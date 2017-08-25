@@ -24,25 +24,25 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class ProgressLoggingHandler(logging.StreamHandler):
 
+class ProgressLoggingHandler(logging.StreamHandler):
     def __init__(self, progressbar):
         self.progressbar = progressbar
         super().__init__()
 
     def emit(self, record):
         try:
-            # delete the current line (i.e. the progress bar)
+            # Delete the current line (i.e. the progress bar)
             self.stream.write("\r\033[K")
             self.flush()
             super().emit(record)
             if not self.progressbar.bar.finished:
                 self.progressbar.bar.update()
         except Exception:
-            # have to do this try-except wrapping otherwise tests fail
-            # due to test_progress.py running main() several times.
-            # this mirrors the super() implementation.
+            # Wrap otherwise tests fail due to test_progress.py call main()
+            # several times. This mirrors the super() implementation.
             self.handleError(record)
+
 
 class ProgressManager(object):
     _singleton = {}
@@ -115,6 +115,7 @@ class ProgressManager(object):
         for x in self.observers:
             x.finish()
 
+
 class Progress(object):
     def __init__(self, total=None):
         self.done = []
@@ -141,17 +142,20 @@ class Progress(object):
 
         if self.current_steps:
             if self.current_child_steps_done or cur_child_estimate:
-                # something is in-progress, the calculation is slightly more complex
+                # Something is in-progress, the calculation is slightly more
+                # complex
                 cur_child_done, cur_child_total = cur_child_estimate or (0, 0)
                 own_done += self.current_steps
-                all_done += self.current_steps + self.current_child_steps_done + cur_child_done
-                # cost of what we expect will have been done, once the current in-progress
-                # step plus all of its children, have completed
-                expected_all_done = all_done + (cur_child_total - cur_child_done)
-                assert own_done # non-zero
-                return all_done, int(float(self.total) / own_done * expected_all_done)
-            else:
-                pass # nothing in progress
+                all_done += self.current_steps + \
+                    self.current_child_steps_done + \
+                    cur_child_done
+                # Cost of what we expect will have been done, once the current
+                # in-progress step plus all of its children, have completed
+                expected_all_done = all_done + \
+                    (cur_child_total - cur_child_done)
+                assert own_done  # non-zero
+                return all_done, int(float(self.total) / own_done \
+                    * expected_all_done)
         else:
             # nothing in progress
             assert not cur_child_estimate
@@ -182,6 +186,7 @@ class Progress(object):
     def child_done(self, total):
         self.current_child_steps_done += total
 
+
 class ProgressBar(object):
     def __init__(self):
         import progressbar
@@ -202,7 +207,7 @@ class ProgressBar(object):
         class OurProgressBar(progressbar.ProgressBar):
             def __init__(self, *args, **kwargs):
                 # Remove after https://github.com/niltonvolpato/python-progressbar/pull/57 is fixed.
-                kwargs.setdefault("fd", sys.stderr)
+                kwargs.setdefault('fd', sys.stderr)
                 super().__init__(*args, **kwargs)
 
             def _need_update(self):
@@ -230,6 +235,7 @@ class ProgressBar(object):
 
     def finish(self):
         self.bar.finish()
+
 
 class StatusFD(object):
     def __init__(self, fileobj):
