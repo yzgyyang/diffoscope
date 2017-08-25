@@ -191,9 +191,15 @@ class ProgressBar(object):
     def __init__(self):
         import progressbar
 
+        try:
+            from progressbar.widgets import WidgetBase
+        except ImportError:
+            # Fallback to the older Debian version
+            from progressbar import Widget as WidgetBase
+
         self.msg = ""
 
-        class Message(progressbar.Widget):
+        class Message(WidgetBase):
             def update(self, pbar, _observer=self):
                 msg = _observer.msg
                 width = 25
