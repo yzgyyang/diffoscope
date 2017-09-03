@@ -1,4 +1,4 @@
-diffoscope (86) UNRELEASED; urgency=medium
+diffoscope (86) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
   * tests:
@@ -11,7 +11,7 @@ diffoscope (86) UNRELEASED; urgency=medium
     + iso9660: support both cdrtools' genisoimage's versions of isoinfo.
 
   [ Chris Lamb ]
-  * comparators
+  * comparators:
     + xml: Use ``name`` attribute over ``path`` to avoid leaking comparison
       full path in output.
   * Tidy diffoscope.progress a little.
@@ -19,16 +19,16 @@ diffoscope (86) UNRELEASED; urgency=medium
   [ Ximin Luo ]
   * Add a --tool-prefix-binutils CLI flag.  Closes: #869868
   * On non-GNU systems, prefer some tools that start with "g".  Closes: #871029
-  * presenters
+  * presenters:
     + html:
       - Don't traverse children whose parents were already limited.
         Closes: #871413
 
   [ Santiago Torres-Arias ]
   * diffoscope.progress:
-    + Support the new fork of python-progressbar. (Closes: #873157)
+    + Support the new fork of python-progressbar.  Closes: #873157
 
- -- Mattia Rizzolo <mattia@debian.org>  Sun, 03 Sep 2017 21:24:30 +0200
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 03 Sep 2017 22:23:06 +0200
 
 diffoscope (85) unstable; urgency=medium
 
