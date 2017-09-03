@@ -1,3 +1,35 @@
+diffoscope (86) UNRELEASED; urgency=medium
+
+  [ Mattia Rizzolo ]
+  * tests:
+    + binary: skip a test if the 'distro' module is not available.
+    + iso9660: avoid an overly-catching exception.
+  * debian/copyright: coalesce some file paragraphs and update information.
+
+  [ Guangyuan Yang ]
+  * tests:
+    + iso9660: support both cdrtools' genisoimage's versions of isoinfo.
+
+  [ Chris Lamb ]
+  * comparators
+    + xml: Use ``name`` attribute over ``path`` to avoid leaking comparison
+      full path in output.
+  * Tidy diffoscope.progress a little.
+
+  [ Ximin Luo ]
+  * Add a --tool-prefix-binutils CLI flag.  Closes: #869868
+  * On non-GNU systems, prefer some tools that start with "g".  Closes: #871029
+  * presenters
+    + html:
+      - Don't traverse children whose parents were already limited.
+        Closes: #871413
+
+  [ Santiago Torres-Arias ]
+  * diffoscope.progress:
+    + Support the new fork of python-progressbar. (Closes: #873157)
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 03 Sep 2017 21:24:30 +0200
+
 diffoscope (85) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
