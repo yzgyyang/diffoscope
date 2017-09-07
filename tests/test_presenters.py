@@ -115,7 +115,7 @@ def test_html_option_with_file(tmpdir, capsys):
         body = extract_body(f.read())
         assert body.count('div class="difference"') == 4
 
-@skip_unless_tools_exist('compare', 'convert')
+@skip_unless_tools_exist('compare', 'convert', 'sng')
 def test_html_visuals(tmpdir, capsys):
     report_path = str(tmpdir.join('report.html'))
 
