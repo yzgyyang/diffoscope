@@ -1,3 +1,22 @@
+diffoscope (87) UNRELEASED; urgency=medium
+
+  * WIP: changelog will be generated right before releasing, don't add
+    anything.
+
+  [ Juliana Oliveira Rodrigues ]
+  * tests/presenters:
+    + skip html_visuals test if 'sng' binary is not available.
+
+  [ Chris Lamb ]
+  * comparators:
+    + fonts: loosen matching of file(1)'s output to ensure we correctly also
+      match TTF files under file 5.32.
+
+  [ Mattia Rizzolo ]
+  * debian/changelog: retroactively close a bug in an old changelog entry.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Fri, 08 Sep 2017 16:59:36 +0200
+
 diffoscope (86) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
@@ -227,6 +246,7 @@ diffoscope (83) unstable; urgency=medium
   [ Maria Glukhova ]
   * New features:
     - Add visual comparisons for JPEG, ICO, PNG and static GIF images.
+      (Closes: #851359)
   * Test improvements:
     - Test that external tools providers are being returned when tool is not
       found.
