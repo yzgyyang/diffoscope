@@ -39,20 +39,23 @@ class FsImageContainer(Archive):
         if not guestfs:
             return None
 
-        self.g = guestfs.GuestFS (python_return_dict=True)
-        if "LIBGUESTFS_CACHEDIR" in os.environ:
+        self.g = guestfs.GuestFS(python_return_dict=True)
+        try:
             # force a check that LIBGUESTFS_CACHEDIR exists. otherwise guestfs
             # will fall back to /var/tmp, which we don't want
-            self.g.set_cachedir(os.getenv("LIBGUESTFS_CACHEDIR"))
-        self.g.add_drive_opts (self.source.path, format="raw", readonly=1)
+            self.g.set_cachedir(os.environ['LIBGUESTFS_CACHEDIR'])
+        except KeyError:
+            pass
+        self.g.add_drive_opts(self.source.path, format='raw', readonly=1)
         try:
             self.g.launch()
         except RuntimeError:
-            logger.exception("guestfs can't be launched")
-            logger.error("If memory is too tight for 512 MiB, try running with LIBGUESTFS_MEMSIZE=256 or lower.")
+            logger.exception("guestfs failed to launch")
+            logger.error("If memory is too tight for 512 MiB, try running "
+                         "with LIBGUESTFS_MEMSIZE=256 or lower.")
             return None
         devices = self.g.list_devices()
-        self.g.mount(devices[0], "/")
+        self.g.mount(devices[0], '/')
         self.fs = self.g.list_filesystems()[devices[0]]
         return self
 
@@ -68,9 +71,10 @@ class FsImageContainer(Archive):
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
         logger.debug('filesystem image extracting to %s', dest_path)
-        self.g.tar_out("/", dest_path)
+        self.g.tar_out('/', dest_path)
 
         return dest_path
+
 
 class FsImageFile(File):
     CONTAINER_CLASS = FsImageContainer
@@ -85,6 +89,8 @@ class FsImageFile(File):
         if hasattr(other.as_container, 'fs'):
             other_fs = other.as_container.fs
         if my_fs != other_fs:
-            differences.append(Difference.from_text(my_fs, other_fs, None, None, source="filesystem"))
+            differences.append(Difference.from_text(
+                my_fs, other_fs, None, None, source="filesystem",
+            ))
 
         return differences
