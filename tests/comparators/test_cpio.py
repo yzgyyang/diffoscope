@@ -29,8 +29,9 @@ from ..utils.nonexisting import assert_non_existing
 cpio1 = load_fixture('test1.cpio')
 cpio2 = load_fixture('test2.cpio')
 
-def test_identification(cpio1):
+def test_identification(cpio1, cpio2):
     assert isinstance(cpio1, CpioFile)
+    assert isinstance(cpio2, CpioFile)
 
 def test_no_differences(cpio1):
     difference = cpio1.compare(cpio1)
