@@ -528,7 +528,7 @@ class SideBySideDiff(object):
                 if self.hunk_size2 == 0:
                     self.buf[-1] = (self.buf[-1][0], self.buf[-1][1] + '\n' + l[2:])
                 else:
-                    self.buf[-1] = (buf[-1][0] + '\n' + l[2:], self.buf[-1][1])
+                    self.buf[-1] = (self.buf[-1][0] + '\n' + l[2:], self.buf[-1][1])
                 continue
 
             if self.hunk_size1 <= 0 and self.hunk_size2 <= 0:
