@@ -43,7 +43,7 @@ class JSONFile(File):
 
     def compare_details(self, other, source=None):
         difference = Difference.from_text(self.dumps(self), self.dumps(other),
-            self.path, other.path)
+                                          self.path, other.path)
         if difference:
             return [difference]
 

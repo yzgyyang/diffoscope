@@ -332,13 +332,13 @@ class File(object, metaclass=abc.ABCMeta):
                 if difference is None:
                     return None
                 difference.add_comment("Error parsing output of `%s` for %s" %
-                        (e.command, e.object_class))
+                                       (e.command, e.object_class))
             except ContainerExtractionError as e:
                 difference = self.compare_bytes(other, source=source)
                 if difference is None:
                     return None
                 difference.add_comment("Error extracting '{}', falling back to "
-                    "binary comparison ('{}')".format(e.pathname, e.wrapped_exc))
+                                       "binary comparison ('{}')".format(e.pathname, e.wrapped_exc))
             return difference
         return self.compare_bytes(other, source)
 

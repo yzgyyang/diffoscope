@@ -65,7 +65,7 @@ def skip_unless_tool_is_between(tool, actual_ver, min_ver, max_ver, vcls=LooseVe
         (vcls(str(actual_ver)) < vcls(str(min_ver))) or
         (vcls(str(actual_ver)) > vcls(str(max_ver))),
         reason="requires {} >= {} >= {} ({} detected)".format(min_ver, tool,
-                                                            max_ver, actual_ver)
+                                                              max_ver, actual_ver)
     )
 
 def skip_if_binutils_does_not_support_x86():

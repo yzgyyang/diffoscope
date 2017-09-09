@@ -341,4 +341,4 @@ class Changes(object):
                     ))
             else:
                 logger.debug("%s Checksum for file %s matches",
-                    field_name, filename)
+                             field_name, filename)

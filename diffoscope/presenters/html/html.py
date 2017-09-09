@@ -171,7 +171,7 @@ def output_node_frame(difference, path, indentstr, indentnum, body):
 {0[2]}<a class="anchor" href="#{4}" name="{4}">\xb6</a>
 {0[1]}</div>
 """.format(indent, dctrl_class, dctrl, sizeof_fmt(difference.size()), anchor,
-        html.escape(difference.source1))
+           html.escape(difference.source1))
     else:
         header = u"""{0[1]}<div class="{1} diffcontrol-double">{2}</div>
 {0[1]}<div><span class="diffsize">{3}</span></div>
@@ -180,8 +180,8 @@ def output_node_frame(difference, path, indentstr, indentnum, body):
 {0[2]}<a class="anchor" href="#{4}" name="{4}">\xb6</a>
 {0[1]}</div>
 """.format(indent, dctrl_class, dctrl, sizeof_fmt(difference.size()), anchor,
-        html.escape(difference.source1),
-        html.escape(difference.source2))
+           html.escape(difference.source1),
+           html.escape(difference.source2))
 
     return PartialString.numl(u"""{0[1]}<div class="diffheader">
 {1}{0[1]}</div>
@@ -284,7 +284,7 @@ def spl_file_printer(directory, filename, accum):
 
 
 class HTMLPrintContext(collections.namedtuple("HTMLPrintContext",
-        "target single_page jquery_url css_url our_css_url icon_url")):
+                                              "target single_page jquery_url css_url our_css_url icon_url")):
     @property
     def directory(self):
         return None if self.single_page else self.target
@@ -588,7 +588,7 @@ class HTMLPresenter(Presenter):
                 report_current = self.report_printed + sum(p.size(placeholder_len) for p in outputs.values())
                 want_to_add = node_output.size(placeholder_len)
                 logger.debug("report size: %s/%s, page size: %s/%s, want to add %s)",
-                    report_current, self.report_limit, page_current, page_limit, want_to_add)
+                             report_current, self.report_limit, page_current, page_limit, want_to_add)
                 if report_current + want_to_add > self.report_limit:
                     make_new_subpage = False
                 elif page_current + want_to_add < page_limit:

@@ -74,11 +74,11 @@ def create_parser():
         description='Calculate differences between two files or directories',
         add_help=False)
     parser.add_argument('path1', nargs='?', help='First file or directory to '
-        'compare. If omitted, tries to read a diffoscope diff from stdin.')
+                        'compare. If omitted, tries to read a diffoscope diff from stdin.')
     parser.add_argument('path2', nargs='?', help='Second file or directory to '
-        'compare. If omitted, no comparison is done but instead we read a '
-        'diffoscope diff from path1 and will output this in the formats '
-        'specified by the rest of the command line.')
+                        'compare. If omitted, no comparison is done but instead we read a '
+                        'diffoscope diff from path1 and will output this in the formats '
+                        'specified by the rest of the command line.')
     parser.add_argument('--debug', action='store_true',
                         default=False, help='Display debug messages')
     parser.add_argument('--debugger', action='store_true',
@@ -247,9 +247,9 @@ def create_parser():
         if parsed_args.path2 is None:
             # warn about unusual flags in this mode
             ineffective_flags = [f
-                for x in group3._group_actions
-                    if getattr(parsed_args, x.dest) != x.default
-                for f in x.option_strings]
+                                 for x in group3._group_actions
+                                 if getattr(parsed_args, x.dest) != x.default
+                                 for f in x.option_strings]
             if ineffective_flags:
                 logger.warning("Loading diff instead of calculating it, but diff-calculation flags were given; they will be ignored:")
                 logger.warning(ineffective_flags)

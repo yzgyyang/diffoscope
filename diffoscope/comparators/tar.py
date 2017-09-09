@@ -34,5 +34,5 @@ class TarFile(File):
 
     def compare_details(self, other, source=None):
         return [Difference.from_text_readers(list_libarchive(self.path),
-                                        list_libarchive(other.path),
-                                        self.path, other.path, source="file list")]
+                                             list_libarchive(other.path),
+                                             self.path, other.path, source="file list")]
