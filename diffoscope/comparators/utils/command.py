@@ -64,7 +64,7 @@ class Command(object, metaclass=abc.ABCMeta):
         return ' '.join(map(lambda x: '{}' if x == self.path else shlex.quote(x), self.cmdline()))
 
     def env(self):
-        return None # inherit parent environment by default
+        return None  # inherit parent environment by default
 
     # Define only if needed. We take care of closing stdin.
     #def feed_stdin(self, stdin)

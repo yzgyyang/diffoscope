@@ -34,7 +34,7 @@ def run_read_write(capsys, diff, *args):
 
     assert err == ''
     assert exc.value.code == 1
-    assert out == get_data(diff) # presented-output is same as parsed-input
+    assert out == get_data(diff)  # presented-output is same as parsed-input
     return out
 
 def run_diff_read(diffpath):

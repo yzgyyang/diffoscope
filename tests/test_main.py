@@ -79,7 +79,7 @@ def test_remove_temp_files_on_sigterm(capsys, tmpdir, monkeypatch):
         os._exit(ret)
     else:
         _, ret = os.waitpid(pid, 0)
-        assert (ret >> 8) == 2 # having received SIGTERM is trouble
+        assert (ret >> 8) == 2  # having received SIGTERM is trouble
         assert os.listdir(str(tmpdir)) == []
 
 def test_ctrl_c_handling(tmpdir, monkeypatch, capsys):
@@ -108,7 +108,7 @@ def test_no_differences(capsys):
 def test_no_differences_directories(capsys, tmpdir):
     def create_dir(x):
         path = str(tmpdir.mkdir(x))
-        os.utime(path, (0, 0)) # Ensure consistent mtime
+        os.utime(path, (0, 0))  # Ensure consistent mtime
         return path
 
     ret, out, err = run(capsys, create_dir('a'), create_dir('b'))

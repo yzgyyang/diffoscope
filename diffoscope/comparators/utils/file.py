@@ -36,7 +36,7 @@ try:
 except ImportError:  # noqa
     tlsh = None
 
-SMALL_FILE_THRESHOLD = 65536 # 64 kiB
+SMALL_FILE_THRESHOLD = 65536  # 64 kiB
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +58,7 @@ def path_apparent_size(path=".", visited=None):
 
 
 class File(object, metaclass=abc.ABCMeta):
-    if hasattr(magic, 'open'): # use Magic-file-extensions from file
+    if hasattr(magic, 'open'):  # use Magic-file-extensions from file
         @classmethod
         def guess_file_type(self, path):
             if not hasattr(self, '_mimedb'):
@@ -72,7 +72,7 @@ class File(object, metaclass=abc.ABCMeta):
                 self._mimedb_encoding = magic.open(magic.MAGIC_MIME_ENCODING)
                 self._mimedb_encoding.load()
             return self._mimedb_encoding.file(path)
-    else: # use python-magic
+    else:  # use python-magic
         @classmethod
         def guess_file_type(self, path):
             if not hasattr(self, '_mimedb'):
@@ -125,14 +125,14 @@ class File(object, metaclass=abc.ABCMeta):
              lambda m, t: t.search(m), file.magic_file_type),
             (cls.FILE_TYPE_HEADER_PREFIX,
              bytes.startswith, file.file_header),
-        ) if test[0]] # filter out undefined tests
+        ) if test[0]]  # filter out undefined tests
 
         all_tests = [test for test in (
             (cls.FILE_EXTENSION_SUFFIX,
              str.endswith, file.name),
             (file_type_tests,
              run_tests, any),
-        ) if test[0]] # filter out undefined tests, inc. file_type_tests if it's empty
+        ) if test[0]]  # filter out undefined tests, inc. file_type_tests if it's empty
 
         return run_tests(all, all_tests) if all_tests else False
 

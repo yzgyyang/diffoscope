@@ -25,13 +25,13 @@ class Config(object):
     max_diff_block_lines_saved = float("inf")
 
     # hard limits, restricts single-file and multi-file formats
-    max_report_size = 40 * 2 ** 20 # 40 MB
-    max_diff_block_lines = 2 ** 10 # 1024 lines
+    max_report_size = 40 * 2 ** 20  # 40 MB
+    max_diff_block_lines = 2 ** 10  # 1024 lines
     # structural limits, restricts single-file formats
     # semi-restricts multi-file formats
-    max_page_size = 400 * 2 ** 10 # 400 kB
-    max_page_size_child = 200 * 2 ** 10 # 200 kB
-    max_page_diff_block_lines = 2 ** 7 # 128 lines
+    max_page_size = 400 * 2 ** 10  # 400 kB
+    max_page_size_child = 200 * 2 ** 10  # 200 kB
+    max_page_diff_block_lines = 2 ** 7  # 128 lines
 
     max_text_report_size = 0
 

@@ -84,10 +84,10 @@ class CbfsContainer(Archive):
 CBFS_HEADER_MAGIC = 0x4F524243
 CBFS_HEADER_VERSION1 = 0x31313131
 CBFS_HEADER_VERSION2 = 0x31313132
-CBFS_HEADER_SIZE = 8 * 4 # 8 * uint32_t
+CBFS_HEADER_SIZE = 8 * 4  # 8 * uint32_t
 
 # On 2015-12-15, the largest image produced by coreboot is 16 MiB
-CBFS_MAXIMUM_FILE_SIZE = 24 * 2 ** 20 # 24 MiB
+CBFS_MAXIMUM_FILE_SIZE = 24 * 2 ** 20  # 24 MiB
 
 def is_header_valid(buf, size, offset=0):
     magic, version, romsize, bootblocksize, align, cbfs_offset, architecture, pad = struct.unpack_from('!IIIIIIII', buf, offset)

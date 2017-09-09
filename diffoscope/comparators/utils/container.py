@@ -112,7 +112,7 @@ class Container(object, metaclass=abc.ABCMeta):
     def get_adjusted_members_sizes(self):
         for name, member in self.get_adjusted_members():
             if member.is_directory():
-                size = 4096 # default "size" of a directory
+                size = 4096  # default "size" of a directory
             else:
                 size = path_apparent_size(member.path)
             yield name, (member, size)

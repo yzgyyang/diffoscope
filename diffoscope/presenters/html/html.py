@@ -219,7 +219,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
             ud_cont = ud_cont.send
             udiff = udiff.pformatl(PartialString.of(ud_cont))
         else:
-            for _ in ud_cont: pass # exhaust the iterator, avoids GeneratorExit
+            for _ in ud_cont: pass  # exhaust the iterator, avoids GeneratorExit
             ud_cont = None
 
     # PartialString for this node
@@ -237,7 +237,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
 {-1}""", 2, cont).pformatl(indent, child)
         t = cont(t, child)
 
-    assert len(t.holes) >= len(difference.details) + 1 # there might be extra holes for the unified diff continuation
+    assert len(t.holes) >= len(difference.details) + 1  # there might be extra holes for the unified diff continuation
     return cont(t, u""), ud_cont
 
 def output_header(css_url, our_css_url=False, icon_url=None):
@@ -294,7 +294,7 @@ class HTMLSideBySidePresenter(object):
     supports_visual_diffs = True
 
     def __init__(self):
-        self.max_lines = Config().max_diff_block_lines # only for html-dir
+        self.max_lines = Config().max_diff_block_lines  # only for html-dir
         self.max_lines_parent = Config().max_page_diff_block_lines
         self.max_page_size_child = Config().max_page_size_child
 
@@ -370,11 +370,11 @@ class HTMLSideBySidePresenter(object):
             if self.spl_rows >= self.max_lines:
                 raise DiffBlockLimitReached()
 
-            if self.spl_current_page == 0: # on parent page
+            if self.spl_current_page == 0:  # on parent page
                 if self.spl_rows < self.max_lines_parent:
                     return False
                 logger.debug("new unified-diff subpage, parent page went over %s lines", self.max_lines_parent)
-            else: # on child page
+            else:  # on child page
                 if self.bytes_max_total and self.bytes_written > self.bytes_max_total:
                     raise PrintLimitReached()
                 if self.spl_print_func.bytes_written < self.max_page_size_child:
@@ -557,11 +557,11 @@ class HTMLPresenter(Presenter):
             return templates.DIFFNODE_LIMIT
 
     def output_difference(self, ctx, root_difference):
-        outputs = {} # nodes to their partial output
-        ancestors = {} # child nodes to ancestor nodes
+        outputs = {}  # nodes to their partial output
+        ancestors = {}  # child nodes to ancestor nodes
         placeholder_len = len(self.output_node_placeholder("XXXXXXXXXXXXXXXX", not ctx.single_page))
-        continuations = {} # functions to print unified diff continuations (html-dir only)
-        printers = {} # nodes to their printers
+        continuations = {}  # functions to print unified diff continuations (html-dir only)
+        printers = {}  # nodes to their printers
 
         def smallest_first(node, parscore):
             depth = parscore[0] + 1 if parscore else 0
@@ -569,7 +569,7 @@ class HTMLPresenter(Presenter):
             # Difference is not comparable so use memory address in event of a tie
             return depth, node.size_self(), id(node), parents + [node]
 
-        pruned = set() # children
+        pruned = set()  # children
         for node, score in root_difference.traverse_heapq(smallest_first, yield_score=True):
             if node in pruned:
                 continue
@@ -608,7 +608,7 @@ class HTMLPresenter(Presenter):
                     outputs[ancestor] = outputs[ancestor].pformat({node: placeholder})
                     self.maybe_print(ancestor, printers, outputs, continuations)
                     footer = output_footer()
-                    if not make_new_subpage: # we hit a limit, either max-report-size or single-page
+                    if not make_new_subpage:  # we hit a limit, either max-report-size or single-page
                         if not outputs:
                             # no more holes, don't traverse any more nodes
                             break
@@ -648,7 +648,7 @@ class HTMLPresenter(Presenter):
     def ensure_jquery(self, jquery_url, basedir, default_override):
         if jquery_url is None:
             jquery_url = default_override
-            default_override = None # later, we can detect jquery_url was None
+            default_override = None  # later, we can detect jquery_url was None
         if jquery_url == 'disable' or not jquery_url:
             return None
 
