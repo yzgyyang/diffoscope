@@ -22,7 +22,6 @@ import struct
 from diffoscope.difference import Difference
 
 from .utils.file import File
-from .utils.command import Command
 
 
 class FontconfigCacheFile(File):

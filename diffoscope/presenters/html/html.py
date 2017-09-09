@@ -50,7 +50,7 @@ from diffoscope.diff import SideBySideDiff, DIFFON, DIFFOFF
 
 from ..icon import FAVICON_BASE64
 from ..utils import sizeof_fmt, PrintLimitReached, DiffBlockLimitReached, \
-    create_limited_print_func, Presenter, make_printer, PartialString
+    Presenter, make_printer, PartialString
 
 from . import templates
 

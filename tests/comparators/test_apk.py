@@ -20,7 +20,6 @@
 import pytest
 
 from diffoscope.comparators.apk import ApkFile
-from diffoscope.comparators.xml import XMLFile
 
 from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist

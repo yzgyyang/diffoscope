@@ -22,7 +22,6 @@ import sys
 import shutil
 import os.path
 import zipfile
-import contextlib
 
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
