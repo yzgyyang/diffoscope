@@ -284,7 +284,7 @@ def spl_file_printer(directory, filename, accum):
 
 
 class HTMLPrintContext(collections.namedtuple("HTMLPrintContext",
-    "target single_page jquery_url css_url our_css_url icon_url")):
+        "target single_page jquery_url css_url our_css_url icon_url")):
     @property
     def directory(self):
         return None if self.single_page else self.target
