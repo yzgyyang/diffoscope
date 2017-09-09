@@ -432,9 +432,9 @@ class SideBySideDiff(object):
         elif self.del_cpt != 0 and self.add_cpt != 0:
             l0, l1 = [], []
             for l in self.buf:
-                if l[0] != None:
+                if l[0] is not None:
                     l0.append(l[0])
-                if l[1] != None:
+                if l[1] is not None:
                     l1.append(l[1])
             max_len = (len(l0) > len(l1)) and len(l0) or len(l1)
             for i in range(max_len):
