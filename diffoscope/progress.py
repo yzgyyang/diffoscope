@@ -154,7 +154,7 @@ class Progress(object):
                 expected_all_done = all_done + \
                     (cur_child_total - cur_child_done)
                 assert own_done  # non-zero
-                return all_done, int(float(self.total) / own_done \
+                return all_done, int(float(self.total) / own_done
                                      * expected_all_done)
         else:
             # nothing in progress
