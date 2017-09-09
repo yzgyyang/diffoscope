@@ -133,6 +133,7 @@ class MozillaZipContainer(ZipContainer):
         # This is gross: Monkeypatch zipfile._EndRecData to work with
         # Mozilla-optimized ZIPs
         _orig_EndRecData = zipfile._EndRecData
+
         def _EndRecData(fh):
             endrec = _orig_EndRecData(fh)
             if endrec:

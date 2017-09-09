@@ -275,6 +275,7 @@ def file_printer(directory, filename):
 def spl_file_printer(directory, filename, accum):
     with codecs.open(os.path.join(directory, filename), 'w', encoding='utf-8') as f:
         print_func = f.write
+
         def recording_print_func(s):
             print_func(s)
             recording_print_func.bytes_written += len(s)

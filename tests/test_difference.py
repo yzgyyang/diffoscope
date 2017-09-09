@@ -80,6 +80,7 @@ def test_traverse_heapq():
     diff.add_details([d0, d1, d2])
     # traverse nodes in depth order, but at a given depth traverse the nodes
     # there from smallest diff (counted non-recursively) to largest
+
     def f(node, parscore):
         depth = parscore[0] + 1 if parscore else 0
         return depth, node.size_self()

@@ -60,6 +60,7 @@ def test_identification_of_md5sums_outside_deb(tmpdir):
 
 def test_identification_of_md5sums_in_deb(deb1, deb2, monkeypatch):
     orig_func = Md5sumsFile.recognizes
+
     @staticmethod
     def probe(file):
         ret = orig_func(file)
@@ -80,6 +81,7 @@ def test_identical_files_in_md5sums(deb1, deb2):
 
 def test_identification_of_data_tar(deb1, deb2, monkeypatch):
     orig_func = DebDataTarFile.recognizes
+
     @staticmethod
     def probe(file):
         ret = orig_func(file)
@@ -94,6 +96,7 @@ def test_identification_of_data_tar(deb1, deb2, monkeypatch):
 def test_skip_comparison_of_known_identical_files(deb1, deb2, monkeypatch):
     compared = set()
     orig_func = diffoscope.comparators.utils.compare.compare_files
+
     def probe(file1, file2, **kwargs):
         compared.add(file1.name)
         return orig_func(file1, file2, **kwargs)

@@ -53,6 +53,7 @@ def skip_unless_tool_is_at_least():
     # pytest.skipif().args[0] contains the evaluated statement
     assert func('cat', 1, 1).args[0] is False
     assert func('cat', 1, '1.2d.45+b8').args[0] is True
+
     def version():
         return '4.3-git'
     assert func('cat', version, '4.3').args[0] is False

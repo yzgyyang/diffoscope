@@ -507,6 +507,7 @@ class ElfContainer(Container):
         # 2. Monkey-patch the ElfSection object created for the .gnu_debuglink
         # to change the path to point to this new file
         section = self._sections['.gnu_debuglink']
+
         class MonkeyPatchedElfSection(section.__class__):
             @property
             def path(self):

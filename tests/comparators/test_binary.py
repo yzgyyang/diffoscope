@@ -98,6 +98,7 @@ def test_compare_without_xxd(xxd_not_found, binary1, binary2):
 
 def test_with_compare_details():
     d = Difference('diff', TEST_FILE1_PATH, TEST_FILE2_PATH, source='source')
+
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
             return [d]
@@ -124,6 +125,7 @@ def test_with_compare_details_and_no_actual_differences():
 @skip_unless_tools_exist('xxd')
 def test_with_compare_details_and_failed_process():
     output = 'Free Jeremy Hammond'
+
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
             subprocess.check_output(['sh', '-c', 'echo "%s"; exit 42' % output], shell=False)
@@ -137,6 +139,7 @@ def test_with_compare_details_and_failed_process():
 @skip_unless_tools_exist('xxd')
 def test_with_compare_details_and_parsing_error():
     from diffoscope.exc import OutputParsingError
+
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
             subprocess.check_output(['sh', '-c', 'exit 0'], shell=False)
@@ -149,6 +152,7 @@ def test_with_compare_details_and_parsing_error():
 @skip_unless_tools_exist('xxd')
 def test_with_compare_details_and_extraction_error():
     from diffoscope.exc import ContainerExtractionError
+
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
             subprocess.check_output(['sh', '-c', 'exit 0'], shell=False)
@@ -172,6 +176,7 @@ def test_with_compare_details_and_tool_not_found(monkeypatch):
             'FreeBSD': 'some-package'
         }
     )
+
     class MockFile(FilesystemFile):
         @tool_required('nonexistent')
         def compare_details(self, other, source=None):
