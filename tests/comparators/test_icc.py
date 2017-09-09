@@ -56,4 +56,3 @@ def test_compare_non_existing(monkeypatch, icc1):
     difference = icc1.compare(MissingFile('/nonexisting', icc1))
     assert difference.source2 == '/nonexisting'
     assert len(difference.details) > 0
-

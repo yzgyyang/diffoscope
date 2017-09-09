@@ -36,4 +36,3 @@ class PublicKeyFile(File):
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(SSHKeyList, self.path, other.path)]
-
