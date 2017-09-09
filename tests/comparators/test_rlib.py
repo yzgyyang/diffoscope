@@ -33,23 +33,29 @@ from ..utils.nonexisting import assert_non_existing
 rlib1 = load_fixture('test1.rlib')
 rlib2 = load_fixture('test2.rlib')
 
+
 def llvm_version():
     return subprocess.check_output(['llvm-config', '--version']).decode("utf-8").strip()
 
+
 def test_identification(rlib1):
     assert isinstance(rlib1, ArFile)
+
 
 def test_no_differences(rlib1):
     difference = rlib1.compare(rlib1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(rlib1, rlib2):
     return rlib1.compare(rlib2).details
 
+
 @skip_unless_tools_exist('nm')
 def test_num_items(differences):
     assert len(differences) == 4
+
 
 @skip_unless_tools_exist('nm')
 @skip_if_binutils_does_not_support_x86()
@@ -59,6 +65,7 @@ def test_item0_armap(differences):
     expected_diff = get_data('rlib_armap_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
+
 @skip_unless_tools_exist('nm')
 @skip_if_binutils_does_not_support_x86()
 def test_item1_elf(differences):
@@ -67,10 +74,12 @@ def test_item1_elf(differences):
     expected_diff = get_data('rlib_elf_expected_diff')
     assert differences[1].details[0].unified_diff == expected_diff
 
+
 @skip_unless_tools_exist('nm')
 def test_item2_rust_metadata_bin(differences):
     assert differences[2].source1 == 'rust.metadata.bin'
     assert differences[2].source2 == 'rust.metadata.bin'
+
 
 @skip_unless_tools_exist('llvm-dis')
 @skip_unless_tool_is_at_least('llvm-config', llvm_version, '3.8')
@@ -80,6 +89,7 @@ def test_item3_deflate_llvm_bitcode(differences):
     expected_diff = get_data('rlib_llvm_dis_expected_diff')
     actual_diff = differences[3].details[0].details[1].unified_diff
     assert diff_ignore_line_numbers(actual_diff) == diff_ignore_line_numbers(expected_diff)
+
 
 @skip_unless_tools_exist('nm')
 def test_compare_non_existing(monkeypatch, rlib1):

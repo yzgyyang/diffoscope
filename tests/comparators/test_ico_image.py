@@ -33,25 +33,31 @@ image2 = load_fixture('test2.ico')
 image1_meta = load_fixture('test1_meta.ico')
 image2_meta = load_fixture('test2_meta.ico')
 
+
 def test_identification(image1):
     assert isinstance(image1, ICOImageFile)
+
 
 def test_no_differences(image1):
     difference = image1.compare(image1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(image1, image2):
     return image1.compare(image2).details
+
 
 @skip_unless_tools_exist('img2txt', 'convert')
 def test_diff(differences):
     expected_diff = get_data('ico_image_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
+
 @pytest.fixture
 def differences_meta(image1_meta, image2_meta):
     return image1_meta.compare(image2_meta).details
+
 
 @skip_unless_tools_exist('img2txt', 'identify')
 @skip_unless_tool_is_between('identify', identify_version, '6.9.6', '6.9.8-3')
@@ -59,11 +65,13 @@ def test_diff_meta(differences_meta):
     expected_diff = get_data('ico_image_meta_expected_diff')
     assert differences_meta[-1].unified_diff == expected_diff
 
+
 @skip_unless_tools_exist('img2txt', 'identify')
 @skip_unless_tool_is_at_least('identify', identify_version, '6.9.8-4')
 def test_diff_meta(differences_meta):
     expected_diff = get_data('ico_image_meta_expected_diff_v2')
     assert differences_meta[-1].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('img2txt', 'compose', 'convert', 'identify')
 def test_has_visuals(monkeypatch, image1, image2):

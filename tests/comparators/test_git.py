@@ -27,15 +27,19 @@ from ..utils.data import get_data, load_fixture
 git1 = load_fixture('test1.git-index')
 git2 = load_fixture('test2.git-index')
 
+
 def test_identification(git1):
     assert isinstance(git1, GitIndexFile)
+
 
 def test_no_differences(git1):
     assert git1.compare(git1) is None
 
+
 @pytest.fixture
 def differences(git1, git2):
     return git1.compare(git2).details
+
 
 def test_diff(differences):
     expected_diff = get_data('git_expected_diff')

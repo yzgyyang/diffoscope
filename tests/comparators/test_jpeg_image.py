@@ -33,6 +33,7 @@ image2 = load_fixture('test2.jpg')
 image1_meta = load_fixture('test1_meta.jpg')
 image2_meta = load_fixture('test2_meta.jpg')
 
+
 def identify_version():
     out = subprocess.check_output(['identify', '-version']).decode('utf-8')
     # First line is expected to look like
@@ -41,21 +42,26 @@ def identify_version():
         return '0.0.0'
     return out.splitlines()[0].split()[2].strip()
 
+
 def test_identification(image1):
     assert isinstance(image1, JPEGImageFile)
+
 
 def test_no_differences(image1):
     difference = image1.compare(image1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(image1, image2):
     return image1.compare(image2).details
+
 
 @skip_unless_tools_exist('img2txt', 'identify')
 def test_diff(differences):
     expected_diff = get_data('jpeg_image_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('img2txt', 'identify')
 def test_compare_non_existing(monkeypatch, image1):
@@ -64,15 +70,18 @@ def test_compare_non_existing(monkeypatch, image1):
     assert difference.source2 == '/nonexisting'
     assert len(difference.details) > 0
 
+
 @pytest.fixture
 def differences_meta(image1_meta, image2_meta):
     return image1_meta.compare(image2_meta).details
+
 
 @skip_unless_tools_exist('img2txt', 'identify')
 @skip_unless_tool_is_at_least('identify', identify_version, '6.9.6')
 def test_diff_meta(differences_meta):
     expected_diff = get_data('jpeg_image_meta_expected_diff')
     assert differences_meta[-1].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('img2txt', 'compose', 'convert', 'identify')
 def test_has_visuals(monkeypatch, image1, image2):

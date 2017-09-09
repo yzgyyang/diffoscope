@@ -35,21 +35,26 @@ from ..utils.tools import skip_unless_tools_exist
 exe1 = load_fixture('test1.exe')
 exe2 = load_fixture('test2.exe')
 
+
 def test_identification(exe1):
     assert isinstance(exe1, MonoExeFile)
+
 
 def test_no_differences(exe1):
     difference = exe1.compare(exe1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(exe1, exe2):
     return exe1.compare(exe2).details
+
 
 @skip_unless_tools_exist('pedump')
 def test_diff(differences):
     expected_diff = get_data('pe_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('pedump')
 def test_compare_non_existing(monkeypatch, exe1):

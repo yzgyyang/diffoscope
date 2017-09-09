@@ -36,6 +36,7 @@ def run(capsys, *args):
 
     return exc.value.code, out
 
+
 def test_none(capsys):
     ret, out = run(capsys)
 
@@ -43,11 +44,13 @@ def test_none(capsys):
     assert '── dir/text' in out
     assert '── dir/link' in out
 
+
 def test_all(capsys):
     ret, out = run(capsys, '--exclude=*')
 
     assert ret == 0
     assert out == ''
+
 
 def test_specific(capsys):
     ret, out = run(capsys, '--exclude=dir/text')
@@ -56,12 +59,14 @@ def test_specific(capsys):
     assert '── dir/text' not in out
     assert '── dir/link' in out
 
+
 def test_specific_case(capsys):
     ret, out = run(capsys, '--exclude=dir/TEXT')
 
     assert ret == 1
     assert '── dir/text' in out
     assert '── dir/link' in out
+
 
 def test_multiple(capsys):
     ret, out = run(capsys, '--exclude=dir/text', '--exclude=dir/link')
@@ -70,12 +75,14 @@ def test_multiple(capsys):
     assert '── dir/text' not in out
     assert '── dir/link' not in out
 
+
 def test_nomatch(capsys):
     ret, out = run(capsys, '--exclude=nomatch')
 
     assert ret == 1
     assert '── dir/text' in out
     assert '── dir/link' in out
+
 
 def test_wildcard(capsys):
     ret, out = run(capsys, '--exclude=*link')

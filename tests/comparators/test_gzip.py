@@ -36,13 +36,16 @@ gzip2 = load_fixture('test2.gz')
 def test_identification(gzip1):
     assert isinstance(gzip1, GzipFile)
 
+
 def test_no_differences(gzip1):
     difference = gzip1.compare(gzip1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(gzip1, gzip2):
     return gzip1.compare(gzip2).details
+
 
 def test_metadata(differences):
     assert differences[0].source1 == 'metadata'
@@ -50,9 +53,11 @@ def test_metadata(differences):
     expected_diff = get_data('gzip_metadata_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
+
 def test_content_source(differences):
     assert differences[1].source1 == 'test1'
     assert differences[1].source2 == 'test2'
+
 
 def test_content_source_without_extension(tmpdir, gzip1, gzip2):
     path1 = str(tmpdir.join('test1'))
@@ -65,9 +70,11 @@ def test_content_source_without_extension(tmpdir, gzip1, gzip2):
     assert difference[1].source1 == 'test1-content'
     assert difference[1].source2 == 'test2-content'
 
+
 def test_content_diff(differences):
     expected_diff = get_data('text_ascii_expected_diff')
     assert differences[1].unified_diff == expected_diff
+
 
 def test_compare_non_existing(monkeypatch, gzip1):
     monkeypatch.setattr(Config(), 'new_file', True)

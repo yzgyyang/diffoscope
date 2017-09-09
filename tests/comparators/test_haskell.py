@@ -29,6 +29,7 @@ from ..utils.tools import skip_unless_tools_exist
 haskell1 = load_fixture('test1.hi')
 haskell2 = load_fixture('test2.hi')
 
+
 @skip_unless_tools_exist('ghc')
 def test_identification(haskell1):
     if isinstance(haskell1, FilesystemFile):
@@ -36,12 +37,15 @@ def test_identification(haskell1):
 
     assert isinstance(haskell1, HiFile)
 
+
 def test_no_differences(haskell1):
     assert haskell1.compare(haskell1) is None
+
 
 @pytest.fixture
 def differences(haskell1, haskell2):
     return haskell1.compare(haskell2).details
+
 
 @skip_unless_tools_exist('ghc')
 def test_diff(haskell1, differences):

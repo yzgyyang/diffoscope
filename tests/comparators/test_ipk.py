@@ -29,25 +29,31 @@ from ..utils.data import load_fixture, get_data
 ipk1 = load_fixture('base-files_157-r45695_ar71xx.ipk')
 ipk2 = load_fixture('base-files_157-r45918_ar71xx.ipk')
 
+
 def test_identification(ipk1):
     assert isinstance(ipk1, IpkFile)
+
 
 def test_no_differences(ipk1):
     difference = ipk1.compare(ipk1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(ipk1, ipk2):
     return ipk1.compare(ipk2).details
+
 
 def test_metadata(differences):
     assert differences[0].source1 == 'metadata'
     expected_diff = get_data('ipk_metadata_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
+
 def test_compressed_files(differences):
     assert differences[1].details[1].source1 == './data.tar.gz'
     assert differences[1].details[2].source1 == './control.tar.gz'
+
 
 def test_compare_non_existing(monkeypatch, ipk1):
     monkeypatch.setattr(Config(), 'new_file', True)

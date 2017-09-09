@@ -30,21 +30,26 @@ from ..utils.tools import skip_unless_tools_exist
 ttf1 = load_fixture('Samyak-Malayalam1.ttf')
 ttf2 = load_fixture('Samyak-Malayalam2.ttf')
 
+
 def test_identification(ttf1):
     assert isinstance(ttf1, TtfFile)
+
 
 def test_no_differences(ttf1):
     difference = ttf1.compare(ttf1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(ttf1, ttf2):
     return ttf1.compare(ttf2).details
+
 
 @skip_unless_tools_exist('showttf')
 def test_diff(differences):
     expected_diff = get_data('ttf_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('showttf')
 def test_compare_non_existing(monkeypatch, ttf1):

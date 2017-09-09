@@ -29,26 +29,32 @@ from ..utils.nonexisting import assert_non_existing
 ps1 = load_fixture('test1.ps')
 ps2 = load_fixture('test2.ps')
 
+
 def test_identification(ps1):
     assert isinstance(ps1, PsFile)
+
 
 def test_no_differences(ps1):
     difference = ps1.compare(ps1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(ps1, ps2):
     return ps1.compare(ps2)
+
 
 @skip_unless_tools_exist('ps2ascii')
 def test_internal_diff(differences):
     expected_diff = get_data('ps_internal_expected_diff')
     assert differences.unified_diff == expected_diff
 
+
 @skip_unless_tools_exist('ps2ascii')
 def test_text_diff(differences):
     expected_diff = get_data('ps_text_expected_diff')
     assert differences.details[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('ps2ascii')
 def test_compare_non_existing(monkeypatch, ps1):

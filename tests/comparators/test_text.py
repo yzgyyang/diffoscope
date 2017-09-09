@@ -29,9 +29,11 @@ from ..utils.nonexisting import assert_non_existing
 ascii1 = load_fixture('text_ascii1')
 ascii2 = load_fixture('text_ascii2')
 
+
 def test_no_differences(ascii1):
     difference = ascii1.compare(ascii1)
     assert difference is None
+
 
 def test_difference_in_ascii(ascii1, ascii2):
     difference = ascii1.compare(ascii2)
@@ -45,6 +47,7 @@ def test_difference_in_ascii(ascii1, ascii2):
 unicode1 = load_fixture('text_unicode1')
 unicode2 = load_fixture('text_unicode2')
 
+
 def test_difference_in_unicode(unicode1, unicode2):
     difference = unicode1.compare(unicode2)
     expected_diff = codecs.open(data('text_unicode_expected_diff'), encoding='utf-8').read()
@@ -53,10 +56,12 @@ def test_difference_in_unicode(unicode1, unicode2):
 
 iso8859 = load_fixture('text_iso8859')
 
+
 def test_difference_between_iso88591_and_unicode(iso8859, unicode1):
     difference = iso8859.compare(unicode1)
     expected_diff = codecs.open(data('text_iso8859_expected_diff'), encoding='utf-8').read()
     assert difference.unified_diff == expected_diff
+
 
 def test_difference_between_iso88591_and_unicode_only(iso8859, tmpdir):
     utf8_path = str(tmpdir.join('utf8'))
@@ -67,12 +72,14 @@ def test_difference_between_iso88591_and_unicode_only(iso8859, tmpdir):
     assert difference.unified_diff is None
     assert difference.details[0].source1 == 'encoding'
 
+
 def test_compare_non_existing(monkeypatch, ascii1):
     assert_non_existing(monkeypatch, ascii1, has_null_source=False, has_details=False)
 
 
 text_order1 = load_fixture('text_order1')
 text_order2 = load_fixture('text_order2')
+
 
 def test_ordering_differences(text_order1, text_order2):
     difference = text_order1.compare(text_order2)

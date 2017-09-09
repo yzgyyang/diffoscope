@@ -36,18 +36,22 @@ bzip2 = load_fixture('test2.bz2')
 def test_identification(bzip1):
     assert isinstance(bzip1, Bzip2File)
 
+
 def test_no_differences(bzip1):
     difference = bzip1.compare(bzip1)
     assert difference is None
+
 
 @pytest.fixture
 def differences(bzip1, bzip2):
     return bzip1.compare(bzip2).details
 
+
 @skip_unless_tools_exist('bzip2')
 def test_content_source(differences):
     assert differences[0].source1 == 'test1'
     assert differences[0].source2 == 'test2'
+
 
 @skip_unless_tools_exist('bzip2')
 def test_content_source_without_extension(tmpdir, bzip1, bzip2):
@@ -61,10 +65,12 @@ def test_content_source_without_extension(tmpdir, bzip1, bzip2):
     assert differences[0].source1 == 'test1-content'
     assert differences[0].source2 == 'test2-content'
 
+
 @skip_unless_tools_exist('bzip2')
 def test_content_diff(differences):
     expected_diff = get_data('text_ascii_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('bzip2')
 def test_compare_non_existing(monkeypatch, bzip1):

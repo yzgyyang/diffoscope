@@ -29,22 +29,27 @@ from ..utils.nonexisting import assert_non_existing
 sqlite3db1 = load_fixture('test1.sqlite3')
 sqlite3db2 = load_fixture('test2.sqlite3')
 
+
 def test_identification(sqlite3db1):
     assert isinstance(sqlite3db1, Sqlite3Database)
+
 
 def test_no_differences(sqlite3db1):
     difference = sqlite3db1.compare(sqlite3db1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(sqlite3db1, sqlite3db2):
     return sqlite3db1.compare(sqlite3db2).details
+
 
 @skip_unless_tools_exist('sqlite3')
 def test_diff(differences):
     expected_diff = get_data('sqlite3_expected_diff')
     actual_diff = differences[0].unified_diff
     assert actual_diff == expected_diff or actual_diff == expected_diff.replace('"test"', 'test')
+
 
 @skip_unless_tools_exist('sqlite3')
 def test_compare_non_existing(monkeypatch, sqlite3db1):

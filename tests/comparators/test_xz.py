@@ -31,21 +31,26 @@ from ..utils.nonexisting import assert_non_existing
 xz1 = load_fixture('test1.xz')
 xz2 = load_fixture('test2.xz')
 
+
 def test_identification(xz1):
     assert isinstance(xz1, XzFile)
+
 
 def test_no_differences(xz1):
     difference = xz1.compare(xz1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(xz1, xz2):
     return xz1.compare(xz2).details
+
 
 @skip_unless_tools_exist('xz')
 def test_content_source(differences):
     assert differences[0].source1 == 'test1'
     assert differences[0].source2 == 'test2'
+
 
 @skip_unless_tools_exist('xz')
 def test_content_source_without_extension(tmpdir, xz1, xz2):
@@ -59,10 +64,12 @@ def test_content_source_without_extension(tmpdir, xz1, xz2):
     assert difference[0].source1 == 'test1-content'
     assert difference[0].source2 == 'test2-content'
 
+
 @skip_unless_tools_exist('xz')
 def test_content_diff(differences):
     expected_diff = get_data('text_ascii_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('xz')
 def test_compare_non_existing(monkeypatch, xz1):

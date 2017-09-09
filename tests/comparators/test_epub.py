@@ -30,16 +30,20 @@ from ..utils.tools import skip_unless_tools_exist
 epub1 = load_fixture('test1.epub')
 epub2 = load_fixture('test2.epub')
 
+
 def test_identification(epub1):
     assert isinstance(epub1, ZipFile)
+
 
 def test_no_differences(epub1):
     difference = epub1.compare(epub1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(epub1, epub2):
     return epub1.compare(epub2).details
+
 
 @skip_unless_tools_exist('zipinfo')
 def test_differences(differences):
@@ -53,6 +57,7 @@ def test_differences(differences):
     assert differences[3].source2 == 'ch001.xhtml'
     expected_diff = get_data('epub_expected_diffs')
     assert expected_diff == "".join(map(lambda x: x.unified_diff, differences))
+
 
 @skip_unless_tools_exist('zipinfo')
 def test_compare_non_existing(monkeypatch, epub1):

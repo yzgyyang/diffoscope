@@ -37,12 +37,14 @@ def run(capsys, *args):
 
     return exc.value.code, out, err
 
+
 def test_non_existing_files(capsys):
     ret, _, err = run(capsys, '/nonexisting1', '/nonexisting2')
 
     assert ret == 2
     assert '/nonexisting1: No such file or directory' in err
     assert '/nonexisting2: No such file or directory' in err
+
 
 def test_non_existing_left_with_new_file(capsys):
     ret, out, _ = run(capsys, '--new-file', '/nonexisting1', __file__)
@@ -51,12 +53,14 @@ def test_non_existing_left_with_new_file(capsys):
     assert '--- /nonexisting1' in out
     assert ('+++ %s' % __file__) in out
 
+
 def test_non_existing_right_with_new_file(capsys):
     ret, out, _ = run(capsys, '--new-file', __file__, '/nonexisting2')
 
     assert ret == 1
     assert ('--- %s' % __file__) in out
     assert '+++ /nonexisting2' in out
+
 
 def test_non_existing_files_with_new_file(capsys):
     ret, out, _ = run(capsys, '--new-file', '/nonexisting1', '/nonexisting2')
@@ -65,6 +69,7 @@ def test_non_existing_files_with_new_file(capsys):
     assert '--- /nonexisting1' in out
     assert '+++ /nonexisting2' in out
     assert 'Trying to compare two non-existing files.' in out
+
 
 def test_remove_temp_files_on_sigterm(capsys, tmpdir, monkeypatch):
     pid = os.fork()
@@ -82,6 +87,7 @@ def test_remove_temp_files_on_sigterm(capsys, tmpdir, monkeypatch):
         assert (ret >> 8) == 2  # having received SIGTERM is trouble
         assert os.listdir(str(tmpdir)) == []
 
+
 def test_ctrl_c_handling(tmpdir, monkeypatch, capsys):
     monkeypatch.setattr('tempfile.tempdir', str(tmpdir))
 
@@ -98,12 +104,14 @@ def test_ctrl_c_handling(tmpdir, monkeypatch, capsys):
     assert ret == 2
     assert os.listdir(str(tmpdir)) == []
 
+
 def test_no_differences(capsys):
     ret, out, err = run(capsys, TEST_TAR1_PATH, TEST_TAR1_PATH)
 
     assert ret == 0
     assert err == ''
     assert out == ''
+
 
 def test_no_differences_directories(capsys, tmpdir):
     def create_dir(x):
@@ -119,6 +127,7 @@ def test_no_differences_directories(capsys, tmpdir):
     assert err == '' or "getfacl" in err
     assert out == ''
 
+
 def test_list_tools(capsys):
     ret, out, err = run(capsys, '--list-tools')
 
@@ -126,6 +135,7 @@ def test_list_tools(capsys):
     assert err == ''
     assert 'External-Tools-Required: ' in out
     assert 'xxd,' in out
+
 
 def test_profiling(capsys):
     ret, out, err = run(capsys, TEST_TAR1_PATH, TEST_TAR1_PATH, '--profile=-')

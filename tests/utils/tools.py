@@ -30,11 +30,13 @@ from distutils.version import LooseVersion
 def tools_missing(*required):
     return not required or any(find_executable(x) is None for x in required)
 
+
 def skip_unless_tools_exist(*required):
     return pytest.mark.skipif(
         tools_missing(*required),
         reason="requires {}".format(" and ".join(required)),
     )
+
 
 def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
     if tools_missing(tool):
@@ -46,6 +48,7 @@ def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
         reason="requires {} >= {} ({} detected)".format(tool, min_ver, actual_ver)
     )
 
+
 def skip_unless_tool_is_at_most(tool, actual_ver, max_ver, vcls=LooseVersion):
     if tools_missing(tool):
         return pytest.mark.skipif(True, reason="requires {}".format(tool))
@@ -55,6 +58,7 @@ def skip_unless_tool_is_at_most(tool, actual_ver, max_ver, vcls=LooseVersion):
         vcls(str(actual_ver)) > vcls(str(max_ver)),
         reason="requires {} <= {} ({} detected)".format(tool, max_ver, actual_ver)
     )
+
 
 def skip_unless_tool_is_between(tool, actual_ver, min_ver, max_ver, vcls=LooseVersion):
     if tools_missing(tool):
@@ -68,6 +72,7 @@ def skip_unless_tool_is_between(tool, actual_ver, min_ver, max_ver, vcls=LooseVe
                                                               max_ver, actual_ver)
     )
 
+
 def skip_if_binutils_does_not_support_x86():
     if tools_missing('objdump'):
         return skip_unless_tools_exist('objdump')
@@ -77,11 +82,13 @@ def skip_if_binutils_does_not_support_x86():
         reason="requires a binutils capable of reading x86-64 binaries"
     )
 
+
 @functools.lru_cache()
 def get_supported_elf_formats():
     return set(subprocess.check_output(
         ('objdump', '--info'),
     ).decode('utf-8').splitlines())
+
 
 def module_is_not_importable(x):
     try:
@@ -96,6 +103,7 @@ def module_is_not_importable(x):
         # Probing for submodules (eg. ``debian.deb822``) will attempt to
         # import ``debian`` so we must handle that failing.
         return True
+
 
 def skip_unless_module_exists(name):
     return pytest.mark.skipif(

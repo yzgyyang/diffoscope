@@ -32,16 +32,20 @@ from ..utils.tools import skip_unless_tools_exist
 obj1 = load_fixture('test1.macho')
 obj2 = load_fixture('test2.macho')
 
+
 def test_obj_identification(obj1):
     assert isinstance(obj1, MachoFile)
+
 
 def test_obj_no_differences(obj1):
     difference = obj1.compare(obj1)
     assert difference is None
 
+
 @pytest.fixture
 def obj_differences(obj1, obj2):
     return obj1.compare(obj2).details
+
 
 @skip_unless_tools_exist('otool', 'lipo')
 def test_obj_compare_non_existing(monkeypatch, obj1):
@@ -49,6 +53,7 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
     difference = obj1.compare(MissingFile('/nonexisting', obj1))
     assert difference.source2 == '/nonexisting'
     assert len(difference.details) > 0
+
 
 @skip_unless_tools_exist('otool', 'lipo')
 def test_diff(obj_differences):

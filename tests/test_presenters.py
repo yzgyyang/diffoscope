@@ -39,8 +39,10 @@ def run(capsys, *args, pair=('test1.tar', 'test2.tar')):
     assert exc.value.code == 1
     return out
 
+
 def run_images(capsys, *args):
     return run(capsys, *args, pair=('test1.png', 'test2.png'))
+
 
 def extract_body(val):
     """
@@ -55,20 +57,24 @@ def extract_body(val):
 
     return result
 
+
 def test_text_option_is_default(capsys):
     out = run(capsys)
 
     assert out == get_data('output.txt')
+
 
 def test_text_proper_indentation(capsys):
     out = run(capsys, pair=('archive1.tar', 'archive2.tar'))
 
     assert out == get_data('archive12.diff.txt')
 
+
 def test_text_option_color(capsys):
     out = run(capsys, '--text-color=always')
 
     assert out == get_data('output.colored.txt')
+
 
 def test_text_option_with_file(tmpdir, capsys):
     report_path = str(tmpdir.join('report.txt'))
@@ -80,30 +86,36 @@ def test_text_option_with_file(tmpdir, capsys):
     with open(report_path, 'r', encoding='utf-8') as f:
         assert f.read() == get_data('output.txt')
 
+
 def test_text_option_with_stdiout(capsys):
     out = run(capsys, '--text', '-')
 
     assert out == get_data('output.txt')
+
 
 def test_markdown(capsys):
     out = run(capsys, '--markdown', '-')
 
     assert out == get_data('output.md')
 
+
 def test_restructuredtext(capsys):
     out = run(capsys, '--restructured-text', '-')
 
     assert out == get_data('output.rst')
+
 
 def test_json(capsys):
     out = run(capsys, '--json', '-')
 
     assert out == get_data('output.json')
 
+
 def test_no_report_option(capsys):
     out = run(capsys)
 
     assert out == get_data('output.txt')
+
 
 def test_html_option_with_file(tmpdir, capsys):
     report_path = str(tmpdir.join('report.html'))
@@ -114,6 +126,7 @@ def test_html_option_with_file(tmpdir, capsys):
     with open(report_path, 'r', encoding='utf-8') as f:
         body = extract_body(f.read())
         assert body.count('div class="difference"') == 4
+
 
 @skip_unless_tools_exist('compare', 'convert', 'sng')
 def test_html_visuals(tmpdir, capsys):
@@ -126,6 +139,7 @@ def test_html_visuals(tmpdir, capsys):
     assert '<img src="data:image/png;base64' in body
     assert '<img src="data:image/gif;base64' in body
 
+
 def test_htmldir_option(tmpdir, capsys):
     html_dir = os.path.join(str(tmpdir), 'target')
 
@@ -137,10 +151,12 @@ def test_htmldir_option(tmpdir, capsys):
         body = extract_body(f.read())
         assert body.count('div class="difference"') == 4
 
+
 def test_html_option_with_stdout(capsys):
     body = extract_body(run(capsys, '--html', '-'))
 
     assert body.count('div class="difference"') == 4
+
 
 def test_limited_print():
     def fake(x): return None
@@ -154,6 +170,7 @@ def test_limited_print():
     p = create_limited_print_func(fake, 5)
     p("123")
     p("456", force=True)
+
 
 def test_partial_string():
     a, b = object(), object()
@@ -171,6 +188,7 @@ def test_partial_string():
     with pytest.raises(IndexError):
         PartialString("{0} {1} {2}", a, b)
 
+
 def test_partial_string_cont():
     t, cont = PartialString.cont()
     t = cont(t, "x: {0}\ny: {1}\n{-1}", object(), object())
@@ -181,10 +199,12 @@ def test_partial_string_cont():
             == 'x: line1\ny: line2\nz: line3\n')
     assert t.size(hole_size=5) == 27
 
+
 def test_partial_string_numl():
     tmpl = PartialString.numl("{0} {1} {2}", 2, object())
     assert tmpl.holes[:2] == (0, 1)
     assert tmpl.pformatl("(1)", "(2)", "(o)") == PartialString('(1) (2) (o)')
+
 
 def test_partial_string_escape():
     tmpl = PartialString.numl("find {0} -name {1} " +

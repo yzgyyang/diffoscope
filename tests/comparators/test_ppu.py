@@ -37,29 +37,35 @@ from ..utils.nonexisting import assert_non_existing
 file1 = load_fixture('test1.ppu')
 file2 = load_fixture('test2.ppu')
 
+
 def ppudump_version():
     # first line of `PPU-Analyser Version 3.0.0` looks like:
     #   PPU-Analyser Version 3.0.0
     out = subprocess.check_output(['ppudump', '-h'])
     return out.decode('utf-8').splitlines()[0].split()[2].strip()
 
+
 @skip_unless_tools_exist('ppudump')
 def test_identification(file1):
     assert isinstance(file1, PpuFile)
+
 
 def test_no_differences(file1):
     difference = file1.compare(file1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(file1, file2):
     return file1.compare(file2).details
+
 
 @skip_unless_tool_is_at_least('ppudump', ppudump_version, '3.0.0')
 def test_diff(differences):
     print(differences[0].unified_diff)
     expected_diff = get_data('ppu_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tool_is_at_least('ppudump', ppudump_version, '3.0.0')
 def test_compare_non_existing(monkeypatch, file1):

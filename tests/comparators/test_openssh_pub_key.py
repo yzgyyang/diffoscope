@@ -42,18 +42,22 @@ def openssh_version():
 def test_identification(opensshpubkey1):
     assert isinstance(opensshpubkey1, PublicKeyFile)
 
+
 def test_no_differences(opensshpubkey1):
     difference = opensshpubkey1.compare(opensshpubkey1)
     assert difference is None
+
 
 @pytest.fixture
 def differences(opensshpubkey1, opensshpubkey2):
     return opensshpubkey1.compare(opensshpubkey2).details
 
+
 @skip_unless_tool_is_at_least('ssh-keygen', openssh_version, '6.9')
 def test_diff(differences):
     expected_diff = get_data('openssh_pub_key_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('ssh-keygen')
 def test_compare_non_existing(monkeypatch, opensshpubkey1):

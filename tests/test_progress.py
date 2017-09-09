@@ -39,12 +39,14 @@ def run(capsys, *args):
 
     return exc.value.code, out, err
 
+
 @skip_unless_module_exists('progressbar')
 def test_progress(capsys):
     ret, _, err = run(capsys, TEST_TAR1_PATH, TEST_TAR2_PATH, '--progress')
 
     assert ret == 1
     assert "ETA" in err
+
 
 def test_status_fd(capsys):
     ProgressManager().register(StatusFD(sys.stderr))

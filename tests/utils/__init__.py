@@ -21,5 +21,6 @@ import re
 
 re_diff_line_numbers = re.compile(r"(^|\n)@@ -(\d+),(\d+) \+(\d+),(\d+) @@(?=\n|$)")
 
+
 def diff_ignore_line_numbers(diff):
     return re_diff_line_numbers.sub(r"\1@@ -XX,XX +XX,XX @@", diff)

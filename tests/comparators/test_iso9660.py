@@ -31,22 +31,27 @@ from ..utils.tools import skip_unless_tools_exist
 iso1 = load_fixture('test1.iso')
 iso2 = load_fixture('test2.iso')
 
+
 def is_cdrtools():
     if b"Schilling" in subprocess.check_output(['isoinfo', '--version']):
         return True
     else:
         return False
 
+
 def test_identification(iso1):
     assert isinstance(iso1, Iso9660File)
+
 
 def test_no_differences(iso1):
     difference = iso1.compare(iso1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(iso1, iso2):
     return iso1.compare(iso2).details
+
 
 @skip_unless_tools_exist('isoinfo')
 def test_iso9660_content(differences):
@@ -56,6 +61,7 @@ def test_iso9660_content(differences):
         expected_diff = get_data('iso9660_content_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
+
 @skip_unless_tools_exist('isoinfo')
 def test_iso9660_rockridge(differences):
     if is_cdrtools():
@@ -64,11 +70,13 @@ def test_iso9660_rockridge(differences):
         expected_diff = get_data('iso9660_rockridge_expected_diff')
     assert differences[1].unified_diff == expected_diff
 
+
 @skip_unless_tools_exist('isoinfo')
 def test_symlink(differences):
     assert differences[3].comment == 'symlink'
     expected_diff = get_data('symlink_expected_diff')
     assert differences[3].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('isoinfo')
 def test_compressed_files(differences):
@@ -76,6 +84,7 @@ def test_compressed_files(differences):
     assert differences[2].source2 == 'text'
     expected_diff = get_data('text_ascii_expected_diff')
     assert differences[2].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('isoinfo')
 def test_compare_non_existing(monkeypatch, iso1):

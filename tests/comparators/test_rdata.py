@@ -28,20 +28,25 @@ from ..utils.tools import skip_unless_tools_exist
 file1 = load_fixture('test1.rdx')
 file2 = load_fixture('test2.rdx')
 
+
 def test_identification(file1):
     assert isinstance(file1, GzipFile)
+
 
 def test_no_differences(file1):
     difference = file1.compare(file1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(file1, file2):
     return file1.compare(file2).details
 
+
 @skip_unless_tools_exist('Rscript')
 def test_num_items(differences):
     assert len(differences) == 1
+
 
 @skip_unless_tools_exist('Rscript')
 def test_item_rds(differences):

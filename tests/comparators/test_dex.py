@@ -33,6 +33,7 @@ from .test_java import javap_version
 dex1 = load_fixture('test1.dex')
 dex2 = load_fixture('test2.dex')
 
+
 def enjarify_version():
     # Module enjarify.typeinference appeared in enjarify 1.0.3.  We use a call
     # directly to the python3 binary over importing with this module to escape
@@ -44,16 +45,20 @@ def enjarify_version():
         return '1.0.3'
     return '1.0.2'
 
+
 def test_identification(dex1):
     assert isinstance(dex1, DexFile)
+
 
 def test_no_differences(dex1):
     difference = dex1.compare(dex1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(dex1, dex2):
     return dex1.compare(dex2).details
+
 
 @skip_unless_tools_exist('enjarify', 'zipinfo', 'javap')
 @skip_unless_tool_is_at_least('javap', javap_version, '1.8')
@@ -70,6 +75,7 @@ def test_differences(differences):
     expected_diff = get_data('dex_expected_diffs')
     found_diff = zipinfo.unified_diff + classdiff.details[0].unified_diff
     assert expected_diff == found_diff
+
 
 @skip_unless_tools_exist('enjarify', 'zipinfo', 'javap')
 def test_compare_non_existing(monkeypatch, dex1):

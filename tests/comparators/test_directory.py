@@ -32,13 +32,16 @@ from ..utils.data import data, get_data
 TEST_FILE1_PATH = data('text_ascii1')
 TEST_FILE2_PATH = data('text_ascii2')
 
+
 def test_no_differences():
     difference = compare_directories(os.path.dirname(__file__), os.path.dirname(__file__))
     assert difference is None
 
+
 def test_no_differences_with_extra_slash():
     difference = compare_directories(os.path.dirname(__file__) + '/', os.path.dirname(__file__))
     assert difference is None
+
 
 @pytest.fixture
 def differences(tmpdir):
@@ -56,11 +59,13 @@ def differences(tmpdir):
     os.utime(str(tmpdir.join('b')), (0, 0))
     return compare_directories(str(tmpdir.join('a')), str(tmpdir.join('b'))).details
 
+
 def test_content(differences):
     assert differences[0].source1 == 'dir'
     assert differences[0].details[0].source1 == 'text'
     expected_diff = get_data('text_ascii_expected_diff')
     assert differences[0].details[0].unified_diff == expected_diff
+
 
 def test_stat(differences):
     assert 'stat' in differences[0].details[0].details[0].source1
@@ -77,11 +82,13 @@ def test_compare_to_file(tmpdir):
 
     assert a.compare(b).unified_diff == get_data('test_directory_file_diff')
 
+
 def test_compare_to_device(tmpdir):
     a = specialize(FilesystemFile(str(tmpdir.mkdir('dir'))))
     b = specialize(FilesystemFile('/dev/null'))
 
     assert a.compare(b).unified_diff == get_data('test_directory_device_diff')
+
 
 def test_compare_to_symlink(tmpdir):
     path = str(tmpdir.join('src'))
@@ -91,6 +98,7 @@ def test_compare_to_symlink(tmpdir):
     b = specialize(FilesystemFile(path))
 
     assert a.compare(b).unified_diff == get_data('test_directory_symlink_diff')
+
 
 def test_compare_to_dangling_symlink(tmpdir):
     path = str(tmpdir.join('src'))

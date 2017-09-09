@@ -31,6 +31,7 @@ from ..utils.tools import skip_unless_tools_exist, skip_unless_module_exists
 img1 = load_fixture('test1.ext4')
 img2 = load_fixture('test2.ext4')
 
+
 @pytest.fixture(scope="session")
 def guestfs_tempdir():
     import guestfs
@@ -50,8 +51,10 @@ def guestfs_tempdir():
             pytest.skip('guestfs not working on the system: %r' % e)
         yield cachedir
 
+
 def test_identification(img1):
     assert isinstance(img1, FsImageFile)
+
 
 @skip_unless_tools_exist('qemu-img')
 @skip_unless_module_exists('guestfs')
@@ -59,9 +62,11 @@ def test_no_differences(img1, guestfs_tempdir):
     difference = img1.compare(img1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(img1, img2, guestfs_tempdir):
     return img1.compare(img2).details
+
 
 @skip_unless_tools_exist('qemu-img')
 @skip_unless_module_exists('guestfs')
@@ -79,6 +84,7 @@ def test_differences(differences, guestfs_tempdir):
     expected_diff = get_data('ext4_expected_diffs')
     found_diff = tarinfo.unified_diff + tardiff.unified_diff + encodingdiff.unified_diff
     assert expected_diff == found_diff
+
 
 @skip_unless_tools_exist('qemu-img')
 @skip_unless_module_exists('guestfs')

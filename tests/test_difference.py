@@ -31,9 +31,11 @@ def assert_size(diff, size):
     g = itertools.count()
     assert size == sum(d.size_self() for d in diff.traverse_heapq(lambda x, _: next(g)))
 
+
 def assert_algebraic_properties(d, size):
     assert d.equals(d.get_reverse().get_reverse())
     assert d.get_reverse().size() == d.size() == size
+
 
 def test_too_much_input_for_diff(monkeypatch):
     monkeypatch.setattr(Config(), 'max_diff_input_lines', 20)
@@ -42,6 +44,7 @@ def test_too_much_input_for_diff(monkeypatch):
     difference = Difference.from_text_readers(too_long_text_a, too_long_text_b, 'a', 'b')
     assert '[ Too much input for diff ' in difference.unified_diff
     assert_algebraic_properties(difference, 290)
+
 
 def test_too_long_diff_block_lines(monkeypatch):
     monkeypatch.setattr(Config(), 'enforce_constraints', False)
@@ -52,6 +55,7 @@ def test_too_long_diff_block_lines(monkeypatch):
     assert '[ 11 lines removed ]' in difference.unified_diff
     assert_algebraic_properties(difference, 124)
 
+
 def test_size_updates():
     d = Difference("0123456789", "path1", "path2")
     assert_size(d, 20)
@@ -59,6 +63,7 @@ def test_size_updates():
     assert_size(d, 44)
     d.add_comment("lol1")
     assert_size(d, 48)
+
 
 def test_traverse_heapq():
     d0 = Difference("0", "path1/a", "path2/a")
@@ -87,6 +92,7 @@ def test_traverse_heapq():
     assert_size(diff, 284)
     results = [d.source1[6:] for d in diff.traverse_heapq(f)]
     assert results == ['', 'a', 'c', 'b', 'c/1', 'a/3', 'a/2', 'b/2', 'b/3', 'c/3', 'b/1', 'a/1', 'c/2']
+
 
 def test_non_str_arguments_to_source1_source2():
     for x in (

@@ -31,6 +31,7 @@ from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 class1 = load_fixture('Test1.class')
 class2 = load_fixture('Test2.class')
 
+
 def javap_version():
     try:
         out = subprocess.check_output(['javap', '-version'])
@@ -38,21 +39,26 @@ def javap_version():
         out = e.output
     return out.decode('UTF-8').strip()
 
+
 def test_identification(class1):
     assert isinstance(class1, ClassFile)
+
 
 def test_no_differences(class1):
     difference = class1.compare(class1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(class1, class2):
     return class1.compare(class2).details
+
 
 @skip_unless_tool_is_at_least('javap', javap_version, '1.8')
 def test_diff(differences):
     expected_diff = get_data('class_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('javap')
 def test_compare_non_existing(monkeypatch, class1):

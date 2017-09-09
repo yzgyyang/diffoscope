@@ -30,20 +30,25 @@ from ..utils.tools import skip_unless_tools_exist
 
 text_ascii1 = load_fixture('text_ascii1')
 
+
 @pytest.fixture
 def devnull():
     return specialize(FilesystemFile('/dev/null'))
+
 
 @pytest.fixture
 def differences(devnull, text_ascii1):
     return devnull.compare_bytes(text_ascii1)
 
+
 @pytest.fixture
 def differences_reverse(text_ascii1, devnull):
     return text_ascii1.compare_bytes(devnull)
 
+
 def test_identification(devnull):
     assert isinstance(devnull, Device)
+
 
 @skip_unless_tools_exist('xxd')
 def test_diff(differences):
@@ -52,6 +57,7 @@ def test_diff(differences):
     else:
         expected_diff = get_data('device_expected_diff')
     assert normalize_zeros(differences.unified_diff) == expected_diff
+
 
 @skip_unless_tools_exist('xxd')
 def test_diff_reverse(differences_reverse):

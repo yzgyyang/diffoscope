@@ -31,26 +31,33 @@ json3a = load_fixture('order1a.json')
 json3b = load_fixture('order1b.json')
 invalid_json = load_fixture('test_invalid.json')
 
+
 def test_identification(json1):
     assert isinstance(json1, JSONFile)
+
 
 def test_invalid(invalid_json):
     assert not isinstance(invalid_json, JSONFile)
 
+
 def test_no_differences(json1):
     assert json1.compare(json1) is None
+
 
 @pytest.fixture
 def differences(json1, json2):
     return json1.compare(json2).details
+
 
 def test_diff(differences):
     expected_diff = get_data('json_expected_diff')
 
     assert differences[0].unified_diff == expected_diff
 
+
 def test_compare_non_existing(monkeypatch, json1):
     assert_non_existing(monkeypatch, json1)
+
 
 def test_ordering_differences(json3a, json3b):
     diff = json3a.compare(json3b)

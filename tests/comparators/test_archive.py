@@ -25,9 +25,11 @@ from ..utils.data import load_fixture
 archive1 = load_fixture('archive1.tar')
 archive2 = load_fixture('archive2.tar')
 
+
 @pytest.fixture
 def differences(archive1, archive2):
     return archive1.compare(archive2).details
+
 
 def test_compressed_content_name(differences):
     assert differences[1].details[1].source1 == 'compressed'

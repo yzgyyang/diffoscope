@@ -40,26 +40,32 @@ def unsquashfs_version():
 squashfs1 = load_fixture('test1.squashfs')
 squashfs2 = load_fixture('test2.squashfs')
 
+
 def test_identification(squashfs1):
     assert isinstance(squashfs1, SquashfsFile)
+
 
 def test_no_differences(squashfs1):
     difference = squashfs1.compare(squashfs1)
     assert difference is None
+
 
 def test_no_warnings(capfd, squashfs1, squashfs2):
     _ = squashfs1.compare(squashfs2)
     _, err = capfd.readouterr()
     assert err == ''
 
+
 @pytest.fixture
 def differences(squashfs1, squashfs2):
     return squashfs1.compare(squashfs2).details
+
 
 @skip_unless_tool_is_at_least('unsquashfs', unsquashfs_version, '4.3')
 def test_superblock(differences):
     expected_diff = get_data('squashfs_superblock_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('unsquashfs')
 def test_symlink(differences):
@@ -67,12 +73,14 @@ def test_symlink(differences):
     expected_diff = get_data('symlink_expected_diff')
     assert differences[2].unified_diff == expected_diff
 
+
 @skip_unless_tools_exist('unsquashfs')
 def test_compressed_files(differences):
     assert differences[3].source1 == '/text'
     assert differences[3].source2 == '/text'
     expected_diff = get_data('text_ascii_expected_diff')
     assert differences[3].unified_diff == expected_diff
+
 
 @skip_unless_tools_exist('unsquashfs')
 def test_compare_non_existing(monkeypatch, squashfs1):

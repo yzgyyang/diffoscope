@@ -33,30 +33,37 @@ from ..utils.data import load_fixture, get_data
 deb1 = load_fixture('test1.deb')
 deb2 = load_fixture('test2.deb')
 
+
 def test_identification(deb1):
     assert isinstance(deb1, DebFile)
+
 
 def test_no_differences(deb1):
     difference = deb1.compare(deb1)
     assert difference is None
 
+
 @pytest.fixture
 def differences(deb1, deb2):
     return deb1.compare(deb2).details
+
 
 def test_metadata(differences):
     expected_diff = get_data('deb_metadata_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
+
 def test_compressed_files(differences):
     assert differences[1].source1 == 'control.tar.gz'
     assert differences[2].source1 == 'data.tar.gz'
+
 
 def test_identification_of_md5sums_outside_deb(tmpdir):
     path = str(tmpdir.join('md5sums'))
     open(path, 'w')
     f = specialize(FilesystemFile(path))
     assert type(f) is FilesystemFile
+
 
 def test_identification_of_md5sums_in_deb(deb1, deb2, monkeypatch):
     orig_func = Md5sumsFile.recognizes
@@ -72,12 +79,15 @@ def test_identification_of_md5sums_in_deb(deb1, deb2, monkeypatch):
     deb1.compare(deb2)
     assert test_identification_of_md5sums_in_deb.found
 
+
 def test_md5sums(differences):
     assert differences[1].details[0].details[1].details[0].comment == 'Files in package differ'
+
 
 def test_identical_files_in_md5sums(deb1, deb2):
     for name in ['./usr/share/doc/test/README.Debian', './usr/share/doc/test/copyright']:
         assert deb1.md5sums[name] == deb2.md5sums[name]
+
 
 def test_identification_of_data_tar(deb1, deb2, monkeypatch):
     orig_func = DebDataTarFile.recognizes
@@ -93,6 +103,7 @@ def test_identification_of_data_tar(deb1, deb2, monkeypatch):
     deb1.compare(deb2)
     assert test_identification_of_data_tar.found
 
+
 def test_skip_comparison_of_known_identical_files(deb1, deb2, monkeypatch):
     compared = set()
     orig_func = diffoscope.comparators.utils.compare.compare_files
@@ -103,6 +114,7 @@ def test_skip_comparison_of_known_identical_files(deb1, deb2, monkeypatch):
     monkeypatch.setattr(diffoscope.comparators.utils.compare, 'compare_files', probe)
     deb1.compare(deb2)
     assert './usr/share/doc/test/README.Debian' not in compared
+
 
 def test_compare_non_existing(monkeypatch, deb1):
     monkeypatch.setattr(Config(), 'new_file', True)
