@@ -40,8 +40,8 @@ class ArContainer(LibarchiveContainer):
     def get_adjusted_members(self):
         members = list(super().get_adjusted_members())
         known_ignores = {
-            "/" : "this is the symbol table, already accounted for in other output",
-            "//" : "this is the table for GNU long names, already accounted for in the archive filelist",
+            "/": "this is the symbol table, already accounted for in other output",
+            "//": "this is the table for GNU long names, already accounted for in the archive filelist",
         }
         filtered_out = [p for p in members if p[0] in known_ignores]
         if filtered_out:
