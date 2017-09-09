@@ -24,9 +24,9 @@ from diffoscope.comparators.utils.file import File
 from .missing_file import MissingFile
 
 try:
-  from defusedxml import minidom
+    from defusedxml import minidom
 except ImportError:
-  from xml.dom import minidom
+    from xml.dom import minidom
 
 def _format(node):
     """
