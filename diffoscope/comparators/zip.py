@@ -122,10 +122,12 @@ class MozillaZipCommandMixin(object):
         return 0
 
 
-class MozillaZipinfo(MozillaZipCommandMixin, Zipinfo): pass
+class MozillaZipinfo(MozillaZipCommandMixin, Zipinfo):
+    pass
 
 
-class MozillaZipinfoVerbose(MozillaZipCommandMixin, ZipinfoVerbose): pass
+class MozillaZipinfoVerbose(MozillaZipCommandMixin, ZipinfoVerbose):
+    pass
 
 
 class MozillaZipContainer(ZipContainer):

@@ -219,7 +219,8 @@ def output_node(ctx, difference, path, indentstr, indentnum):
             ud_cont = ud_cont.send
             udiff = udiff.pformatl(PartialString.of(ud_cont))
         else:
-            for _ in ud_cont: pass  # exhaust the iterator, avoids GeneratorExit
+            for _ in ud_cont:
+                pass  # exhaust the iterator, avoids GeneratorExit
             ud_cont = None
 
     # PartialString for this node
@@ -353,7 +354,8 @@ class HTMLSideBySidePresenter(object):
         return self.spl_print_ctrl and self.spl_print_ctrl[1] and self.spl_current_page > 0
 
     def spl_print_exit(self, *exc_info):
-        if not self.spl_had_entered_child(): return False
+        if not self.spl_had_entered_child():
+            return False
         self.spl_print_func(output_footer())
         _exit, _ = self.spl_print_ctrl
         self.spl_print_func = None
@@ -487,7 +489,8 @@ class HTMLSideBySidePresenter(object):
         except:
             import traceback
             traceback.print_exc()
-            if self.spl_print_exit(*sys.exc_info()) is False: raise
+            if self.spl_print_exit(*sys.exc_info()) is False:
+                raise
         else:
             self.spl_print_exit(None, None, None)
         finally:
