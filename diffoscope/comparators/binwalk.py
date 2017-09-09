@@ -27,6 +27,10 @@ from diffoscope.tempfiles import get_temporary_directory
 from .utils.file import File
 from .utils.archive import Archive
 
+try:
+    from .rpm import RpmFile
+except ImportError:
+    from .rpm_fallback import RpmFile
 
 try:
     import binwalk
@@ -60,6 +64,10 @@ class BinwalkFile(File):
             return False
 
         if not super().recognizes(file):
+            return False
+
+        # RPM files are .cpio, but let's always leave it to the RPM comparator
+        if file.container and isinstance(file.container.source, RpmFile):
             return False
 
         # Don't recurse; binwalk has already found everything
