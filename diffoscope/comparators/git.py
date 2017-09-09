@@ -55,8 +55,8 @@ def parse_entries(f):
         pos = f.tell()
 
         x['ctime'], x['ctime_nano'], x['mtime'], x['mtime_nano'], \
-                x['dev'], x['inode'], x['mode'], x['uid'], x['gid'], \
-                x['size'], x['sha'], x['flags'] = \
+        x['dev'], x['inode'], x['mode'], x['uid'], x['gid'], \
+        x['size'], x['sha'], x['flags'] = \
             struct.unpack('>LLLLLLLLLL20sH', f.read((4 * 10) + 20 + 2))
 
         x['path'] = f.read(x['flags'] & 0x0fff)
