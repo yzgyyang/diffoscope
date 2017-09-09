@@ -66,7 +66,9 @@ class BinwalkFile(File):
         if not super().recognizes(file):
             return False
 
-        # RPM files are .cpio, but let's always leave it to the RPM comparator
+        # RPM files are .cpio, but let's always leave it to the RPM comparator.
+        # This avoids the RpmFile > BinWalkFile > CpioFile > RpmFile circular
+        # ordering dependency.
         if file.container and isinstance(file.container.source, RpmFile):
             return False
 
