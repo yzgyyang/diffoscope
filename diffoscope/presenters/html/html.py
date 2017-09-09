@@ -121,7 +121,7 @@ def convert(s, ponct=0, tag=''):
 
         # special highlighted chars
         elif c == "\t" and ponct == 1:
-            n = TABSIZE-(i%TABSIZE)
+            n = TABSIZE-(i % TABSIZE)
             if n == 0:
                 n = TABSIZE
             t.write('<span class="diffponct">\xbb</span>'+'\xa0'*(n-1))
