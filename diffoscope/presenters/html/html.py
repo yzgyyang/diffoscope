@@ -268,12 +268,12 @@ def output_footer(jquery_url=None):
 
 @contextlib.contextmanager
 def file_printer(directory, filename):
-    with codecs.open(os.path.join(directory,filename), 'w', encoding='utf-8') as f:
+    with codecs.open(os.path.join(directory, filename), 'w', encoding='utf-8') as f:
         yield f.write
 
 @contextlib.contextmanager
 def spl_file_printer(directory, filename, accum):
-    with codecs.open(os.path.join(directory,filename), 'w', encoding='utf-8') as f:
+    with codecs.open(os.path.join(directory, filename), 'w', encoding='utf-8') as f:
         print_func = f.write
         def recording_print_func(s):
             print_func(s)

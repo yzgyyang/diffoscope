@@ -514,7 +514,7 @@ class SideBySideDiff(object):
             m = re.match(r"@@ -(\d+),?(\d*) \+(\d+),?(\d*)", l)
             if m:
                 yield from self.empty_buffer()
-                hunk_data = map(lambda x:x=="" and 1 or int(x), m.groups())
+                hunk_data = map(lambda x: x=="" and 1 or int(x), m.groups())
                 self.hunk_off1, self.hunk_size1, self.hunk_off2, self.hunk_size2 = hunk_data
                 self.line1, self.line2 = self.hunk_off1, self.hunk_off2
                 yield "H", (self.hunk_off1, self.hunk_size1, self.hunk_off2, self.hunk_size2)

@@ -35,7 +35,7 @@ def round_sigfig(num, s):
 def sizeof_fmt(num, suffix='B', sigfig=3):
     # https://stackoverflow.com/questions/1094841/reusable-library-to-get-human-readable-version-of-file-size
     # A more powerful version is python3-hurry.filesize but that's an extra dependency
-    for unit in ['','K','M','G','T','P','E','Z']:
+    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
         if abs(num) < 1024.0:
             break
         num /= 1024.0
