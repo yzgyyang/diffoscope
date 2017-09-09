@@ -263,7 +263,7 @@ class DotBuildinfoFile(DebControlFile):
             # We can parse .buildinfo files just like .dsc
             buildinfo = Dsc(f)
 
-        if not 'Checksums-Sha256' in buildinfo:
+        if 'Checksums-Sha256' not in buildinfo:
             return False
 
         for d in buildinfo.get('Checksums-Sha256'):

@@ -464,7 +464,7 @@ class ElfContainer(Container):
         if not hasattr(deb.container, 'dbgsym_build_id_map'):
             deb.container.dbgsym_build_id_map = get_build_id_map(deb.container)
 
-        if not build_id in deb.container.dbgsym_build_id_map:
+        if build_id not in deb.container.dbgsym_build_id_map:
             logger.debug('Unable to find a matching debug package for Build Id %s', build_id)
             return
 
