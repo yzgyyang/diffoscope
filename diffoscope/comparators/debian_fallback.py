@@ -30,6 +30,7 @@ class DotChangesFile(TextFile):
         difference.add_comment('Unable to find Python debian module. Falling back to text comparison.')
         return difference
 
+
 class DotDscFile(TextFile):
     FILE_EXTENSION_SUFFIX = '.dsc'
 
@@ -39,6 +40,7 @@ class DotDscFile(TextFile):
             return None
         difference.add_comment('Unable to find Python debian module. Falling back to text comparison.')
         return difference
+
 
 class DotBuildinfoFile(TextFile):
     FILE_EXTENSION_SUFFIX = '.buildinfo'

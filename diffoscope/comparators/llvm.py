@@ -32,6 +32,7 @@ class LlvmBcAnalyzer(Command):
     def cmdline(self):
         return ['llvm-bcanalyzer', '-dump', self.path]
 
+
 class LlvmBcDisassembler(Command):
     @tool_required('llvm-dis')
     def cmdline(self):
@@ -39,6 +40,7 @@ class LlvmBcDisassembler(Command):
         # embed the whole path, including our tempdir, into the output.
         # this makes it easier to generate reproducible diffs for our tests.
         return ['find', self.path, '-execdir', 'llvm-dis', '-o', '-', '{}', ';']
+
 
 class LlvmBitCodeFile(File):
     FILE_TYPE_RE = re.compile(r'^LLVM IR bitcode')

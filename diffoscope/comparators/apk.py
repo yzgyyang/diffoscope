@@ -145,6 +145,7 @@ class ApkContainer(Archive):
         differences.extend(super().compare(other, *args, **kwargs))
         return differences
 
+
 class ApkFile(File):
     FILE_TYPE_HEADER_PREFIX = b"PK\x03\x04"
     FILE_TYPE_RE = re.compile(r'^(Java|Zip) archive data.*\b')

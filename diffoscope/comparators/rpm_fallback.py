@@ -25,6 +25,7 @@ from .utils.file import File
 class AbstractRpmFile(File):
     FILE_TYPE_RE = re.compile('^RPM\s')
 
+
 class RpmFile(AbstractRpmFile):
     def compare(self, other, source=None):
         difference = self.compare_bytes(other)

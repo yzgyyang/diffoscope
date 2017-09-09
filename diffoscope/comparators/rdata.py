@@ -39,6 +39,7 @@ DUMP_RDB = """lazyLoad(commandArgs(TRUE)); for (obj in ls()) { print(obj); for (
 def check_rds_extension(f):
     return f.name.endswith(".rds") or f.name.endswith(".rdx")
 
+
 def ensure_archive_rdx(f):
     if not f.container or f.path.endswith(".rdb"):
         return f.path
@@ -56,6 +57,7 @@ def ensure_archive_rdx(f):
     shutil.copy(rdx_path, f.path + ".rdx")
     return f.path + ".rdb"
 
+
 class RdsReader(Command):
     @tool_required('Rscript')
     def cmdline(self):
@@ -63,6 +65,7 @@ class RdsReader(Command):
             'Rscript', '-e', 'args <- commandArgs(TRUE); readRDS(args[1])',
             self.path
         ]
+
 
 class RdsFile(File):
     @staticmethod
@@ -76,10 +79,12 @@ class RdsFile(File):
     def compare_details(self, other, source=None):
         return [Difference.from_command(RdsReader, self.path, other.path)]
 
+
 class RdbReader(Command):
     @tool_required('Rscript')
     def cmdline(self):
         return ['Rscript', '-e', DUMP_RDB, self.path[:-4]]
+
 
 class RdbFile(File):
     FILE_EXTENSION_SUFFIX = '.rdb'

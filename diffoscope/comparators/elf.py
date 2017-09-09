@@ -191,9 +191,11 @@ class ReadElfSection(Readelf):
     def readelf_options(self):
         return ReadElfSection.base_options() + ['--hex-dump={}'.format(self.section_name)]
 
+
 class ReadelfStringSection(ReadElfSection):
     def readelf_options(self):
         return ReadElfSection.base_options() + ['--string-dump={}'.format(self.section_name)]
+
 
 class ObjdumpSection(Command):
     def __init__(self, path, section_name, *args, **kwargs):
@@ -223,6 +225,7 @@ class ObjdumpSection(Command):
 
         return line
 
+
 class ObjdumpDisassembleSection(ObjdumpSection):
     RE_SYMBOL_COMMENT = re.compile(rb'^( +[0-9a-f]+:[^#]+)# [0-9a-f]+ <[^>]+>$')
 
@@ -248,6 +251,7 @@ READELF_COMMANDS = (
     ReadelfNotes,
     RedaelfVersionInfo,
 )
+
 
 def _compare_elf_data(path1, path2):
     return [
@@ -321,6 +325,7 @@ class ElfSection(File):
             command_args=[self._name],
         )
 
+
 class ElfCodeSection(ElfSection):
     def compare(self, other, source=None):
         return Difference.from_command(
@@ -329,6 +334,7 @@ class ElfCodeSection(ElfSection):
             other.path,
             command_args=[self._name],
         )
+
 
 class ElfStringSection(ElfSection):
     def compare(self, other, source=None):
@@ -529,12 +535,14 @@ class ElfContainer(Container):
     def get_member(self, member_name):
         return self._sections[member_name]
 
+
 class ElfFile(File):
     CONTAINER_CLASS = ElfContainer
     FILE_TYPE_RE = re.compile(r'^ELF ')
 
     def compare_details(self, other, source=None):
         return _compare_elf_data(self.path, other.path)
+
 
 class StaticLibFile(File):
     CONTAINER_CLASS = ElfContainer

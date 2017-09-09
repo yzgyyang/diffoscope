@@ -28,6 +28,7 @@ try:
 except ImportError:
     from xml.dom import minidom
 
+
 def _format(node):
     """
     Removes *inplace* spaces from minidom.Document

@@ -296,9 +296,11 @@ DIFFON = "\x01"
 DIFFOFF = "\x02"
 MAX_WF_SIZE = 1024  # any higher, and linediff takes >1 second and >200MB RAM
 
+
 def _linediff_sane(x):
     # turn non-printable chars into "."
     return "." if ord(x) < 32 and x not in '\t\n' else x
+
 
 def diffinput_truncate(s, sz):
     # Truncate, preserving uniqueness
@@ -306,6 +308,7 @@ def diffinput_truncate(s, sz):
         s = s[:sz] + "[ ... truncated by diffoscope; len: {}, SHA1: {} ... ]".format(
             len(s[sz:]), hashlib.sha1(s[sz:].encode('utf-8')).hexdigest())
     return s
+
 
 def linediff(s, t, diffon, diffoff):
     # calculate common prefix/suffix, easy optimisation to WF
@@ -329,6 +332,7 @@ def linediff(s, t, diffon, diffoff):
     s1 = ''.join(to_string(*p) for p in l1)
     t1 = ''.join(to_string(*p) for p in l2)
     return prefix + s1 + suffix, prefix + t1 + suffix
+
 
 def linediff_wagnerfischer(s, t):
     '''
@@ -385,6 +389,7 @@ def linediff_wagnerfischer(s, t):
             assert s[fx] == t[fy]
             yield (False, s[fx]), (False, t[fy])
 
+
 def linediff_simplify(g):
     """Simplify the output of WF."""
     current = None
@@ -398,6 +403,7 @@ def linediff_simplify(g):
             current = l, r
     if current:
         yield current
+
 
 class SideBySideDiff(object):
     """Calculates a side-by-side diff from a unified diff."""

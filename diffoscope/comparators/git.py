@@ -38,6 +38,7 @@ class GitIndexFile(File):
             other.path,
         )]
 
+
 def parse_index(f):
     _, version = struct.unpack('>LL', f.read(4 * 2))
 
@@ -45,6 +46,7 @@ def parse_index(f):
         'version': version,
         'entries': list(parse_entries(f)),
     }
+
 
 def parse_entries(f):
     num_entries = struct.unpack('>L', f.read(4))[0]
@@ -65,6 +67,7 @@ def parse_entries(f):
 
         yield x
 
+
 def describe_index(filename):
     with open(filename, 'rb') as f:
         index = parse_index(f)
@@ -78,6 +81,7 @@ Entries:
     entries_fmt=''.join(describe_entry(x) for x in index['entries']),
     **index
 )
+
 
 def describe_entry(x):
     return """

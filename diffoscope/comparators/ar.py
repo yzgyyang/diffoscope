@@ -49,10 +49,12 @@ class ArContainer(LibarchiveContainer):
                 logger.debug("ignored ar member '%s' because %s", k, known_ignores[k])
         return [p for p in members if p[0] not in known_ignores]
 
+
 class ArSymbolTableDumper(Command):
     @tool_required('nm')
     def cmdline(self):
         return ['nm', '-s', self.path]
+
 
 class ArFile(File):
     CONTAINER_CLASS = ArContainer

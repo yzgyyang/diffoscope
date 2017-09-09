@@ -85,8 +85,10 @@ def send_and_exhaust(iterator, arg, default):
         pass
     return output
 
+
 def md5(s):
     return hashlib.md5(s.encode('utf-8')).hexdigest()
+
 
 def escape_anchor(val):
     """
@@ -103,11 +105,14 @@ def escape_anchor(val):
 
     return val
 
+
 def output_diff_path(path):
     return '/'.join(n.source1 for n in path[1:])
 
+
 def output_anchor(path):
     return escape_anchor(output_diff_path(path))
+
 
 def convert(s, ponct=0, tag=''):
     i = 0
@@ -146,6 +151,7 @@ def convert(s, ponct=0, tag=''):
 
     return t.getvalue()
 
+
 def output_visual(visual, path, indentstr, indentnum):
     logger.debug('including image for %s', visual.source)
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
@@ -159,6 +165,7 @@ def output_visual(visual, path, indentstr, indentnum):
 {0[1]}</div>
 {0[1]}<div class="difference"><img src=\"data:{3},{4}\" alt=\"compared images\" /></div>
 {0[0]}</div>""".format(indent, html.escape(visual.source), anchor, visual.data_type, visual.content)
+
 
 def output_node_frame(difference, path, indentstr, indentnum, body):
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
@@ -186,6 +193,7 @@ def output_node_frame(difference, path, indentstr, indentnum, body):
     return PartialString.numl(u"""{0[1]}<div class="diffheader">
 {1}{0[1]}</div>
 {2}""", 3).pformatl(indent, header, body)
+
 
 def output_node(ctx, difference, path, indentstr, indentnum):
     """Returns a tuple (parent, continuation) where
@@ -241,6 +249,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
     assert len(t.holes) >= len(difference.details) + 1  # there might be extra holes for the unified diff continuation
     return cont(t, u""), ud_cont
 
+
 def output_header(css_url, our_css_url=False, icon_url=None):
     if css_url:
         css_link = u'  <link href="%s" type="text/css" rel="stylesheet" />\n' % css_url
@@ -261,16 +270,19 @@ def output_header(css_url, our_css_url=False, icon_url=None):
         'css_style': css_style
     }
 
+
 def output_footer(jquery_url=None):
     footer = templates.FOOTER % {'version': VERSION}
     if jquery_url:
         return templates.SCRIPTS % {'jquery_url': html.escape(jquery_url)} + footer
     return footer
 
+
 @contextlib.contextmanager
 def file_printer(directory, filename):
     with codecs.open(os.path.join(directory, filename), 'w', encoding='utf-8') as f:
         yield f.write
+
 
 @contextlib.contextmanager
 def spl_file_printer(directory, filename, accum):

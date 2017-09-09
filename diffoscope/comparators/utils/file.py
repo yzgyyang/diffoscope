@@ -343,6 +343,8 @@ class File(object, metaclass=abc.ABCMeta):
         return self.compare_bytes(other, source)
 
 # helper function to convert to bytes if necessary
+
+
 def maybe_decode(s):
     if type(s) is bytes:
         return s.decode('utf-8')

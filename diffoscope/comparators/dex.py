@@ -52,6 +52,7 @@ class DexContainer(Archive):
                               shell=False, stderr=None, stdout=subprocess.PIPE)
         return dest_path
 
+
 class DexFile(File):
     FILE_TYPE_RE = re.compile(r'^Dalvik dex file .*\b')
     CONTAINER_CLASS = DexContainer

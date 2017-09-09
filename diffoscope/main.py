@@ -264,6 +264,7 @@ class RangeCompleter(object):
     def __call__(self, prefix, **kwargs):
         return (str(i) for i in self.choices if str(i).startswith(prefix))
 
+
 class ListToolsAction(argparse.Action):
     def __call__(self, parser, namespace, os_override, option_string=None):
         # Ensure all comparators are imported so tool_required.all is
@@ -287,6 +288,7 @@ class ListToolsAction(argparse.Action):
                     pass
             print(', '.join(sorted(tools)))
         sys.exit(0)
+
 
 class ListDebianSubstvarsAction(argparse._StoreTrueAction):
     def __call__(self, *args, **kwargs):
@@ -315,6 +317,7 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         print('diffoscope:Recommends={}'.format(', '.join(sorted(tools))))
         sys.exit(0)
 
+
 def maybe_set_limit(config, parsed_args, key):
     # apply limits affected by "no-default-limits"
     v = getattr(parsed_args, key)
@@ -322,6 +325,7 @@ def maybe_set_limit(config, parsed_args, key):
         setattr(config, key, float("inf") if v == 0 else v)
     elif parsed_args.no_default_limits:
         setattr(config, key, float("inf"))
+
 
 def run_diffoscope(parsed_args):
     ProfileManager().setup(parsed_args)
@@ -382,6 +386,7 @@ def run_diffoscope(parsed_args):
 def sigterm_handler(signo, stack_frame):
     clean_all_temp_files()
     os._exit(2)
+
 
 def main(args=None):
     if args is None:

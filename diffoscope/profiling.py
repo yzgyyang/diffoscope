@@ -33,6 +33,7 @@ def profile(namespace, key):
     if _ENABLED:
         ProfileManager().increment(start, namespace, key)
 
+
 class ProfileManager(object):
     _singleton = {}
 

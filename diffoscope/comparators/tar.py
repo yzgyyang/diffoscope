@@ -24,6 +24,7 @@ from diffoscope.difference import Difference
 from .utils.file import File
 from .utils.libarchive import LibarchiveContainer, list_libarchive
 
+
 class TarContainer(LibarchiveContainer):
     pass
 

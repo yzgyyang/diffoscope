@@ -33,6 +33,7 @@ def command_excluded(command):
             return True
     return False
 
+
 def filter_excludes(filenames):
     for x in filenames:
         for y in Config().excludes:
@@ -41,6 +42,7 @@ def filter_excludes(filenames):
                 break
         else:
             yield x
+
 
 def any_excluded(*filenames):
     for x in filenames:

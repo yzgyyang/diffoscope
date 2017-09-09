@@ -46,6 +46,7 @@ class ShowIface(Command):
     def cmdline(self):
         return ['ghc', '--show-iface', self.path]
 
+
 class HiFile(File):
     """
     Here is how an example .hi file starts:

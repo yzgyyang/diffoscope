@@ -31,6 +31,7 @@ class SSHKeyList(Command):
     def cmdline(self):
         return ['ssh-keygen', '-l', '-f', self.path]
 
+
 class PublicKeyFile(File):
     FILE_TYPE_RE = re.compile(r'^OpenSSH \S+ public key')
 

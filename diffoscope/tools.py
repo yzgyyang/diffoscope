@@ -47,11 +47,13 @@ OS_NAMES = collections.OrderedDict([
 def get_tool_name(tool):
     return REMAPPED_TOOL_NAMES.get(tool, tool)
 
+
 def tool_prepend_prefix(prefix, *tools):
     if not prefix:
         return
     for tool in tools:
         REMAPPED_TOOL_NAMES[tool] = prefix + tool
+
 
 def tool_required(command):
     """
@@ -88,12 +90,15 @@ def tool_required(command):
         return tool_check
     return wrapper
 
+
 def tool_is_gnu(command):
     return command in GNU_TOOL_NAMES
+
 
 def os_is_gnu():
     system = platform.system()
     return system in ("Linux", "GNU") or system.startswith("GNU/")
+
 
 def get_current_os():
     system = platform.system()
@@ -102,11 +107,13 @@ def get_current_os():
             return distro.id()
     return system  # noqa
 
+
 def get_current_distro_like():
     if distro:
         return distro.like().split()
     else:
         return []
+
 
 def get_package_provider(tool, os=None):
     try:

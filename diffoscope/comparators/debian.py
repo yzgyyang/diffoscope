@@ -159,6 +159,7 @@ class DebControlFile(File):
 
         return differences
 
+
 class DotChangesFile(DebControlFile):
     FILE_EXTENSION_SUFFIX = '.changes'
 
@@ -232,6 +233,7 @@ class DotDscFile(DebControlFile):
 
         return True
 
+
 class DotBuildinfoContainer(DebControlContainer):
     def get_member_names(self):
         result = super(DotBuildinfoContainer, self).get_member_names()
@@ -249,6 +251,7 @@ class DotBuildinfoContainer(DebControlContainer):
             ignore.update(self.source.container.get_member_names())
 
         return [x for x in result if x not in ignore]
+
 
 class DotBuildinfoFile(DebControlFile):
     CONTAINER_CLASS = DotBuildinfoContainer

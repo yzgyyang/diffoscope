@@ -26,12 +26,14 @@ class OutputParsingError(Exception):
         self.command = command
         self.object_class = object.__class__
 
+
 class RequiredToolNotFound(Exception):
     def __init__(self, command):
         self.command = get_tool_name(command)
 
     def get_package(self):
         return get_package_provider(self.command)
+
 
 class ContainerExtractionError(Exception):
     def __init__(self, pathname, wrapped_exc):

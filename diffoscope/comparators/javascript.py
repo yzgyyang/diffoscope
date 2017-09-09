@@ -29,6 +29,7 @@ class JavaScriptBeautify(Command):
     def cmdline(self):
         return ['js-beautify', self.path]
 
+
 class JavaScriptFile(File):
     FILE_EXTENSION_SUFFIX = '.js'
 

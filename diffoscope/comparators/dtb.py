@@ -32,6 +32,7 @@ class DeviceTreeContents(Command):
     def cmdline(self):
         return ['fdtdump', self.path]
 
+
 class DeviceTreeFile(File):
     FILE_TYPE_RE = re.compile(r'^Device Tree Blob')
 

@@ -48,6 +48,7 @@ class Xxd(Command):
     def cmdline(self):
         return ['xxd', self.path]
 
+
 def compare_root_paths(path1, path2):
     from ..directory import FilesystemDirectory, FilesystemFile, compare_directories
 
@@ -62,6 +63,7 @@ def compare_root_paths(path1, path2):
     container2 = FilesystemDirectory(os.path.dirname(path2)).as_container
     file2 = specialize(FilesystemFile(path2, container=container2))
     return compare_files(file1, file2)
+
 
 def compare_files(file1, file2, source=None, diff_content_only=False):
     logger.debug(
@@ -94,12 +96,14 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
     with profile('compare_files (cumulative)', file1):
         return file1.compare(file2, source)
 
+
 def bail_if_non_existing(*paths):
     if not all(map(os.path.lexists, paths)):
         for path in paths:
             if not os.path.lexists(path):
                 sys.stderr.write('%s: %s: No such file or directory\n' % (sys.argv[0], path))
         sys.exit(2)
+
 
 def compare_binary_files(file1, file2, source=None):
     try:
@@ -113,6 +117,7 @@ def compare_binary_files(file1, file2, source=None):
         hexdump2 = hexdump_fallback(file2.path)
         comment = 'xxd not available in path. Falling back to Python hexlify.\n'
         return Difference.from_text(hexdump1, hexdump2, file1.name, file2.name, source, comment)
+
 
 def hexdump_fallback(path):
     hexdump = io.StringIO()
