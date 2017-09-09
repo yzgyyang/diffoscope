@@ -448,13 +448,13 @@ class SideBySideDiff(object):
         orig1 = s1
         orig2 = s2
 
-        if s1 == None and s2 == None:
+        if s1 is None and s2 is None:
             type_name = "unmodified"
         elif s1 == "" and s2 == "":
             type_name = "unmodified"
-        elif s1 == None or s1 == "":
+        elif s1 is None or s1 == "":
             type_name = "added"
-        elif s2 == None or s2 == "":
+        elif s2 is None or s2 == "":
             type_name = "deleted"
         elif orig1 == orig2 and not s1.endswith('lines removed ]') and not s2.endswith('lines removed ]'):
             type_name = "unmodified"
