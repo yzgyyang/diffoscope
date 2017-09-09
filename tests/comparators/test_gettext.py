@@ -47,6 +47,7 @@ def test_diff(differences):
     expected_diff = get_data('mo_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
+
 mo_no_charset = load_fixture('test_no_charset.mo')
 mo_iso8859_1 = load_fixture('test_iso8859-1.mo')
 

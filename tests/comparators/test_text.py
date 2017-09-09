@@ -41,6 +41,7 @@ def test_difference_in_ascii(ascii1, ascii2):
     assert not difference.comments
     assert len(difference.details) == 0
 
+
 unicode1 = load_fixture('text_unicode1')
 unicode2 = load_fixture('text_unicode2')
 
@@ -48,6 +49,7 @@ def test_difference_in_unicode(unicode1, unicode2):
     difference = unicode1.compare(unicode2)
     expected_diff = codecs.open(data('text_unicode_expected_diff'), encoding='utf-8').read()
     assert difference.unified_diff == expected_diff
+
 
 iso8859 = load_fixture('text_iso8859')
 
@@ -67,6 +69,7 @@ def test_difference_between_iso88591_and_unicode_only(iso8859, tmpdir):
 
 def test_compare_non_existing(monkeypatch, ascii1):
     assert_non_existing(monkeypatch, ascii1, has_null_source=False, has_details=False)
+
 
 text_order1 = load_fixture('text_order1')
 text_order2 = load_fixture('text_order2')

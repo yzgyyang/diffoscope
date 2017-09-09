@@ -36,6 +36,7 @@ def unsquashfs_version():
         out = e.output
     return out.decode('UTF-8').splitlines()[0].split()[2].strip()
 
+
 squashfs1 = load_fixture('test1.squashfs')
 squashfs2 = load_fixture('test2.squashfs')
 

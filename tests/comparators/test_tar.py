@@ -61,6 +61,7 @@ def test_text_file(differences):
 def test_compare_non_existing(monkeypatch, tar1):
     assert_non_existing(monkeypatch, tar1)
 
+
 no_permissions_tar = load_fixture('no-perms.tar')
 
 # Reported as Debian #797164. This is a good way to notice if we unpack directories

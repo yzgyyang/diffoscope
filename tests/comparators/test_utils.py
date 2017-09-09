@@ -71,6 +71,7 @@ def test_fuzzy_matching_only_once(fuzzy_tar1, fuzzy_tar3):
     differences = fuzzy_tar1.compare(fuzzy_tar3).details
     assert len(differences) == 2
 
+
 fuzzy_tar_in_tar1 = load_fixture('fuzzy-tar-in-tar1.tar')
 fuzzy_tar_in_tar2 = load_fixture('fuzzy-tar-in-tar2.tar')
 

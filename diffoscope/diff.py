@@ -291,6 +291,7 @@ def color_unified_diff(diff):
 
     return re_diff_change.sub(repl, diff)
 
+
 DIFFON = "\x01"
 DIFFOFF = "\x02"
 MAX_WF_SIZE = 1024  # any higher, and linediff takes >1 second and >200MB RAM

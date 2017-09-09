@@ -60,6 +60,7 @@ def test_diff(obj_differences):
     expected_diff = get_data('elf_obj_expected_diff')
     assert obj_differences[0].unified_diff == expected_diff
 
+
 TEST_LIB1_PATH = data('test1.a')
 TEST_LIB2_PATH = data('test2.a')
 
@@ -100,6 +101,7 @@ def test_lib_compare_non_existing(monkeypatch, lib1):
     difference = lib1.compare(MissingFile('/nonexisting', lib1))
     assert difference.source2 == '/nonexisting'
     assert len(difference.details) > 0
+
 
 TEST_DBGSYM_DEB1_PATH = data('dbgsym/add/test-dbgsym_1_amd64.deb')
 TEST_DBGSYM_DEB2_PATH = data('dbgsym/mult/test-dbgsym_1_amd64.deb')
