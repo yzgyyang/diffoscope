@@ -37,6 +37,7 @@ class ComparatorManager(object):
         ('deb.Md5sumsFile',),
         ('deb.DebDataTarFile',),
         ('elf.ElfSection',),
+        ('binwalk.BinwalkFile',),
         ('ps.PsFile',),
         ('javascript.JavaScriptFile',),
         ('json.JSONFile',),

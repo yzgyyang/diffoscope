@@ -45,6 +45,7 @@ Build-Depends:
  poppler-utils <!nocheck>,
  python-argcomplete,
  python3-all,
+ python3-binwalk <!nocheck>,
  python3-debian <!nocheck>,
  python3-distro <!nocheck>,
  python3-docutils,
