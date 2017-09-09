@@ -108,5 +108,5 @@ class MissingFile(File):
     @property
     def deb822(self):
         class DummyChanges(dict):
-            get_as_string = lambda self, _: ''
+            def get_as_string(self, _): return ''
         return DummyChanges(Files=[], Version='')

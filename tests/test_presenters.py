@@ -143,7 +143,7 @@ def test_html_option_with_stdout(capsys):
     assert body.count('div class="difference"') == 4
 
 def test_limited_print():
-    fake = lambda x: None
+    def fake(x): return None
     with pytest.raises(PrintLimitReached):
         p = create_limited_print_func(fake, 5)
         p("123456")
