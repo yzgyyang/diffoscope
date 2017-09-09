@@ -107,7 +107,6 @@ class LibarchiveMember(ArchiveMember):
         return False
 
 
-
 class LibarchiveDirectory(Directory, LibarchiveMember):
     def __init__(self, archive, entry):
         LibarchiveMember.__init__(self, archive, entry)

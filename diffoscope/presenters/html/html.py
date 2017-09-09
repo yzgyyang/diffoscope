@@ -703,7 +703,6 @@ class HTMLPresenter(Presenter):
         ctx = HTMLPrintContext(directory, False, jquery_url, css_url, "common.css", "icon.png")
         self.output_difference(ctx, difference)
 
-
     def output_html(self, target, difference, css_url=None, jquery_url=None):
         """
         Default presenter, all in one HTML file

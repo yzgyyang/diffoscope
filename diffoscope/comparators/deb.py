@@ -144,7 +144,6 @@ class Md5sumsFile(File):
                                              self.path, other.path, source="line order")]
 
 
-
 class DebTarContainer(TarContainer):
     def comparisons(self, other):
         if self.source:

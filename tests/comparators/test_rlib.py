@@ -30,7 +30,6 @@ from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least,
 from ..utils.nonexisting import assert_non_existing
 
 
-
 rlib1 = load_fixture('test1.rlib')
 rlib2 = load_fixture('test2.rlib')
 
