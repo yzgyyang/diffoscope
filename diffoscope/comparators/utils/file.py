@@ -45,7 +45,7 @@ def path_apparent_size(path=".", visited=None):
     # should output the same as `du --apparent-size -bs "$path"`
     if not visited:
         stat = os.stat(path, follow_symlinks=False)
-        visited = { stat.st_ino: stat.st_size }
+        visited = {stat.st_ino: stat.st_size}
     if os.path.isdir(path) and not os.path.islink(path):
         for entry in os.scandir(path):
             inode = entry.inode()
