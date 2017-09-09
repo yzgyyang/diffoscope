@@ -45,4 +45,4 @@ class DocxFile(File):
             self.path,
             other.path,
             source='docx2txt',
-       )]
+        )]

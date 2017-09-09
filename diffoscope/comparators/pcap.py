@@ -47,4 +47,4 @@ class PcapFile(File):
             self.path,
             other.path,
             source='tcpdump',
-       )]
+        )]

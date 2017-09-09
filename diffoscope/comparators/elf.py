@@ -498,7 +498,7 @@ class ElfContainer(Container):
                 (get_tool_name('objcopy'),) + args,
                 shell=False,
                 stderr=subprocess.DEVNULL,
-        )
+            )
 
         # If #812089 was fixed, we would just do os.link(debug_file.path,
         # dest_path) but for now, we need to do more complicated things…

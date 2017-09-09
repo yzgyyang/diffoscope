@@ -41,4 +41,4 @@ class OggFile(File):
             self.path,
             other.path,
             source='oggDump',
-       )]
+        )]

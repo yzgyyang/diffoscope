@@ -57,8 +57,8 @@ def parse_entries(f):
         pos = f.tell()
 
         x['ctime'], x['ctime_nano'], x['mtime'], x['mtime_nano'], \
-        x['dev'], x['inode'], x['mode'], x['uid'], x['gid'], \
-        x['size'], x['sha'], x['flags'] = \
+            x['dev'], x['inode'], x['mode'], x['uid'], x['gid'], \
+            x['size'], x['sha'], x['flags'] = \
             struct.unpack('>LLLLLLLLLL20sH', f.read((4 * 10) + 20 + 2))
 
         x['path'] = f.read(x['flags'] & 0x0fff)
@@ -78,9 +78,9 @@ Version: {version}
 Entries:
 {entries_fmt}
 """.format(
-    entries_fmt=''.join(describe_entry(x) for x in index['entries']),
-    **index
-)
+        entries_fmt=''.join(describe_entry(x) for x in index['entries']),
+        **index
+    )
 
 
 def describe_entry(x):
@@ -96,8 +96,8 @@ Modified:  {x[mtime]}.{x[mtime_nano]}
 Inode:     {x[inode]}
 Device ID: ({major}, {minor})
 """.format(
-    x=x,
-    major=os.major(x['dev']),
-    minor=os.minor(x['dev']),
-    hexsha=binascii.b2a_hex(x['sha']).decode('utf-8'),
-)
+        x=x,
+        major=os.major(x['dev']),
+        minor=os.minor(x['dev']),
+        hexsha=binascii.b2a_hex(x['sha']).decode('utf-8'),
+    )

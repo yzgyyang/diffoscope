@@ -45,4 +45,4 @@ class OdtFile(File):
             self.path,
             other.path,
             source='odt2txt',
-       )]
+        )]

@@ -49,4 +49,4 @@ class PgpFile(File):
             self.path,
             other.path,
             source='pgpdump',
-       )]
+        )]
