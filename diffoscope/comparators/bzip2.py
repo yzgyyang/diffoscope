@@ -42,7 +42,7 @@ class Bzip2Container(Archive):
 
     @tool_required('bzip2')
     def extract(self, member_name, dest_dir):
-        dest_path = os.path.join(dest_dir, member_name)
+        dest_path = self.get_path_name(dest_dir)
         logger.debug('bzip2 extracting to %s', dest_path)
         with open(dest_path, 'wb') as fp:
             subprocess.check_call(
