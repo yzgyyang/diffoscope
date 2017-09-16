@@ -9,9 +9,7 @@ from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
 
-try:
-    assert sys.version_info >= (3, 4)
-except AssertionError:
+if sys.version_info < (3, 4):
     print("diffoscope requires at least python 3.4", file=sys.stderr)
     sys.exit(1)
 
