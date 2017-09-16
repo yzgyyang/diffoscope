@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from __future__ import print_function
+
 import sys
 import diffoscope
 
@@ -10,8 +12,8 @@ from setuptools.command.test import test as TestCommand
 try:
     assert sys.version_info >= (3, 4)
 except AssertionError:
-    from __future__ import print_function
     print("diffoscope requires at least python 3.4", file=sys.stderr)
+    sys.exit(1)
 
 
 class PyTest(TestCommand):
