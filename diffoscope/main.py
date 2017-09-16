@@ -364,6 +364,7 @@ def run_diffoscope(parsed_args):
     set_locale()
     path1, path2 = parsed_args.path1, parsed_args.path2
     if path2 is None:
+        logger.debug("Loading diff from stdin")
         if path1 is None or path1 == '-':
             difference = load_diff(sys.stdin, "stdin")
         else:
