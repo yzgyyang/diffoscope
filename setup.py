@@ -7,6 +7,13 @@ from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
 
+try:
+    assert sys.version_info >= (3, 4)
+except AssertionError:
+    from __future__ import print_function
+    print("diffoscope requires at least python 3.4", file=sys.stderr)
+
+
 class PyTest(TestCommand):
     user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
 
