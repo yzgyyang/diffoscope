@@ -18,6 +18,8 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import abc
+import uuid
+import os.path
 import logging
 import itertools
 from collections import OrderedDict
@@ -65,6 +67,9 @@ class Container(object, metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get_member(self, member_name):
         raise NotImplementedError()
+
+    def get_path_name(self, dest_dir):
+      return os.path.join(dest_dir, str(uuid.uuid4()))
 
     def get_filtered_members(self):
         # If your get_member implementation is O(n) then this will be O(n^2)
