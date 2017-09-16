@@ -45,11 +45,14 @@ def get_build_id_map(container):
         # too many irrelevant files
         if not member_name.endswith('.deb'):
             continue
+
         specialize(member)
+
         if isinstance(member, DebFile) and member.control:
             build_ids = member.control.get('Build-Ids', None)
             if build_ids:
                 d.update({build_id: member for build_id in build_ids.split()})
+
     return d
 
 
@@ -60,22 +63,28 @@ class DebContainer(LibarchiveContainer):
     @property
     def data_tar(self):
         for name, member in self.get_adjusted_members():
-            if DebContainer.RE_DATA_TAR.match(name):
-                specialize(member)
-                if name.endswith('.tar'):
-                    return member
-                else:
-                    return specialize(member.as_container.get_member('content'))
+            if not DebContainer.RE_DATA_TAR.match(name):
+                continue
+
+            specialize(member)
+
+            if name.endswith('.tar'):
+                return member
+
+            return specialize(member.as_container.get_member('content'))
 
     @property
     def control_tar(self):
         for name, member in self.get_adjusted_members():
-            if DebContainer.RE_CONTROL_TAR.match(name):
-                specialize(member)
-                if name.endswith('.tar'):
-                    return member
-                else:
-                    return specialize(member.as_container.get_member('content'))
+            if not DebContainer.RE_CONTROL_TAR.match(name):
+                continue
+
+            specialize(member)
+
+            if name.endswith('.tar'):
+                return member
+
+            return specialize(member.as_container.get_member('content'))
 
 
 class DebFile(File):
@@ -90,7 +99,7 @@ class DebFile(File):
             if md5sums_file:
                 self._md5sums = md5sums_file.parse()
             else:
-                logger.debug('Unable to find a md5sums file')
+                logger.debug("Unable to find a md5sums file")
                 self._md5sums = {}
         return self._md5sums
 
@@ -98,11 +107,13 @@ class DebFile(File):
     def control(self):
         if not deb822:
             return None
+
         if not hasattr(self, '_control'):
             control_file = self.as_container.control_tar.as_container.lookup_file('./control')
             if control_file:
                 with open(control_file.path, 'rb') as f:
                     self._control = deb822.Deb822(f)
+
         return self._control
 
     def compare_details(self, other, source=None):
@@ -130,7 +141,7 @@ class Md5sumsFile(File):
                     md5sums['./%s' % path] = md5sum
             return md5sums
         except (UnicodeDecodeError, ValueError):
-            logger.debug('Malformed md5sums, ignoring.')
+            logger.debug("Malformed md5sums, ignoring.")
             return {}
 
     def strip_checksum(self, path):
@@ -146,18 +157,18 @@ class Md5sumsFile(File):
 
 class DebTarContainer(TarContainer):
     def comparisons(self, other):
+        my_md5sums = {}
+        other_md5sums = {}
+
         if self.source:
             my_md5sums = self.source.container.source.container.source.md5sums
-        else:
-            my_md5sums = {}
         if other.source:
             other_md5sums = other.source.container.source.container.source.md5sums
-        else:
-            other_md5sums = {}
+
         for my_member, other_member, comment in super().comparisons(other):
             if my_member.name == other_member.name and \
                my_md5sums.get(my_member.name, 'my') == other_md5sums.get(other_member.name, 'other'):
-                logger.debug('Skip %s: identical md5sum', my_member.name)
+                logger.debug("Skip %s: identical md5sum", my_member.name)
                 continue
             yield my_member, other_member, comment
 
