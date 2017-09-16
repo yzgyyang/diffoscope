@@ -18,7 +18,6 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
-import os.path
 import logging
 import subprocess
 
@@ -44,7 +43,7 @@ class GzipContainer(Archive):
 
     @tool_required('gzip')
     def extract(self, member_name, dest_dir):
-        dest_path = os.path.join(dest_dir, member_name)
+        dest_path = self.get_path_name(dest_dir)
         logger.debug('gzip extracting to %s', dest_path)
         with open(dest_path, 'wb') as fp:
             subprocess.check_call(
