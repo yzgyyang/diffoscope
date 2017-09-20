@@ -107,7 +107,7 @@ def escape_anchor(val):
 
 
 def output_diff_path(path):
-    return '/'.join(n.source1 for n in path[1:])
+    return ' / '.join(n.source1 for n in path[1:])
 
 
 def output_anchor(path):
@@ -579,22 +579,20 @@ class HTMLPresenter(Presenter):
         continuations = {}  # functions to print unified diff continuations (html-dir only)
         printers = {}  # nodes to their printers
 
-        def smallest_first(node, parscore):
-            depth = parscore[0] + 1 if parscore else 0
-            parents = parscore[3] if parscore else []
+        def smallest_first(node, parent_score):
+            depth = parent_score[0] + 1 if parent_score else 0
+            parents = parent_score[3] if parent_score else []
             # Difference is not comparable so use memory address in event of a tie
             return depth, node.size_self(), id(node), parents + [node]
 
-        pruned = set()  # children
-        for node, score in root_difference.traverse_heapq(smallest_first, yield_score=True):
-            if node in pruned:
-                continue
-
-            ancestor = ancestors.pop(node, None)
+        def process_node(node, score):
             path = score[3]
             diff_path = output_diff_path(path)
             pagename = md5(diff_path)
             logger.debug('html output for %s', diff_path)
+
+            ancestor = ancestors.pop(node, None)
+            assert ancestor in path or (ancestor is None and node is root_difference)
             node_output, node_continuation = output_node(ctx, node, path, "  ", len(path)-1)
 
             add_to_existing = False
@@ -627,13 +625,10 @@ class HTMLPresenter(Presenter):
                     if not make_new_subpage:  # we hit a limit, either max-report-size or single-page
                         if not outputs:
                             # no more holes, don't traverse any more nodes
-                            break
+                            raise StopIteration
                         else:
-                            # don't traverse this node's children, they won't be output
-                            # however there are holes in other pages, so don't break just yet
-                            for child in node.details:
-                                pruned.add(child)
-                            continue
+                            # True = don't traverse any children either
+                            return True
                 else:
                     # unconditionally write the root node regardless of limits
                     assert node is root_difference
@@ -648,6 +643,7 @@ class HTMLPresenter(Presenter):
                 stored = node
 
             for child in node.details:
+                logger.debug("scheduling future html output for: %s" % output_diff_path(path + [child]))
                 ancestors[child] = stored
 
             conts = continuations.setdefault(stored, [])
@@ -655,6 +651,15 @@ class HTMLPresenter(Presenter):
                 conts.append(node_continuation)
 
             self.maybe_print(stored, printers, outputs, continuations)
+
+        nodes = root_difference.traverse_heapq(smallest_first, yield_score=True)
+        prune_prev_node_descendants = None
+        while True:
+            try:
+                node, score = nodes.send(prune_prev_node_descendants)
+                prune_prev_node_descendants = process_node(node, score)
+            except StopIteration:
+                break
 
         if outputs:
             import pprint

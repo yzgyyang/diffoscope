@@ -148,9 +148,10 @@ class Difference(object):
         queue = queue if queue is not None else [(scorer(self, None), self)]
         while queue:
             val, top = heapq.heappop(queue)
-            yield ((top, val) if yield_score else top)
-            for d in top._details:
-                heapq.heappush(queue, (scorer(d, val), d))
+            prune_descendants = yield ((top, val) if yield_score else top)
+            if not prune_descendants:
+                for d in top._details:
+                    heapq.heappush(queue, (scorer(d, val), d))
 
     @staticmethod
     def from_feeder(feeder1, feeder2, path1, path2, source=None, comment=None, **kwargs):
