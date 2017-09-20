@@ -644,7 +644,7 @@ class HTMLPresenter(Presenter):
                 stored = node
 
             for child in node.details:
-                logger.debug("scheduling future html output for: %s" % output_diff_path(path + [child]))
+                logger.debug("scheduling future html output for: %s", output_diff_path(path + [child]))
                 ancestors[child] = stored
 
             conts = continuations.setdefault(stored, [])
