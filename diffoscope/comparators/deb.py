@@ -20,6 +20,7 @@
 import re
 import logging
 
+from diffoscope.config import Config
 from diffoscope.difference import Difference
 
 from .tar import TarContainer
@@ -167,7 +168,8 @@ class DebTarContainer(TarContainer):
             other_md5sums = other.source.container.source.container.source.md5sums
 
         for my_member, other_member, comment in super().comparisons(other):
-            if my_member.name == other_member.name and \
+            if not Config().force_details and \
+               my_member.name == other_member.name and \
                my_md5sums.get(my_member.name, 'my') == other_md5sums.get(other_member.name, 'other'):
                 logger.debug("Skip %s: identical md5sum", my_member.name)
                 continue

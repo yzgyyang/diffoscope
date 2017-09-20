@@ -82,8 +82,10 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         has_same_content = file1.has_same_content_as(file2)
 
     if has_same_content:
-        if not force_details or diff_content_only:
+        if not force_details:
             logger.debug("has_same_content_as returned True; skipping further comparisons")
+            return None
+        if diff_content_only:
             return None
     elif diff_content_only:
         assert not has_same_content
