@@ -17,12 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import codecs
+
 from .json import JSONReaderV1
 
 
 def load_diff_from_path(path):
     with open(path, 'rb') as fp:
-        return load_diff(fp, path)
+        return load_diff(codecs.getreader('utf-8')(fp), path)
 
 
 def load_diff(fp, path):

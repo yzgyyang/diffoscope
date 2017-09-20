@@ -18,7 +18,6 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
-import codecs
 
 from ..difference import Difference
 from ..presenters.json import JSON_FORMAT_MAGIC
@@ -28,7 +27,9 @@ from .utils import UnrecognizedFormatError
 
 class JSONReaderV1(object):
     def load(self, fp, fn):
-        raw = json.load(codecs.getreader('utf-8')(fp))
+        # fp should be a str-stream not a bytes-stream. If you need to pass in
+        # a bytes-stream, wrap it in codecs.getreader('utf-8')(fp)
+        raw = json.load(fp)
         if JSON_FORMAT_MAGIC not in raw or raw[JSON_FORMAT_MAGIC] != 1:
             raise UnrecognizedFormatError(
                 "Magic not found in JSON: {}".format(JSON_FORMAT_MAGIC)
