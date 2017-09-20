@@ -118,30 +118,11 @@ STYLES = u"""body.diffoscope {
 .diffoscope .diffheader:hover .anchor {
   display: inline;
 }
-.diffoscope table.diff tr.ondemand td, .diffoscope div.ondemand-details {
-  background: #f99;
-  text-align: center;
-  padding: 0.5em 0;
-}
-.diffoscope table.diff tr.ondemand:hover td, .diffoscope div.ondemand-details:hover {
-  background: #faa;
-  cursor: pointer;
-}
 .diffoscope .diffcontrol, .diffoscope .diffcontrol-nochildren {
   float: left;
   margin-right: 0.3em;
   cursor: pointer;
   display: none; /* currently, only available in html-dir output where jquery is enabled */
-}
-.diffoscope .diffheader {
-  cursor: pointer;
-}
-.diffoscope .diffheader:hover .diffcontrol {
-  color: #080;
-  font-weight: bold;
-}
-.diffoscope .diffcontrol-double {
-  line-height: 250%;
 }
 .diffoscope .colines {
   width: 3em;
@@ -209,6 +190,27 @@ $(function() {
   $(".diffcontrol-nochildren").show();
 });
 </script>
+<style type="text/css">
+.diffoscope table.diff tr.ondemand td, .diffoscope div.ondemand-details {
+  background: #f99;
+  text-align: center;
+  padding: 0.5em 0;
+}
+.diffoscope table.diff tr.ondemand:hover td, .diffoscope div.ondemand-details:hover {
+  background: #faa;
+  cursor: pointer;
+}
+.diffoscope .diffheader {
+  cursor: pointer;
+}
+.diffoscope .diffheader:hover .diffcontrol {
+  color: #080;
+  font-weight: bold;
+}
+.diffoscope .diffcontrol-double {
+  line-height: 250%%;
+}
+</style>
 """
 
 DIFFNODE_LAZY_LOAD = u"""<div class="ondemand-details" title="the size refers to the raw diff and includes all children;
