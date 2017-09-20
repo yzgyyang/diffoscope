@@ -23,6 +23,7 @@ import logging
 from diffoscope.difference import Difference
 
 from .tar import TarContainer
+from .utils.compare import compare_files
 from .utils.file import File
 from .utils.archive import ArchiveMember
 from .utils.libarchive import LibarchiveContainer, list_libarchive
@@ -150,7 +151,7 @@ class Md5sumsFile(File):
                 yield " ".join(line.split(" ")[2:])
 
     def compare_details(self, other, source=None):
-        return [Difference(None, self.path, other.path, source="md5sums", comment="Files in package differ"),
+        return [compare_files(self, other, source='md5sums', diff_content_only=True),
                 Difference.from_text_readers(self.strip_checksum(self.path), self.strip_checksum(other.path),
                                              self.path, other.path, source="line order")]
 

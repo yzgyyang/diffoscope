@@ -43,6 +43,7 @@ class Config(object):
     exclude_directory_metadata = False
     compute_visual_diffs = False
     max_container_depth = 50
+    force_details = False
 
     _singleton = {}
 
