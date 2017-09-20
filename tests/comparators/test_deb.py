@@ -81,7 +81,7 @@ def test_identification_of_md5sums_in_deb(deb1, deb2, monkeypatch):
 
 
 def test_md5sums(differences):
-    assert differences[1].details[0].details[1].details[0].comment == 'Files in package differ'
+    assert differences[1].details[0].details[1].details[0].comment == 'Files differ'
 
 
 def test_identical_files_in_md5sums(deb1, deb2):
