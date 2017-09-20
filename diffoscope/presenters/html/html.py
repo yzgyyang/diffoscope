@@ -627,7 +627,8 @@ class HTMLPresenter(Presenter):
                             # no more holes, don't traverse any more nodes
                             raise StopIteration
                         else:
-                            # True = don't traverse any children either
+                            # True = don't traverse this node's children, because they won't be output
+                            # however there are holes in other pages, so don't break the loop just yet
                             return True
                 else:
                     # unconditionally write the root node regardless of limits
