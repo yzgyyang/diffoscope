@@ -252,6 +252,13 @@ def diff(feeder1, feeder2):
         return run_diff(fifo1_path, fifo2_path, fifo1.end_nl_q, fifo2.end_nl_q)
 
 
+def diff_split_lines(diff, keepends=True):
+    lines = diff.split("\n")
+    if not keepends:
+        return lines
+    return [line + "\n" for line in lines[:-1]] + ([lines[-1]] if lines[-1] else [])
+
+
 def reverse_unified_diff(diff):
     res = []
     for line in diff.splitlines(keepends=True):

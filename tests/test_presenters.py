@@ -17,14 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import io
 import os
 import re
 import pytest
 
 from diffoscope.main import main
+from diffoscope.readers import load_diff_from_path
 from diffoscope.presenters.utils import create_limited_print_func, PrintLimitReached, PartialString
+from diffoscope.presenters.json import JSONPresenter
 
-from .utils.data import cwd_data, get_data
+from .utils import diff_expand
+from .utils.data import cwd_data, data, get_data
 from .utils.tools import skip_unless_tools_exist
 
 re_html = re.compile(r'.*<body(?P<body>.*)<div class="footer">', re.MULTILINE | re.DOTALL)
@@ -56,6 +60,14 @@ def extract_body(val):
     assert len(result) > 0
 
     return result
+
+
+def expand_collapsed_json(tmpdir, name):
+    diff = load_diff_from_path(data(name + ".collapsed-diff.json"))
+    diff_path = str(tmpdir.join(name + '.diff.json'))
+    with open(diff_path, 'w') as fp:
+        JSONPresenter(lambda x: print(x, file=fp)).start(diff.fmap(diff_expand))
+    return diff_path
 
 
 def test_text_option_is_default(capsys):
@@ -156,6 +168,14 @@ def test_html_option_with_stdout(capsys):
     body = extract_body(run(capsys, '--html', '-'))
 
     assert body.count('div class="difference"') == 4
+
+
+def test_html_regression_875281(tmpdir, capsys):
+    # this test fails when you `git revert -Xtheirs ccd926f`
+    diff_path = expand_collapsed_json(tmpdir, 'debian-bug-875281')
+    report_path = str(tmpdir.join('report.html'))
+    out = run(capsys, '--html', report_path, pair=(diff_path,))
+    assert out == ''
 
 
 def test_limited_print():

@@ -22,7 +22,7 @@ import logging
 
 from . import feeders
 from .exc import RequiredToolNotFound
-from .diff import diff, reverse_unified_diff
+from .diff import diff, reverse_unified_diff, diff_split_lines
 from .excludes import command_excluded
 
 logger = logging.getLogger(__name__)
@@ -70,26 +70,44 @@ class Difference(object):
             self._details,
         )
 
-    def get_reverse(self):
-        logger.debug("Reverse orig %s %s", self.source1, self.source2)
+    def map_lines(self, f_diff, f_comment):
+        unified_diff = self.unified_diff
+        return self.__class__(
+            "".join(map(f_diff, diff_split_lines(unified_diff))) if unified_diff is not None else None,
+            self.source1,
+            self.source2,
+            comment=["".join(map(f_comment, diff_split_lines(comment))) for comment in self.comments],
+            has_internal_linenos=self.has_internal_linenos,
+            details=self._details,
+        )
 
+    def fmap(self, f):
         if self._visuals:
             raise NotImplementedError(
-                "Reversing VisualDifference is not yet implemented",
+                "fmap on VisualDifference is not yet implemented",
             )
+        return f(self.__class__(
+            self.unified_diff,
+            self.source1,
+            self.source2,
+            comment=self.comments,
+            has_internal_linenos=self.has_internal_linenos,
+            details=[d.fmap(f) for d in self._details],
+        ))
 
-        diff = self.unified_diff
-        if diff is not None:
-            diff = reverse_unified_diff(self.unified_diff)
-
-        return Difference(
-            diff,
+    def _reverse_self(self):
+        return self.__class__(
+            reverse_unified_diff(self.unified_diff) if self.unified_diff is not None else None,
             self.source2,
             self.source1,
             comment=self.comments,
             has_internal_linenos=self.has_internal_linenos,
-            details=[d.get_reverse() for d in self._details],
+            details=self._details,
         )
+
+    def get_reverse(self):
+        logger.debug("Reverse orig %s %s", self.source1, self.source2)
+        return self.fmap(Difference._reverse_self)
 
     def equals(self, other):
         return self == other or (
