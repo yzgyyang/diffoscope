@@ -29,7 +29,8 @@ logger = logging.getLogger(__name__)
 
 
 class Difference(object):
-    def __init__(self, unified_diff, path1, path2, source=None, comment=None, has_internal_linenos=False, details=None):
+    def __init__(self, unified_diff, path1, path2, source=None, comment=None,
+                 has_internal_linenos=False, details=None, visuals=None):
         self._unified_diff = unified_diff
 
         self._comments = []
@@ -60,7 +61,7 @@ class Difference(object):
         # Whether the unified_diff already contains line numbers inside itself
         self._has_internal_linenos = has_internal_linenos
         self._details = details or []
-        self._visuals = []
+        self._visuals = visuals or []
         self._size_cache = None
 
     def __repr__(self):
@@ -78,14 +79,11 @@ class Difference(object):
             self.source2,
             comment=["".join(map(f_comment, diff_split_lines(comment))) for comment in self.comments],
             has_internal_linenos=self.has_internal_linenos,
-            details=self._details,
+            details=self._details[:],
+            visuals=self._visuals[:],
         )
 
     def fmap(self, f):
-        if self._visuals:
-            raise NotImplementedError(
-                "fmap on VisualDifference is not yet implemented",
-            )
         return f(self.__class__(
             self.unified_diff,
             self.source1,
@@ -93,16 +91,22 @@ class Difference(object):
             comment=self.comments,
             has_internal_linenos=self.has_internal_linenos,
             details=[d.fmap(f) for d in self._details],
+            visuals=self._visuals[:],
         ))
 
     def _reverse_self(self):
+        # assumes we're being called from get_reverse()
+        if self._visuals:
+            raise NotImplementedError(
+                "_reverse_self on VisualDifference is not yet implemented",
+            )
         return self.__class__(
             reverse_unified_diff(self.unified_diff) if self.unified_diff is not None else None,
             self.source2,
             self.source1,
             comment=self.comments,
             has_internal_linenos=self.has_internal_linenos,
-            details=self._details,
+            details=self._details, # already reversed by fmap in get_reverse, no need to copy
         )
 
     def get_reverse(self):
