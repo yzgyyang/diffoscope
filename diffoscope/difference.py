@@ -77,7 +77,7 @@ class Difference(object):
             "".join(map(f_diff, diff_split_lines(unified_diff))) if unified_diff is not None else None,
             self.source1,
             self.source2,
-            comment=["".join(map(f_comment, diff_split_lines(comment))) for comment in self.comments],
+            comment=["".join(map(f_comment, diff_split_lines(comment))) for comment in self._comments],
             has_internal_linenos=self.has_internal_linenos,
             details=self._details[:],
             visuals=self._visuals[:],
@@ -88,7 +88,7 @@ class Difference(object):
             self.unified_diff,
             self.source1,
             self.source2,
-            comment=self.comments,
+            comment=self._comments[:],
             has_internal_linenos=self.has_internal_linenos,
             details=[d.fmap(f) for d in self._details],
             visuals=self._visuals[:],
@@ -104,7 +104,7 @@ class Difference(object):
             reverse_unified_diff(self.unified_diff) if self.unified_diff is not None else None,
             self.source2,
             self.source1,
-            comment=self.comments,
+            comment=self._comments, # already copied by fmap in get_reverse
             has_internal_linenos=self.has_internal_linenos,
             details=self._details, # already reversed by fmap in get_reverse, no need to copy
         )
@@ -118,9 +118,10 @@ class Difference(object):
             self.unified_diff == other.unified_diff and
             self.source1 == other.source1 and
             self.source2 == other.source2 and
-            self.comments == other.comments and
+            self._comments == other._comments and
             self.has_internal_linenos == other.has_internal_linenos and
-            all(x.equals(y) for x, y in zip(self.details, other.details)))
+            all(x.equals(y) for x, y in zip(self._details, other._details)) and
+            all(x.equals(y) for x, y in zip(self._visuals, other._visuals)))
 
     def size(self):
         if self._size_cache is None:
@@ -345,3 +346,9 @@ class VisualDifference(object):
 
     def size(self):
         return len(self.data_type) + len(self.content) + len(self.source)
+
+    def equals(self, other):
+        return self == other or (
+            self._data_type == other._data_type and
+            self._content == other._content and
+            self._source == other._source)
