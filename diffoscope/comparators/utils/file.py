@@ -162,13 +162,26 @@ class File(object, metaclass=abc.ABCMeta):
 
         The default test returns True if the file matches these tests:
 
-        cls.FALLBACK_FILE_EXTENSION_SUFFIX AND
-        cls.FALLBACK_FILE_TYPE_HEADER_PREFIX
+        (cls.FALLBACK_FILE_EXTENSION_SUFFIX AND cls.FILE_EXTENSION_SUFFIX) AND
+        (cls.FALLBACK_FILE_TYPE_HEADER_PREFIX AND cls.FILE_TYPE_HEADER_PREFIX)
+
+        We also AND-compare with the non-fallback versions to ensure that
+        subclasses don't "accidentally match" (e.g. IpkFile vs GzipFile).
         """
+        if cls.recognizes.__func__ != File.recognizes.__func__:
+            # If the class has overridden the default recognizes() then the
+            # logic below about AND-comparing with the non-fallback versions is
+            # not valid, they have to re-implement it
+            return False
+
         all_tests = [test for test in (
             (cls.FALLBACK_FILE_EXTENSION_SUFFIX,
              str.endswith, file.name),
+            (cls.FILE_EXTENSION_SUFFIX,
+             str.endswith, file.name),
             (cls.FALLBACK_FILE_TYPE_HEADER_PREFIX,
+             bytes.startswith, file.file_header),
+            (cls.FILE_TYPE_HEADER_PREFIX,
              bytes.startswith, file.file_header),
         ) if test[0]]  # filter out undefined tests, inc. file_type_tests if it's empty
 

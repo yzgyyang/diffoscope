@@ -31,8 +31,8 @@ logger = logging.getLogger(__name__)
 
 
 class Device(File):
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         return file.is_device()
 
     def get_device(self):

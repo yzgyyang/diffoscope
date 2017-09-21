@@ -71,8 +71,8 @@ class HiFile(File):
     """
     RE_FILE_EXTENSION = re.compile(r'\.(p_|dyn_)?hi$')
 
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         if not HiFile.RE_FILE_EXTENSION.search(file.name):
             return False
 

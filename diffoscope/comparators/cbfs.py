@@ -101,8 +101,8 @@ def is_header_valid(buf, size, offset=0):
 class CbfsFile(File):
     CONTAINER_CLASS = CbfsContainer
 
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         size = os.stat(file.path).st_size
         if size < CBFS_HEADER_SIZE or size > CBFS_MAXIMUM_FILE_SIZE:
             return False

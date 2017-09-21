@@ -68,8 +68,8 @@ class RdsReader(Command):
 
 
 class RdsFile(File):
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         if check_rds_extension(file) or \
                 file.container and \
                 check_rds_extension(file.container.source):

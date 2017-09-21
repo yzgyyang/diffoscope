@@ -125,8 +125,8 @@ class DebFile(File):
 
 
 class Md5sumsFile(File):
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         return isinstance(file, ArchiveMember) and \
                file.name == './md5sums' and \
                isinstance(file.container.source, ArchiveMember) and \
@@ -179,8 +179,8 @@ class DebTarContainer(TarContainer):
 class DebDataTarFile(File):
     CONTAINER_CLASS = DebTarContainer
 
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         return isinstance(file, ArchiveMember) and \
                isinstance(file.container.source, ArchiveMember) and \
                DebContainer.RE_DATA_TAR.match(file.container.source.name) and \

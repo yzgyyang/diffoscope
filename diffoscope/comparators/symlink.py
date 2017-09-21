@@ -29,8 +29,8 @@ logger = logging.getLogger(__name__)
 
 
 class Symlink(File):
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         return file.is_symlink()
 
     @property

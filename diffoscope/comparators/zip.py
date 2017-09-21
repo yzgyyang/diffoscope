@@ -151,8 +151,8 @@ class MozillaZipContainer(ZipContainer):
 class MozillaZipFile(File):
     CONTAINER_CLASS = MozillaZipContainer
 
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         # Mozilla-optimized ZIPs start with a 32-bit little endian integer
         # indicating the amount of data to preload, followed by the ZIP
         # central directory (with a PK\x01\x02 signature)

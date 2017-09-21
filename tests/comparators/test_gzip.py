@@ -24,17 +24,26 @@ from diffoscope.config import Config
 from diffoscope.comparators.gzip import GzipFile
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.missing_file import MissingFile
-from diffoscope.comparators.utils.specialize import specialize
+from diffoscope.comparators.utils.specialize import specialize, is_direct_instance
 
 from ..utils.data import load_fixture, get_data
 
 
 gzip1 = load_fixture('test1.gz')
 gzip2 = load_fixture('test2.gz')
+gzip3 = load_fixture('debian-bug-876316-control.tar.gz')
 
 
 def test_identification(gzip1):
-    assert isinstance(gzip1, GzipFile)
+    assert is_direct_instance(gzip1, GzipFile)
+
+
+def test_fallback_recognizes(gzip3):
+    # the below always-True assertion is just to document the fact that we
+    # should identify it correctly regardless of any bugs in file(1)
+    assert ("gzip" not in gzip3.magic_file_type or
+            "gzip" in gzip3.magic_file_type)
+    assert is_direct_instance(gzip3, GzipFile)
 
 
 def test_no_differences(gzip1):

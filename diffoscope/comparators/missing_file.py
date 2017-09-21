@@ -34,8 +34,8 @@ class MissingFile(File):
     Represents a missing file when comparing containers.
     """
 
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         if isinstance(file, FilesystemFile) and not os.path.lexists(file.name):
             assert Config().new_file, '%s does not exist' % file.name
             return True

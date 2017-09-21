@@ -56,3 +56,14 @@ def specialize(file):
 
     logger.debug("Unidentified file. Magic says: %s", file.magic_file_type)
     return file
+
+
+def is_direct_instance(file, cls):
+    # is_direct_instance(<GzipFile>, GzipFile) == True, but
+    # is_direct_instance(<IpkFile>, GzipFile) == False
+    if not isinstance(file, cls):
+        return False
+    for c in ComparatorManager().classes:
+        if c != cls and isinstance(file, c):
+            return False
+    return True

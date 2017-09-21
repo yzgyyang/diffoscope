@@ -312,8 +312,8 @@ class ElfSection(File):
     def fuzzy_hash(self):
         return None
 
-    @staticmethod
-    def recognizes(file):
+    @classmethod
+    def recognizes(cls, file):
         # No file should be recognized as an elf section
         return False
 
