@@ -64,6 +64,6 @@ def is_direct_instance(file, cls):
     if not isinstance(file, cls):
         return False
     for c in ComparatorManager().classes:
-        if c != cls and isinstance(file, c):
+        if c is not cls and isinstance(file, c):
             return False
     return True
