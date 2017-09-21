@@ -66,7 +66,7 @@ Build-Depends:
  tcpdump <!nocheck>,
  unzip <!nocheck>,
  xxd <!nocheck> | vim-common <!nocheck>,
-Standards-Version: 4.0.0
+Standards-Version: 4.1.0
 Homepage: https://diffoscope.org/
 Vcs-Git: https://anonscm.debian.org/git/reproducible/diffoscope.git
 Vcs-Browser: https://anonscm.debian.org/git/reproducible/diffoscope.git
