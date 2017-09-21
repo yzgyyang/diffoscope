@@ -261,7 +261,7 @@ def diff_split_lines(diff, keepends=True):
 
 def reverse_unified_diff(diff):
     res = []
-    for line in diff.splitlines(keepends=True):
+    for line in diff_split_lines(diff):
         found = DiffParser.RANGE_RE.match(line)
 
         if found:
@@ -514,7 +514,7 @@ class SideBySideDiff(object):
         """
         self.reset()
 
-        for l in self.unified_diff.splitlines():
+        for l in diff_split_lines(self.unified_diff, False):
             self._bytes_processed += len(l) + 1
             m = re.match(r'^--- ([^\s]*)', l)
             if m:
