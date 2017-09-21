@@ -150,6 +150,10 @@ class Directory(object):
     def recognizes(file):
         return file.is_directory()
 
+    @classmethod
+    def fallback_recognizes(cls, file):
+        return False
+
 
 class FilesystemDirectory(Directory):
     def __init__(self, path):

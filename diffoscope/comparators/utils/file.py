@@ -57,6 +57,10 @@ def path_apparent_size(path=".", visited=None):
     return sum(visited.values())
 
 
+def _run_tests(fold, tests):
+    return fold(t(y, x) for x, t, y in tests)
+
+
 class File(object, metaclass=abc.ABCMeta):
     if hasattr(magic, 'open'):  # use Magic-file-extensions from file
         @classmethod
@@ -112,13 +116,25 @@ class File(object, metaclass=abc.ABCMeta):
 
     @classmethod
     def recognizes(cls, file):
+        """Check if a file's type matches the one represented by this class.
+
+        The default test returns True if the file matches these tests:
+
+        (cls.FILE_TYPE_RE OR
+         cls.FILE_TYPE_HEADER_PREFIX) AND
+        (cls.FILE_EXTENSION_SUFFIX)
+
+        If any test is None then the test is ignored and effectively deleted
+        from the above definition.
+
+        By default, the tests are all None and the test returns False for all
+        files. Subclasses may override them with specific values, or override
+        this method to implement a totally different test.
+        """
         # The structure below allows us to construct a boolean tree of tests
         # that can be combined with all() and any(). Tests that are not defined
         # for a class are filtered out, so that we don't get into a "vacuous
         # truth" situation like a naive all([]) invocation would give.
-
-        def run_tests(fold, tests):
-            return fold(t(y, x) for x, t, y in tests)
 
         file_type_tests = [test for test in (
             (cls.FILE_TYPE_RE,
@@ -131,10 +147,32 @@ class File(object, metaclass=abc.ABCMeta):
             (cls.FILE_EXTENSION_SUFFIX,
              str.endswith, file.name),
             (file_type_tests,
-             run_tests, any),
+             _run_tests, any),
         ) if test[0]]  # filter out undefined tests, inc. file_type_tests if it's empty
 
-        return run_tests(all, all_tests) if all_tests else False
+        return _run_tests(all, all_tests) if all_tests else False
+
+    FALLBACK_FILE_EXTENSION_SUFFIX = None
+    FALLBACK_FILE_TYPE_HEADER_PREFIX = None
+
+    @classmethod
+    def fallback_recognizes(cls, file):
+        """This is checked if the file could not be identified by recognizes().
+        This helps to work around bugs in file(1), see Debian bug #876316.
+
+        The default test returns True if the file matches these tests:
+
+        cls.FALLBACK_FILE_EXTENSION_SUFFIX AND
+        cls.FALLBACK_FILE_TYPE_HEADER_PREFIX
+        """
+        all_tests = [test for test in (
+            (cls.FALLBACK_FILE_EXTENSION_SUFFIX,
+             str.endswith, file.name),
+            (cls.FALLBACK_FILE_TYPE_HEADER_PREFIX,
+             bytes.startswith, file.file_header),
+        ) if test[0]]  # filter out undefined tests, inc. file_type_tests if it's empty
+
+        return _run_tests(all, all_tests) if all_tests else False
 
     # This might be different from path and is used to do file extension matching
     @property

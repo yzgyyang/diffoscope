@@ -26,23 +26,33 @@ from .. import ComparatorManager
 logger = logging.getLogger(__name__)
 
 
+def try_recognize(file, cls, recognizes):
+    if isinstance(file, cls):
+        return True
+
+    # Does this file class match?
+    with profile('recognizes', file):
+        #logger.debug("trying %s on %s", cls, file)
+        if not recognizes(file):
+            return False
+
+    # Found a match; perform type magic
+    logger.debug("Using %s for %s", cls.__name__, file.name)
+    new_cls = type(cls.__name__, (cls, type(file)), {})
+    file.__class__ = new_cls
+
+    return True
+
+
 def specialize(file):
     for cls in ComparatorManager().classes:
-        if isinstance(file, cls):
+        if try_recognize(file, cls, cls.recognizes):
             return file
 
-        # Does this file class match?
-        with profile('recognizes', file):
-            if not cls.recognizes(file):
-                continue
-
-        # Found a match; perform type magic
-        logger.debug("Using %s for %s", cls.__name__, file.name)
-        new_cls = type(cls.__name__, (cls, type(file)), {})
-        file.__class__ = new_cls
-
-        return file
+    for cls in ComparatorManager().classes:
+        if try_recognize(file, cls, cls.fallback_recognizes):
+            logger.debug("File recognized by fallback. Magic says: %s", file.magic_file_type)
+            return file
 
     logger.debug("Unidentified file. Magic says: %s", file.magic_file_type)
-
     return file
