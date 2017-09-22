@@ -1,21 +1,70 @@
 diffoscope (87) UNRELEASED; urgency=medium
 
-  * WIP: changelog will be generated right before releasing, don't add
-    anything.
-
   [ Juliana Oliveira Rodrigues ]
-  * tests/presenters:
-    + skip html_visuals test if 'sng' binary is not available.
+  * comparators:
+    + utils:
+      - compare: fix comparison between container types.
+      - container: add get_path_name() method, aiming at preventing hitting
+        OS' max filename length.
+    + gzip: replace dest_path generation with self.get_path_name().
+    + bzip2: replace dest_path generation with self.get_path_name().
+  * tests:
+    + presenters:
+      - skip html_visuals test if 'sng' binary is not available.
+    + comparators:
+      - test_cointainers: new tests to test cross-container comparisons.
+      - add test_containers.py.
 
   [ Chris Lamb ]
   * comparators:
+    + utils:
+      - file: correct reference to path_apparent_size.
     + fonts: loosen matching of file(1)'s output to ensure we correctly also
       match TTF files under file 5.32.
+    + binwalk:
+      - new comparator to deal with (e.g.) concatenated CPIO archives using
+        the new optional python module 'binwalk'.  Closes: #820631
+  * diffoscope.diff: Correct reference to self.buf.
+  * debian/rules: run flake8 during the tests, and fail the build in case the
+    "underfined name" flake8's check fails.
+  * tests/comparators:
+    + test_cpio: check we identify all CPIO fixtures.
+  * main:
+    + print a debugging message if we are reading diff from stdin.
+  * presenters:
+    + html: use logging.py's lazy argument interpolation.
+  * debian/control: bump Standards-Version to 4.1.0.
+  * Code style improvements across all of the codebase.
 
   [ Mattia Rizzolo ]
   * debian/changelog: retroactively close a bug in an old changelog entry.
+  * setup.py: add a check to prevent people from installing diffoscope under
+    python < 3.5 (i.e. python2) and give them a usable error message otherwise.
+  * Code style improvements across all of the codebase.
 
- -- Mattia Rizzolo <mattia@debian.org>  Fri, 08 Sep 2017 16:59:36 +0200
+  [ Ximin Luo ]
+  * comparators:
+    +  add a fallback_recognizes() method to work around file(1)'s bug #876316.
+       Closes: #875282
+    + add a --force-details flag for debugging.
+    + deb:
+      - if --force-details then don't skip files with identical md5sums either.
+  * presenters:
+    + html:
+      - prune all descendants properly.  Closes: #875281
+      - don't show pointer-cursor when jquery is disabled.
+  * config:
+    + force-set a value if it must be less than another, and it was not set on
+      purpose.  Closes: #875451
+  * readers: convert bytes to str in the right place.
+  * diff: use diff_split_lines everywhere.
+  * difference:
+    + in fmap/map_lines, don't forget about self._visuals.
+    + also copy self._comment properly, compare self._visuals in equals().
+  * tests/comparators:
+    + test_deb: make test_md5sums less brittle.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Fri, 22 Sep 2017 18:25:33 +0200
 
 diffoscope (86) unstable; urgency=medium
 
