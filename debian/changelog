@@ -1,4 +1,4 @@
-diffoscope (87) UNRELEASED; urgency=medium
+diffoscope (87) unstable; urgency=medium
 
   [ Juliana Oliveira Rodrigues ]
   * comparators:
@@ -64,7 +64,7 @@ diffoscope (87) UNRELEASED; urgency=medium
   * tests/comparators:
     + test_deb: make test_md5sums less brittle.
 
- -- Mattia Rizzolo <mattia@debian.org>  Fri, 22 Sep 2017 18:25:33 +0200
+ -- Mattia Rizzolo <mattia@debian.org>  Fri, 22 Sep 2017 18:53:05 +0200
 
 diffoscope (86) unstable; urgency=medium
 
