@@ -22,8 +22,8 @@ endif
 export PATH := $(CURDIR)/bin:$(PATH)
 export PYBUILD_DESTDIR = debian/diffoscope
 export PYBUILD_TEST_ARGS = -vv -r sxX -l --cov=diffoscope --cov-report=term-missing --cov-report=html
-export PYBUILD_AFTER_TEST = debian/tests/basic-command-line
 export PYBUILD_BEFORE_TEST = flake8 --config=/dev/null --select=F821
+export PYBUILD_AFTER_TEST = debian/tests/basic-command-line
 export PYBUILD_AFTER_INSTALL = rm -rvf '{destdir}/{install_dir}/htmlcov' '{destdir}/{install_dir}/.coverage'
 
 ifneq ($(JENKINS_EXPORTS_DIR),)
