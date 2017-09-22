@@ -19,19 +19,29 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 
+import logging
+
+
+logger = logging.getLogger(__name__)
+
+
+class defaultint(int):
+    pass
+
+
 class Config(object):
     # GNU diff cannot process arbitrary large files :(
     max_diff_input_lines = 2 ** 22
     max_diff_block_lines_saved = float("inf")
 
     # hard limits, restricts single-file and multi-file formats
-    max_report_size = 40 * 2 ** 20  # 40 MB
-    max_diff_block_lines = 2 ** 10  # 1024 lines
+    max_report_size = defaultint(40 * 2 ** 20)  # 40 MB
+    max_diff_block_lines = defaultint(2 ** 10)  # 1024 lines
     # structural limits, restricts single-file formats
     # semi-restricts multi-file formats
-    max_page_size = 400 * 2 ** 10  # 400 kB
-    max_page_size_child = 200 * 2 ** 10  # 200 kB
-    max_page_diff_block_lines = 2 ** 7  # 128 lines
+    max_page_size = defaultint(400 * 2 ** 10)  # 400 kB
+    max_page_size_child = defaultint(200 * 2 ** 10)  # 200 kB
+    max_page_diff_block_lines = defaultint(2 ** 7)  # 128 lines
 
     max_text_report_size = 0
 
@@ -57,7 +67,11 @@ class Config(object):
         va = getattr(self, a)
         vb = getattr(self, b)
         if va < vb:
-            raise ValueError("{0} ({1}) cannot be smaller than {2} ({3})".format(a, va, b, vb))
+            if isinstance(vb, defaultint):
+                logger.warn("%s (%s) < default value of %s (%s), setting latter to %s", a, va, b, vb, va)
+                setattr(self, b, va)
+            else:
+                raise ValueError("{0} ({1}) cannot be smaller than {2} ({3})".format(a, va, b, vb))
 
     def check_constraints(self):
         self.check_ge("max_diff_block_lines", "max_page_diff_block_lines")
