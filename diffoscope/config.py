@@ -68,10 +68,17 @@ class Config(object):
         vb = getattr(self, b)
         if va < vb:
             if isinstance(vb, defaultint):
-                logger.warn("%s (%s) < default value of %s (%s), setting latter to %s", a, va, b, vb, va)
+                logger.warn(
+                    "%s (%s) < default value of %s (%s), setting latter to %s",
+                    a, va, b, vb, va
+                )
                 setattr(self, b, va)
             else:
-                raise ValueError("{0} ({1}) cannot be smaller than {2} ({3})".format(a, va, b, vb))
+                raise ValueError(
+                    "{0} ({1}) cannot be smaller than {2} ({3})".format(
+                        a, va, b, vb
+                    )
+                )
 
     def check_constraints(self):
         self.check_ge("max_diff_block_lines", "max_page_diff_block_lines")
