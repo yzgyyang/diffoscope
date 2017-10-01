@@ -36,7 +36,13 @@ dtb2 = load_fixture('devicetree2.dtb')
 
 def fdtdump_version():
     out = subprocess.check_output(('fdtdump', '--version'), stderr=subprocess.STDOUT)
-    return out.decode().split()[2]
+    # We are looking for a line like
+    #   Version: DTC 1.4.5
+    # that usually is placed last
+    for line in reversed(out.decode().splitlines())):
+        if line.startswith('Version: '):
+            return line.split()[2]
+    raise ValueError('Error parsing `fdtdump --version` output')
 
 
 def test_identification(dtb1):
