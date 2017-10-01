@@ -39,7 +39,7 @@ def fdtdump_version():
     # We are looking for a line like
     #   Version: DTC 1.4.5
     # that usually is placed last
-    for line in reversed(out.decode().splitlines())):
+    for line in reversed(out.decode().splitlines()):
         if line.startswith('Version: '):
             return line.split()[2]
     raise ValueError('Error parsing `fdtdump --version` output')
