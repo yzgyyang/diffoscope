@@ -42,13 +42,14 @@ def test_no_differences(binwalk1):
 
 
 @pytest.fixture
-def differences(binwalk1, binwalk2):
-    return binwalk1.compare(binwalk2).details
+def comparison(binwalk1, binwalk2):
+    return binwalk1.compare(binwalk2)
 
 
 @skip_unless_tools_exist('cpio')
 @skip_unless_module_exists('binwalk')
-def test_listing(differences):
+def test_listing(comparison):
+    differences = comparison.details
     assert differences[0].source1 == '0.cpio'
     assert differences[1].source2 == '600.cpio'
 
@@ -58,7 +59,8 @@ def test_listing(differences):
 
 @skip_unless_tools_exist('cpio')
 @skip_unless_module_exists('binwalk')
-def test_symlink(differences):
+def test_symlink(comparison):
+    differences = comparison.details
     assert differences[0].details[1].source1 == 'dir/link'
     assert differences[0].details[1].comment == 'symlink'
     expected_diff = get_data('symlink_expected_diff')
