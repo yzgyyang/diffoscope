@@ -89,7 +89,10 @@ class BinwalkFile(File):
         )
 
         members = {
-            os.path.basename(x): x
+            '{} file embedded at offset {}'.format(
+                os.path.splitext(x)[1],
+                os.path.basename(os.path.splitext(x)[0]),
+            ): x
             for x in glob.glob(os.path.join(unpacked.name, '*/*'))
         }
 
@@ -103,3 +106,13 @@ class BinwalkFile(File):
         file._unpacked = unpacked
 
         return True
+
+    def compare(self, other, source=None):
+        difference = super().compare(other, source)
+
+        if difference is not None:
+            difference.add_comment(
+                "comprises of {} embedded members".format(len(self._members))
+            )
+
+        return difference

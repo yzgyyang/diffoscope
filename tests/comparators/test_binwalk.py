@@ -50,8 +50,9 @@ def comparison(binwalk1, binwalk2):
 @skip_unless_module_exists('binwalk')
 def test_listing(comparison):
     differences = comparison.details
-    assert differences[0].source1 == '0.cpio'
-    assert differences[1].source2 == '600.cpio'
+    assert comparison.comments == ["comprises of 2 embedded members"]
+    assert differences[0].source1 == '.cpio file embedded at offset 0'
+    assert differences[1].source2 == '.cpio file embedded at offset 600'
 
     expected_diff = get_data('binwalk_expected_diff')
     assert differences[0].details[0].unified_diff == expected_diff
