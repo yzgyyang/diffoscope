@@ -55,7 +55,8 @@ def from_raw_reader(in_file, filter=lambda buf: buf):
                 # python buffering; force a flush here to avoid this,
                 # see https://bugs.debian.org/870049
                 out_file.flush()
-            end_nl = buf[-1] == '\n'
+            if buf:
+                end_nl = buf[-1] == '\n'
 
         if h is not None and line_count >= max_lines:
             out_file.write("[ Too much input for diff (SHA1: {}) ]\n".format(
