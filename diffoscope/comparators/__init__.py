@@ -116,8 +116,9 @@ class ComparatorManager(object):
                 self.classes.append(getattr(mod, klass_name))
                 break
             else:  # noqa
-                raise ImportError(
-                    "Could not import any of {}".format(', '.join(xs))
-                )
+                raise ImportError("Could not import {}{}".format(
+                    "any of" if len(xs) > 1 else '',
+                    ', '.join(xs)
+                ))
 
         logger.debug("Loaded %d comparator classes", len(self.classes))
