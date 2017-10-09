@@ -217,6 +217,8 @@ class SquashfsDevice(Device, SquashfsMember):
 
 
 class SquashfsContainer(Archive):
+    auto_diff_metadata = False
+
     MEMBER_CLASS = {
         'd': SquashfsDirectory,
         'l': SquashfsSymlink,

@@ -45,7 +45,7 @@ def differences(ipk1, ipk2):
 
 
 def test_metadata(differences):
-    assert differences[0].source1 == 'metadata'
+    assert differences[0].source1.startswith('filetype')
     expected_diff = get_data('ipk_metadata_expected_diff')
     assert differences[0].unified_diff == expected_diff
 

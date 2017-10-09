@@ -40,6 +40,8 @@ logger = logging.getLogger(__name__)
 
 
 class Container(object, metaclass=abc.ABCMeta):
+    auto_diff_metadata = True
+
     def __new__(cls, source):
         if isinstance(source, MissingFile):
             new = super(Container, MissingContainer).__new__(MissingContainer)

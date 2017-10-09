@@ -57,8 +57,8 @@ def differences(gzip1, gzip2):
 
 
 def test_metadata(differences):
-    assert differences[0].source1 == 'metadata'
-    assert differences[0].source2 == 'metadata'
+    assert differences[0].source1.startswith('filetype')
+    assert differences[0].source2.startswith('filetype')
     expected_diff = get_data('gzip_metadata_expected_diff')
     assert differences[0].unified_diff == expected_diff
 

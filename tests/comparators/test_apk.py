@@ -92,7 +92,7 @@ def test_skip_undecoded_android_manifest(differences):
 @skip_unless_tools_exist('apktool', 'zipinfo')
 def test_no_android_manifest(differences2):
     undecoded_manifest = 'AndroidManifest.xml (original / undecoded)'
-    assert differences2[1].source1 == undecoded_manifest
-    assert differences2[1].source2 == undecoded_manifest
-    assert differences2[1].comment == 'No decoded AndroidManifest.xml ' \
+    assert differences2[2].source1 == undecoded_manifest
+    assert differences2[2].source2 == undecoded_manifest
+    assert differences2[2].comment == 'No decoded AndroidManifest.xml ' \
                                       'found for one of the APK files.'

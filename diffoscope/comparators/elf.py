@@ -383,6 +383,8 @@ def get_debug_link(path):
 
 
 class ElfContainer(Container):
+    auto_diff_metadata = False
+
     SECTION_FLAG_MAPPING = {
         'X': ElfCodeSection,
         'S': ElfStringSection,
