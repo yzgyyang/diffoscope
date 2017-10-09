@@ -52,21 +52,22 @@ def expected_type_diff(ext1, ext2):
 
 # Compares same content files, but with different extensions
 def test_equal(set1):
-    for x, y in itertools.permutations(TYPES, 2):
-        differences = set1[x].compare(set1[y]).details
+    for x, y in itertools.product(TYPES, TYPES):
+        diff = set1[x].compare(set1[y])
         if x == y:
-            assert differences is None
+            assert diff is None
         else:
+            differences = diff.details
             assert differences[0].unified_diff == expected_magic_diff(x, y)
             assert differences[1].unified_diff == expected_type_diff(x, y)
 
 # Compares different content files with different extensions
 def test_different(set1, set2):
-    for x, y in itertools.permutations(TYPES, 2):
+    for x, y in itertools.product(TYPES, TYPES):
         expected_diff = get_data('containers/different_files_expected_diff')
         differences = set1[x].compare(set2[y]).details
         if x == y:
-            assert differences is None
+            assert differences[0].details[1].unified_diff == expected_diff
         else:
             assert differences[0].unified_diff == expected_magic_diff(x, y)
             assert differences[1].unified_diff == expected_type_diff(x, y)
