@@ -19,6 +19,8 @@
 
 import pytest
 
+import itertools
+
 from ..utils.data import load_fixture, get_data
 
 gzip1 = load_fixture('containers/a.tar.gz')
@@ -30,80 +32,42 @@ xz2 = load_fixture('containers/b.tar.xz')
 bzip1 = load_fixture('containers/a.tar.bz2')
 bzip2 = load_fixture('containers/b.tar.bz2')
 
+TYPES = "gzip bzip2 xz".split()
 
 @pytest.fixture
-def differences_equal_gzip_xz(gzip1, xz1):
-    return gzip1.compare(xz1).details
-
-
-@pytest.fixture
-def differences_equal_gzip_bzip2(gzip1, bzip1):
-    return gzip1.compare(bzip1).details
-
+def set1(gzip1, bzip1, xz1):
+    return dict(zip(TYPES, [gzip1, bzip1, xz1]))
 
 @pytest.fixture
-def differences_equal_bzip2_xz(bzip1, xz1):
-    return bzip1.compare(xz1).details
+def set2(gzip2, bzip2, xz2):
+    return dict(zip(TYPES, [gzip2, bzip2, xz2]))
 
+def expected_magic_diff(ext1, ext2):
+    meta1 = get_data('containers/magic_%s' % ext1)
+    meta2 = get_data('containers/magic_%s' % ext2)
+    return "@@ -1 +1 @@\n" + "-" + meta1 + "+" + meta2
 
-@pytest.fixture
-def differences_different_gzip_xz(gzip1, xz2):
-    return gzip1.compare(xz2).details
-
-
-@pytest.fixture
-def differences_different_gzip_bzip2(gzip1, bzip2):
-    return gzip1.compare(bzip2).details
-
-
-@pytest.fixture
-def differences_different_bzip2_xz(bzip1, xz2):
-    return bzip1.compare(xz2).details
-
+def expected_type_diff(ext1, ext2):
+    return "@@ -1 +1 @@\n-%sFile\n+%sFile\n" % (ext1.capitalize(), ext2.capitalize())
 
 # Compares same content files, but with different extensions
-def test_equal_content_gzip_xz_diff(differences_equal_gzip_xz):
-    expected_diff = get_data('containers/equal_files_expected_bzip_xz_diff')
-    assert differences_equal_gzip_xz[0].unified_diff == expected_diff
-
-
-def test_equal_content_gzip_bzip2_diff(differences_equal_gzip_bzip2):
-    expected_diff = get_data('containers/equal_files_expected_gzip_bzip2_diff')
-    assert differences_equal_gzip_bzip2[0].unified_diff == expected_diff
-
-
-@pytest.mark.skip(reason="Behavior not matching previous containers. Check needed.")
-def test_equal_content_bzip2_xz_diff(differences_equal_bzip2_xz):
-    assert differences_equal_bzip2_xz == []
-
+def test_equal(set1):
+    for x, y in itertools.permutations(TYPES, 2):
+        differences = set1[x].compare(set1[y]).details
+        if x == y:
+            assert differences is None
+        else:
+            assert differences[0].unified_diff == expected_magic_diff(x, y)
+            assert differences[1].unified_diff == expected_type_diff(x, y)
 
 # Compares different content files with different extensions
-def test_different_content_gzip_xz_meta(differences_different_gzip_xz):
-    expected_diff = get_data('containers/different_files_expected_gzip_xz_meta')
-    assert differences_different_gzip_xz[0].unified_diff == expected_diff
-
-
-def test_different_content_gzip_xz_diff(differences_different_gzip_xz):
-    expected_diff = get_data('containers/different_files_expected_gzip_xz_diff')
-    assert differences_different_gzip_xz[1].details[1].unified_diff == expected_diff
-
-
-def test_different_content_gzip_bzip2_meta(differences_different_gzip_bzip2):
-    expected_diff = get_data('containers/different_files_expected_gzip_bzip2_meta')
-    assert differences_different_gzip_bzip2[0].unified_diff == expected_diff
-
-
-def test_different_content_gzip_bzip2_diff(differences_different_gzip_bzip2):
-    expected_diff = get_data('containers/different_files_expected_gzip_bzip2_diff')
-    assert differences_different_gzip_bzip2[1].details[1].unified_diff == expected_diff
-
-
-@pytest.mark.skip(reason="Behavior not matching previous containers. Check needed.")
-def test_different_content_bzip2_xz_meta(differences_different_bzip2_xz):
-    expected_diff = get_data('containers/different_files_expected_bzip2_xz_meta')
-    assert differences_different_bzip2_xz[0].unified_diff == expected_diff
-
-
-def test_different_content_bzip2_xz_diff(differences_different_bzip2_xz):
-    expected_diff = get_data('containers/different_files_expected_bzip2_xz_diff')
-    assert differences_different_bzip2_xz[0].details[1].unified_diff == expected_diff
+def test_different(set1, set2):
+    for x, y in itertools.permutations(TYPES, 2):
+        expected_diff = get_data('containers/different_files_expected_diff')
+        differences = set1[x].compare(set2[y]).details
+        if x == y:
+            assert differences is None
+        else:
+            assert differences[0].unified_diff == expected_magic_diff(x, y)
+            assert differences[1].unified_diff == expected_type_diff(x, y)
+            assert differences[2].details[1].unified_diff == expected_diff

@@ -296,6 +296,12 @@ class File(object, metaclass=abc.ABCMeta):
         if hasattr(self, 'compare_details'):
             details.extend(self.compare_details(other, source))
         if self.as_container:
+            details.extend([
+                Difference.from_text(self.magic_file_type, other.magic_file_type, self, other,
+                    source='filetype from file(1)'),
+                Difference.from_text(self.__class__.__name__, other.__class__.__name__, self, other,
+                    source='filetype from diffoscope'),
+            ])
             # Don't recursve forever on archive quines, etc.
             depth = self._as_container.depth
             no_recurse = (depth >= Config().max_container_depth)

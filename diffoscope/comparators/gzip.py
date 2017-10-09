@@ -59,6 +59,3 @@ class GzipFile(File):
     # Work around file(1) Debian bug #876316
     FALLBACK_FILE_EXTENSION_SUFFIX = ".gz"
     FALLBACK_FILE_TYPE_HEADER_PREFIX = b"\x1f\x8b"
-
-    def compare_details(self, other, source=None):
-        return [Difference.from_text(self.magic_file_type, other.magic_file_type, self, other, source='metadata')]
