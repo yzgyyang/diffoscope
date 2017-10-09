@@ -18,16 +18,21 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
+import subprocess
 
 from diffoscope.comparators.ps import PsFile
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist
+from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_most
 from ..utils.nonexisting import assert_non_existing
 
 
 ps1 = load_fixture('test1.ps')
 ps2 = load_fixture('test2.ps')
+
+
+def ps2ascii_version():
+    return subprocess.check_output(('ps2ascii', '--version')).decode('utf-8')
 
 
 def test_identification(ps1):
@@ -50,7 +55,7 @@ def test_internal_diff(differences):
     assert differences.unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('ps2ascii')
+@skip_unless_tool_is_at_most('ps2ascii', ps2ascii_version, '9.21')
 def test_text_diff(differences):
     expected_diff = get_data('ps_text_expected_diff')
     assert differences.details[0].unified_diff == expected_diff
