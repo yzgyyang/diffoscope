@@ -241,6 +241,11 @@ class ObjdumpDisassembleSection(ObjdumpSection):
         return ObjdumpDisassembleSection.RE_SYMBOL_COMMENT.sub(r'\1', line)
 
 
+class ObjdumpDisassembleSectionNoLineNumbers(ObjdumpDisassembleSection):
+    def objdump_options(self):
+        return ['--disassemble', '--demangle']
+
+
 READELF_COMMANDS = (
     ReadelfFileHeader,
     ReadelfProgramHeader,
@@ -328,12 +333,20 @@ class ElfSection(File):
 
 class ElfCodeSection(ElfSection):
     def compare(self, other, source=None):
+        # Normally disassemble with line numbers, but if the command is
+        # excluded, fallback to disassembly, and if that is also excluded,
+        # fallback to a hexdump.
         return Difference.from_command(
             ObjdumpDisassembleSection,
             self.path,
             other.path,
             command_args=[self._name],
-        )
+        ) or Difference.from_command(
+            ObjdumpDisassembleSectionNoLineNumbers,
+            self.path,
+            other.path,
+            command_args=[self._name],
+        ) or super().compare(other, source)
 
 
 class ElfStringSection(ElfSection):
