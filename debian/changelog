@@ -1,4 +1,4 @@
-diffoscope (88) UNRELEASED; urgency=medium
+diffoscope (88) unstable; urgency=medium
 
   [ Holger Levsen ]
   * Bump standards version to 4.1.1, no changes needed.
@@ -24,7 +24,7 @@ diffoscope (88) UNRELEASED; urgency=medium
       This fixes a last remaining bug in fuzzy-matching across containers.
     + Fix all the affected comparators after the above change.
 
- -- Mattia Rizzolo <mattia@debian.org>  Sat, 04 Nov 2017 13:36:31 +0100
+ -- Mattia Rizzolo <mattia@debian.org>  Sat, 04 Nov 2017 16:26:09 +0100
 
 diffoscope (87) unstable; urgency=medium
 
