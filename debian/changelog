@@ -1,15 +1,30 @@
 diffoscope (88) UNRELEASED; urgency=medium
 
-  * WIP: changelog will be generated right before releasing, don't add
-    anything.
-
-  [ Mattia Rizzolo ]
-  * tests/comparators: dtb: compatibility with version 1.4.5.
-
   [ Holger Levsen ]
   * Bump standards version to 4.1.1, no changes needed.
 
- -- Mattia Rizzolo <mattia@debian.org>  Mon, 02 Oct 2017 01:06:42 +0200
+  [ Mattia Rizzolo ]
+  * tests/comparators:
+    + dtb: compatibility with version 1.4.5.  Closes: #880279
+
+  [ Chris Lamb ]
+  * comparators:
+    + binwalk: improve names in output of "internal" members.  Closes: #877525
+    + Omit misleading "any of" prefix when only complaining about one module
+      in ImportError messages.
+  * Don't crash on malformed md5sums files.  Closes: #877473
+  * tests/comparators:
+    + ps: ps2ascii > 9.21 now varies on timezone, so skip this test for now.
+    + dtby: only parse the version number, not any "-dirty" suffix.
+  * debian/watch: use HTTPS URI.
+
+  [ Ximin Luo ]
+  * comparators:
+    + utils/file: diff container metadata centrally.  Closes: #797759
+      This fixes a last remaining bug in fuzzy-matching across containers.
+    + Fix all the affected comparators after the above change.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sat, 04 Nov 2017 13:36:31 +0100
 
 diffoscope (87) unstable; urgency=medium
 
