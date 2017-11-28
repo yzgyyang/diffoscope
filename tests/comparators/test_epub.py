@@ -47,8 +47,8 @@ def differences(epub1, epub2):
 
 @skip_unless_tools_exist('zipinfo')
 def test_differences(differences):
-    assert differences[0].source1 == 'zipinfo {}'
-    assert differences[0].source2 == 'zipinfo {}'
+    assert differences[0].source1 == 'zipinfo /dev/stdin'
+    assert differences[0].source2 == 'zipinfo /dev/stdin'
     assert differences[1].source1 == 'content.opf'
     assert differences[1].source2 == 'content.opf'
     assert differences[2].source1 == 'toc.ncx'

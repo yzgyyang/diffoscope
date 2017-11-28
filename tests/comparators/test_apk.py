@@ -56,8 +56,8 @@ def test_compare_non_existing(monkeypatch, apk1):
 
 @skip_unless_tools_exist('apktool', 'zipinfo')
 def test_zipinfo(differences):
-    assert differences[0].source1 == 'zipinfo {}'
-    assert differences[0].source2 == 'zipinfo {}'
+    assert differences[0].source1 == 'zipinfo /dev/stdin'
+    assert differences[0].source2 == 'zipinfo /dev/stdin'
     expected_diff = get_data('apk_zipinfo_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
