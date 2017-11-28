@@ -1,0 +1,4 @@
+#!/bin/sh
+# dummy program wrapper for help2man
+cd ..
+exec python3 -m diffoscope.main "$@"

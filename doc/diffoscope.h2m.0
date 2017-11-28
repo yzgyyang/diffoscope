@@ -1,0 +1,9 @@
+[NAME]
+diffoscope \- in-depth comparison of files, archives, and directories
+[SYNOPSIS]
+.nf
+\fBdiffoscope\fR \-\-help
+\fBdiffoscope\fR [OPTIONS] [\-\-json \fIoutput_diff\fR] \fIpath1\fR \fIpath2\fR
+\fBdiffoscope\fR [OPTIONS] \fIdiff\fR
+\fBdiffoscope\fR [OPTIONS] < \fIdiff\fR
+.fi

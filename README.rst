@@ -1,11 +1,13 @@
-diffoscope
-==========
+Description
+===========
 
-.. image:: https://badge.fury.io/py/diffoscope.svg
-    :target: http://badge.fury.io/py/diffoscope
+.. only:: not manpage
 
-.. image:: https://jenkins.debian.net/buildStatus/icon?job=reproducible_diffoscope_from_git_master&plastic=true
-   :target: https://jenkins.debian.net/job/reproducible_diffoscope_from_git_master
+   .. image:: https://badge.fury.io/py/diffoscope.svg
+       :target: http://badge.fury.io/py/diffoscope
+
+   .. image:: https://jenkins.debian.net/buildStatus/icon?job=reproducible_diffoscope_from_git_master&plastic=true
+      :target: https://jenkins.debian.net/job/reproducible_diffoscope_from_git_master
 
 diffoscope will try to get to the bottom of what makes files or
 directories different. It will recursively unpack archives of many kinds
@@ -24,8 +26,25 @@ Builds” initiative <https://reproducible-builds.org>`_.  It is meant
 to be able to quickly understand why two builds of the same package
 produce different outputs. diffoscope was previously named debbindiff.
 
-Example
--------
+See the ``COMMAND-LINE EXAMPLES`` section further below to get you
+started, as well as more detailed explanations of all the command-line
+options. The same information is also available in
+``/usr/share/doc/diffoscope/README.rst`` or similar.
+
+.. raw:: manpage
+
+   .\" the below hack gets rid of the python "usage" message in favour of the
+   .\" the synopsis we manually defined in doc/$(PACKAGE).h2m.0
+   .SS positional arguments:
+   .\" end_of_description_header
+
+Exit status
+===========
+
+Exit status is 0 if inputs are the same, 1 if different, 2 if trouble.
+
+Command-line examples
+=====================
 
 To compare two files in-depth and produce an HTML report, run something like::
 
@@ -53,7 +72,7 @@ By default this allowed to use up half of RAM; for more add something like::
 to your ``/etc/fstab``; see ``man mount`` for details.
 
 External dependencies
----------------------
+=====================
 
 diffoscope requires Python 3 and the following modules available on PyPI:
 `libarchive-c <https://pypi.python.org/pypi/libarchive-c>`_,
@@ -64,79 +83,8 @@ get a list of them, please run::
 
     $ bin/diffoscope --list-tools
 
-Contributing
-------------
-
-The preferred way to report bugs about diffoscope, as well as suggest fixes and
-requests for improvements, is to submit reports to the Debian bug tracker for
-the ``diffoscope`` package. You can do this over e-mail, simply write an email
-as follows:
-
-::
-
-    To: submit@bugs.debian.org
-    Subject: <subject>
-
-    Source: diffoscope
-    Version: <version>
-    Severity: <grave|serious|important|normal|minor|wishlist>
-
-
-There are `more detailed instructions available
-<https://www.debian.org/Bugs/Reporting>`__ about reporting a bug in the Debian bug tracker.
-
-If you're on a Debian-based system, you can install and use the ``reportbug``
-package to help walk you through the process.
-
-You can also submit patches to the Debian bug tracker. Start by cloning the `Git
-repository <https://anonscm.debian.org/git/reproducible/diffoscope.git/>`__,
-make your changes and commit them as you normally would. You can then use
-Git's ``format-patch`` command to save your changes as a series of patches that
-can be attached to the report you submit. For example:
-
-::
-
-    git clone git://anonscm.debian.org/reproducible/diffoscope.git
-    cd diffoscope
-    git checkout origin/master -b <topicname>
-    # <edits>
-    git commit -a
-    git format-patch -M origin/master
-
-The ``format-patch`` command will create a series of ``.patch`` files in your
-checkout. Attach these files to your submission in your e-mail client or
-reportbug.
-
-Uploading the package
-----------------------
-
-When uploading diffoscope to the Debian archive, please take extra care to make
-sure the uploaded source package is correct, that is it includes the files
-tests/data/test(1|2).(a|o) which in some cases are removed by dpkg-dev when
-building the package. See `#834315 <https://bugs.debian.org/834315>`__ for an example
-FTBFS bug caused by this. (See `#735377
-<https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=735377#44>`__ and followups
-to learn how this happened and how to prevent it)
-
-Please also release a signed tarball::
-
-    $ VERSION=FIXME
-    $ git archive --format=tar --prefix=diffoscope-${VERSION}/ ${VERSION} | bzip2 -9 > diffoscope-${VERSION}.tar.bz2
-    $ gpg --detach-sig --armor --output=diffoscope-${VERSION}.tar.bz2.asc < diffoscope-${VERSION}.tar.bz2
-    $ scp diffoscope-${VERSION}* alioth.debian.org:/home/groups/reproducible/htdocs/releases/diffoscope
-
-After uploading, please also update the version on PyPI using::
-
-   $ python3 setup.py sdist upload --sign
-
-Once the tracker.debian.org entry appears, consider tweeting the release on
-``#reproducible-builds`` with::
-
-  %twitter diffoscope $VERSION has been released. Check out the changelog here: $URL
-
-
 Contributors
-------------
+============
 
 Lunar, Reiner Herrmann, Chris Lamb, Mattia Rizzolo, Ximin Luo, Helmut Grohne,
 Holger Levsen, Daniel Kahn Gillmor, Paul Gevers, Peter De Wachter, Yasushi
@@ -144,20 +92,21 @@ SHOJI, Clemens Lang, Ed Maste, Joachim Breitner, Mike McQuaid. Baptiste
 Daroussin, Levente Polyak.
 
 Contact
--------
+=======
 
 Please report bugs and send patches through the Debian bug tracking
 system against the diffoscope package:
 <https://bugs.debian.org/src:diffoscope>
+
+For more instructions, see ``CONTRIBUTING.rst`` in this directory.
 
 Join the users and developers mailing-list:
 <https://lists.reproducible-builds.org/listinfo/diffoscope>
 
 diffoscope website is at <https://diffoscope.org/>
 
-
 License
--------
+=======
 
 diffoscope is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -171,3 +120,9 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
+
+See also
+========
+
+* `<https://diffoscope.org/>`
+* `<https://wiki.debian.org/ReproducibleBuilds>`

@@ -1,3 +1,9 @@
+diffoscope (89) UNRELEASED; urgency=medium
+
+  * Auto-generate manpage using help2man, so it's no longer out-of-date.
+
+ -- Ximin Luo <infinity0@debian.org>  Tue, 28 Nov 2017 18:09:33 +0100
+
 diffoscope (88) unstable; urgency=medium
 
   [ Holger Levsen ]

@@ -5,6 +5,8 @@
 /.cache
 /diffoscope.egg-info/
 /dist/
+/doc/diffoscope.1
+/doc/diffoscope.h2m
 .coverage
 /htmlcov/
 favicon.png

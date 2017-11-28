@@ -27,6 +27,7 @@ Build-Depends:
  ghc <!nocheck>,
  ghostscript <!nocheck>,
  giflib-tools <!nocheck>,
+ help2man,
  imagemagick <!nocheck>,
  jsbeautifier <!nocheck>,
  libarchive-tools <!nocheck>,
