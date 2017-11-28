@@ -38,7 +38,10 @@ class Zipinfo(Command):
         # zipinfo (without -v) puts warning messages (some of which contain
         # $path) into stdin when stderr is not a tty, see #879011 for details.
         # to work around it, we run it on /dev/stdin instead, seems to work ok.
-        return ['sh', '-ec', 'exec zipinfo /dev/stdin < "$1"', '-', self.path]
+        return ['zipinfo', '/dev/stdin']
+
+    def stdin(self):
+        return open(self.path, 'rb')
 
     def filter(self, line):
         # we don't care about the archive file path

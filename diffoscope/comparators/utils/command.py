@@ -33,19 +33,19 @@ class Command(object, metaclass=abc.ABCMeta):
 
     def start(self):
         logger.debug("Executing %s", ' '.join([shlex.quote(x) for x in self.cmdline()]))
+        self._stdin = self.stdin()
+        # "stdin" used to be a feeder but we didn't need the functionality so
+        # it was simplified into the current form. it can be recovered from git
+        # the extra functionality is needed in the future. alternatively,
+        # consider using a shell pipeline ("sh -ec $script") to implement what
+        # you need, because that involves much less code - like it or not (I
+        # don't) shell is still the most readable option for composing processes
         self._process = subprocess.Popen(self.cmdline(),
                                          shell=False, close_fds=True,
                                          env=self.env(),
-                                         stdin=subprocess.PIPE,
+                                         stdin=self._stdin,
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)
-        if hasattr(self, 'feed_stdin'):
-            self._stdin_feeder = threading.Thread(target=self._feed_stdin, args=(self._process.stdin,))
-            self._stdin_feeder.daemon = True
-            self._stdin_feeder.start()
-        else:
-            self._stdin_feeder = None
-            self._process.stdin.close()
         self._stderr = io.BytesIO()
         self._stderr_line_count = 0
         self._stderr_reader = threading.Thread(target=self._read_stderr)
@@ -56,6 +56,9 @@ class Command(object, metaclass=abc.ABCMeta):
     def path(self):
         return self._path
 
+    def stdin(self):
+        return None
+
     @abc.abstractmethod
     def cmdline(self):
         raise NotImplementedError()
@@ -65,15 +68,6 @@ class Command(object, metaclass=abc.ABCMeta):
 
     def env(self):
         return None  # inherit parent environment by default
-
-    # Define only if needed. We take care of closing stdin.
-    #def feed_stdin(self, stdin)
-
-    def _feed_stdin(self, stdin):
-        try:
-            self.feed_stdin(stdin)
-        finally:
-            stdin.close()
 
     def filter(self, line):
         # Assume command output is utf-8 by default
@@ -86,8 +80,6 @@ class Command(object, metaclass=abc.ABCMeta):
         return self._process.terminate()
 
     def wait(self):
-        if self._stdin_feeder:
-            self._stdin_feeder.join()
         self._stderr_reader.join()
         returncode = self._process.wait()
         logger.debug(
@@ -95,6 +87,8 @@ class Command(object, metaclass=abc.ABCMeta):
             ' '.join([shlex.quote(x) for x in self.cmdline()]),
             returncode,
         )
+        if self._stdin:
+            self._stdin.close()
         return returncode
 
     MAX_STDERR_LINES = 50

@@ -38,10 +38,8 @@ class Sng(Command):
     def cmdline(self):
         return ['sng']
 
-    def feed_stdin(self, stdin):
-        with open(self.path, 'rb') as f:
-            for buf in iter(functools.partial(f.read, 32768), b''):
-                stdin.write(buf)
+    def stdin(self):
+        return open(self.path, 'rb')
 
 
 class PngFile(File):
