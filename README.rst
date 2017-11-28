@@ -1,5 +1,5 @@
-Description
-===========
+diffoscope
+==========
 
 .. only:: not manpage
 

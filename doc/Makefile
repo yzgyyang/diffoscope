@@ -11,6 +11,9 @@ SED_fix_rst2man_quirks = \
   -e 's,^ \\- ,,' \
   -e 's,^\[,\\[char91],g' \
   -e 's,\.TH *"" "" "",,g'
+SED_rst2man_output_to_h2m_input = \
+  -e 's,\.SH \(.*\),[\1],g' \
+  -e 's,\[$(PACKAGE)\],[DESCRIPTION],gi'
 
 all: $(PACKAGE).1
 
@@ -21,8 +24,9 @@ $(PACKAGE).1: $(PACKAGE).h2m ../$(PACKAGE)/__init__.py
 $(PACKAGE).h2m: $(PACKAGE).h2m.0 ../README.rst Makefile
 	{ cat $(PACKAGE).h2m.0; cat ../README.rst | \
 	  rst2man -q --no-doc-title | \
-	  sed $(SED_fix_rst2man_quirks) $(SED_fix_package_quirks) \
-	      -e 's,\.SH \(.*\),[\1],g'; } > "$@"
+	  sed $(SED_fix_rst2man_quirks) \
+	      $(SED_fix_package_quirks) \
+	      $(SED_rst2man_output_to_h2m_input); } > "$@"
 
 .PHONY: clean
 clean:
