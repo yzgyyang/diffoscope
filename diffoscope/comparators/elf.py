@@ -336,17 +336,23 @@ class ElfCodeSection(ElfSection):
         # Normally disassemble with line numbers, but if the command is
         # excluded, fallback to disassembly, and if that is also excluded,
         # fallback to a hexdump.
-        return Difference.from_command(
+        diff, excluded = Difference.from_command_exc(
             ObjdumpDisassembleSection,
             self.path,
             other.path,
             command_args=[self._name],
-        ) or Difference.from_command(
+        )
+        if not excluded:
+            return diff
+        diff, excluded = Difference.from_command_exc(
             ObjdumpDisassembleSectionNoLineNumbers,
             self.path,
             other.path,
             command_args=[self._name],
-        ) or super().compare(other, source)
+        )
+        if not excluded:
+            return diff
+        return super().compare(other, source)
 
 
 class ElfStringSection(ElfSection):

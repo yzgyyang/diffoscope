@@ -226,6 +226,10 @@ class Difference(object):
 
     @staticmethod
     def from_command(klass, path1, path2, *args, **kwargs):
+        return Difference.from_command_exc(klass, path1, path2, *args, **kwargs)[0]
+
+    @staticmethod
+    def from_command_exc(klass, path1, path2, *args, **kwargs):
         command_args = []
         if 'command_args' in kwargs:
             command_args = kwargs['command_args']
@@ -239,14 +243,15 @@ class Difference(object):
                 command = klass(path, *command_args)
                 feeder = feeders.from_command(command)
                 if command_excluded(command.shell_cmdline()):
-                    return None, None
+                    return None, None, True
                 command.start()
-            return feeder, command
+            return feeder, command, False
 
-        feeder1, command1 = command_and_feeder(path1)
-        feeder2, command2 = command_and_feeder(path2)
+        feeder1, command1, excluded1 = command_and_feeder(path1)
+        feeder2, command2, excluded2 = command_and_feeder(path2)
         if not feeder1 or not feeder2:
-            return None
+            assert excluded1 or excluded2
+            return None, True
 
         if 'source' not in kwargs:
             source_cmd = command1 or command2
@@ -261,7 +266,7 @@ class Difference(object):
             **kwargs
         )
         if not difference:
-            return None
+            return None, False
 
         if command1 and command1.stderr_content:
             difference.add_comment("stderr from `{}`:".format(
@@ -274,7 +279,7 @@ class Difference(object):
             ))
             difference.add_comment(command2.stderr_content)
 
-        return difference
+        return difference, False
 
     @property
     def comment(self):
