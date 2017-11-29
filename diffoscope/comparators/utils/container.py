@@ -79,6 +79,9 @@ class Container(object, metaclass=abc.ABCMeta):
         for name in filter_excludes(self.get_member_names()):
             yield name, self.get_member(name)
 
+    def perform_fuzzy_matching(self, my_members, other_members):
+        return perform_fuzzy_matching(my_members, other_members)
+
     def get_adjusted_members(self):
         """
         Returns an iterable of pairs. The key is what is used to match when
@@ -150,7 +153,7 @@ class Container(object, metaclass=abc.ABCMeta):
             for name in both_names:
                 yield prep_yield(name, name)
 
-            for my_name, other_name, score in perform_fuzzy_matching(my_members, other_members):
+            for my_name, other_name, score in self.perform_fuzzy_matching(my_members, other_members):
                 comment = "Files similar despite different names" \
                     " (difference score: {})".format(score)
                 yield prep_yield(my_name, other_name, comment)

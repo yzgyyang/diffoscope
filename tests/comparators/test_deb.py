@@ -124,3 +124,15 @@ def test_compare_non_existing(monkeypatch, deb1):
     difference = deb1.compare(MissingFile('/nonexisting', deb1))
     assert difference.source2 == '/nonexisting'
     assert difference.details[-1].source2 == '/dev/null'
+
+
+bug881937_deb1 = load_fixture('bug881937_1.deb')
+bug881937_deb2 = load_fixture('bug881937_2.deb')
+
+def test_compare_different_compression(bug881937_deb1, bug881937_deb2):
+    difference = bug881937_deb1.compare(bug881937_deb2)
+    assert difference.details[1].source1 == 'control.tar.gz'
+    assert difference.details[1].source2 == 'control.tar.xz'
+    expected_diff = get_data('bug881937_control_expected_diff')
+    assert difference.details[1].details[2].details[1].unified_diff == expected_diff
+

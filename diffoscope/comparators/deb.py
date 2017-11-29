@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
 import re
 import logging
 
@@ -87,6 +88,16 @@ class DebContainer(LibarchiveContainer):
                 return member
 
             return specialize(member.as_container.get_member('content'))
+
+    def perform_fuzzy_matching(self, my_members, other_members):
+        matched = set()
+        for name1 in my_members.keys():
+            main, ext = os.path.splitext(name1)
+            candidates = [name2 for name2 in other_members.keys() - matched
+                          if os.path.splitext(name2)[0] == main]
+            if len(candidates) == 1:
+                yield name1, candidates[0], 0
+                matched.add(candidates[0])
 
 
 class DebFile(File):
