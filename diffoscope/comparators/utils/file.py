@@ -257,7 +257,11 @@ class File(object, metaclass=abc.ABCMeta):
                         for buf in iter(lambda: f.read(32768), b''):
                             h.update(buf)
                     h.final()
-                    self._fuzzy_hash = h.hexdigest()
+                    try:
+                        self._fuzzy_hash = h.hexdigest()
+                    except ValueError:
+                        # File must contain a certain amount of randomness.
+                        self._fuzzy_hash = None
                 else:
                     self._fuzzy_hash = None
             return self._fuzzy_hash
