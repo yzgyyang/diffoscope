@@ -51,7 +51,10 @@ class Symlink(File):
 
     def cleanup(self):
         if hasattr(self, '_placeholder'):
-            os.remove(self._placeholder)
+            try:
+                os.remove(self._placeholder)
+            except FileNotFoundError:
+                pass
             del self._placeholder
         super().cleanup()
 
