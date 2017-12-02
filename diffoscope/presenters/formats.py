@@ -85,22 +85,20 @@ class PresenterManager(object):
         )
 
     def output(self, difference, parsed_args, has_differences):
-        # As a special case, write an empty file instead of an empty diff.
-        if not has_differences:
-            try:
-                target = self.config['text']['target']
-
-                if target != '-':
-                    open(target, 'w').close()
-            except KeyError:
-                pass
-            return
-
         if difference is None:
             return
 
         for name, data in self.config.items():
             logger.debug("Generating %r output at %r", name, data['target'])
+
+            # As a special case for text format, write an empty file instead of
+            # an empty diff (with headers including the path). This lets people
+            # test if the file is empty.
+            if not has_differences and name == 'text':
+                target = data['target']
+                if target != '-':
+                    open(target, 'w').close()
+                continue
 
             with profile('output', name):
                 data['klass'].run(data, difference, parsed_args)
