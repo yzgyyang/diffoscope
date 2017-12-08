@@ -37,6 +37,15 @@ def skip_unless_tools_exist(*required):
         reason="requires {}".format(" and ".join(required)),
     )
 
+def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
+    if tools_missing(tool):
+        return pytest.mark.skipif(True, reason="requires {}".format(tool))
+    if callable(actual_ver):
+        actual_ver = actual_ver()
+    return pytest.mark.skipif(
+        vcls(str(actual_ver)) == vcls(str(target_ver)),
+        reason="requires {} != {} ({} detected)".format(tool, target_ver, actual_ver)
+    )
 
 def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
     if tools_missing(tool):

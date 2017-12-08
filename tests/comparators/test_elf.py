@@ -19,6 +19,7 @@
 
 import pytest
 import os.path
+import subprocess
 
 from diffoscope.config import Config
 from diffoscope.comparators.elf import ElfFile, StaticLibFile
@@ -29,10 +30,20 @@ from diffoscope.comparators.utils.specialize import specialize
 
 from ..utils.data import data, load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist, \
-    skip_if_binutils_does_not_support_x86, skip_unless_module_exists
+    skip_if_binutils_does_not_support_x86, skip_unless_module_exists, \
+    skip_if_tool_version_is
+
 
 obj1 = load_fixture('test1.o')
 obj2 = load_fixture('test2.o')
+
+
+def readelf_version():
+    try:
+        out = subprocess.check_output(['readelf', '--version'])
+    except subprocess.CalledProcessError as e:
+        out = e.output
+    return out.decode('UTF-8').splitlines()[0].split()[-1].strip()
 
 
 def test_obj_identification(obj1):
@@ -50,6 +61,7 @@ def obj_differences(obj1, obj2):
 
 
 @skip_unless_tools_exist('readelf')
+@skip_if_tool_version_is('readelf', readelf_version, '2.29')
 @skip_if_binutils_does_not_support_x86()
 def test_obj_compare_non_existing(monkeypatch, obj1):
     monkeypatch.setattr(Config(), 'new_file', True)
@@ -59,6 +71,7 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
 
 
 @skip_unless_tools_exist('readelf')
+@skip_if_tool_version_is('readelf', readelf_version, '2.29')
 @skip_if_binutils_does_not_support_x86()
 def test_diff(obj_differences):
     assert len(obj_differences) == 1
@@ -95,6 +108,7 @@ def lib_differences(lib1, lib2):
 
 
 @skip_unless_tools_exist('readelf', 'objdump')
+@skip_if_tool_version_is('readelf', readelf_version, '2.29')
 @skip_if_binutils_does_not_support_x86()
 def test_lib_differences(lib_differences):
     assert len(lib_differences) == 2
@@ -107,6 +121,7 @@ def test_lib_differences(lib_differences):
 
 
 @skip_unless_tools_exist('readelf', 'objdump')
+@skip_if_tool_version_is('readelf', readelf_version, '2.29')
 @skip_if_binutils_does_not_support_x86()
 def test_lib_compare_non_existing(monkeypatch, lib1):
     monkeypatch.setattr(Config(), 'new_file', True)
