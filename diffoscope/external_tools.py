@@ -18,6 +18,9 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 EXTERNAL_TOOLS = {
+    'abootimg': {
+        'debian': 'abootimg',
+    },
     'apktool': {
         'debian': 'apktool',
     },

@@ -9,6 +9,7 @@ Uploaders:
  Reiner Herrmann <reiner@reiner-h.de>,
  Ximin Luo <infinity0@debian.org>,
 Build-Depends:
+ abootimg <!nocheck>,
  apktool <!nocheck>,
  bash-completion,
  binutils-multiarch <!nocheck>,

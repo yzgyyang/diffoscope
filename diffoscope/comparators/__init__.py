@@ -83,6 +83,7 @@ class ComparatorManager(object):
         ('image.ICOImageFile',),
         ('cbfs.CbfsFile',),
         ('git.GitIndexFile',),
+        ('android.AndroidBootImgFile',),
         ('openssh.PublicKeyFile',),
         ('gif.GifFile',),
         ('pcap.PcapFile',),
