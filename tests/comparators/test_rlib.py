@@ -22,6 +22,7 @@ import pytest
 import subprocess
 
 from diffoscope.comparators.ar import ArFile
+from distutils.version import LooseVersion as vcls
 
 from ..utils import diff_ignore_line_numbers
 from ..utils.data import load_fixture, get_data
@@ -50,6 +51,18 @@ def test_no_differences(rlib1):
 @pytest.fixture
 def differences(rlib1, rlib2):
     return rlib1.compare(rlib2).details
+
+@pytest.fixture
+def rlib_dis_expected_diff():
+    actual_ver = llvm_version()
+
+    if (vcls(str(actual_ver)) >= vcls("3.8")):
+        diff_file = 'rlib_llvm_dis_expected_diff'
+
+    if (vcls(str(actual_ver)) >= vcls("5.0")):
+        diff_file = 'rlib_llvm_dis_expected_diff_5'
+
+    return get_data(diff_file)
 
 
 @skip_unless_tools_exist('nm')
@@ -83,10 +96,10 @@ def test_item2_rust_metadata_bin(differences):
 
 @skip_unless_tools_exist('llvm-dis')
 @skip_unless_tool_is_at_least('llvm-config', llvm_version, '3.8')
-def test_item3_deflate_llvm_bitcode(differences):
+def test_item3_deflate_llvm_bitcode(differences, rlib_dis_expected_diff):
     assert differences[3].source1 == 'alloc_system-d16b8f0e.0.bytecode.deflate'
     assert differences[3].source2 == 'alloc_system-d16b8f0e.0.bytecode.deflate'
-    expected_diff = get_data('rlib_llvm_dis_expected_diff')
+    expected_diff = rlib_dis_expected_diff
     actual_diff = differences[3].details[0].details[1].unified_diff
     assert diff_ignore_line_numbers(actual_diff) == diff_ignore_line_numbers(expected_diff)
 
