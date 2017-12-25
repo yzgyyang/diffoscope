@@ -1,4 +1,11 @@
-diffoscope (89) UNRELEASED; urgency=medium
+diffoscope (89) unstable; urgency=medium
+
+  [ Mike Hommey ]
+  * comparators:
+    + elf:
+      - Add fallbacks to elf code section disassembly.  Closes: #879003
+    + utils/libarchive:
+      - Extract libarchive members with the file extension.
 
   [ Ximin Luo ]
   * Auto-generate manpage using help2man, so it's no longer out-of-date.
@@ -16,7 +23,7 @@ diffoscope (89) UNRELEASED; urgency=medium
       - Loose matching for .deb archive members, so it's possible to e.g.
       compare deb with different control.tar.{gz,xz}.  Closes: #881937
     + elf:
-      - Improve disassembly fallbacks with the new Difference.from_command_exc().
+      - Improve disassembly fallbacks with Difference.from_command_exc().
     + png:
       - Cater for the feed_stdin() removal.
     + zip:
@@ -29,13 +36,6 @@ diffoscope (89) UNRELEASED; urgency=medium
     + Remove the egg file when cleaning.
   * debian/rules:
     + Fix tests by adding PYTHONPATH.
-
-  [ Mike Hommey ]
-  * comparators:
-    + elf:
-      - Add fallbacks to elf code section disassembly.  Closes: #879003
-    + utils/libarchive:
-      - Extract libarchive members with the file extension.
 
   [ Chris Lamb ]
   * comparators:
@@ -57,9 +57,13 @@ diffoscope (89) UNRELEASED; urgency=medium
         didn't.  Closes: #877728
 
   [ Holger Levsen ]
-  * Update Standards-Version to 4.1.2. No changes required.
+  * debian/control: Bump Standards-Version to 4.1.2.  No changes required.
 
- -- Mattia Rizzolo <mattia@debian.org>  Fri, 22 Dec 2017 16:36:53 +0100
+  [ Mattia Rizzolo ]
+  * debian/control: Set Rules-Requires-Root: no.
+  * Bump Debhelper compat version to 11.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Mon, 25 Dec 2017 14:49:22 +0100
 
 diffoscope (88) unstable; urgency=medium
 
