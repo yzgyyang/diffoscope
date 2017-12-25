@@ -1,8 +1,65 @@
 diffoscope (89) UNRELEASED; urgency=medium
 
+  [ Ximin Luo ]
   * Auto-generate manpage using help2man, so it's no longer out-of-date.
+  * difference:
+    + Add a Difference.from_command_exc() to help distinguish excluded
+      commands from commands returning an empty diff.
+  * comparators:
+    + utils/command:
+      - Replace the feed_stdin() feeder into the simpler stdin() function,
+        which provides (if needed) a simple file opject instead of a feeder.
+    + utils/container:
+      - Add a perform_fuzzy_matching() method (wrapping the already existing
+        method) so that comparators can easily override it.
+    + deb:
+      - Loose matching for .deb archive members, so it's possible to e.g.
+      compare deb with different control.tar.{gz,xz}.  Closes: #881937
+    + elf:
+      - Improve disassembly fallbacks with the new Difference.from_command_exc().
+    + png:
+      - Cater for the feed_stdin() removal.
+    + zip:
+      - Run zipinfo on /dev/stdin instead of a variable path to avoid including
+       the temporary file name in the output.  Closes: #879011
+      - Cater for the feed_stdin() removal.
+  * presenters/formats:
+    + Allow non-text formats to output an empty diff.
+  * debian/clean:
+    + Remove the egg file when cleaning.
+  * debian/rules:
+    + Fix tests by adding PYTHONPATH.
 
- -- Ximin Luo <infinity0@debian.org>  Tue, 28 Nov 2017 18:09:33 +0100
+  [ Mike Hommey ]
+  * comparators:
+    + elf:
+      - Add fallbacks to elf code section disassembly.  Closes: #879003
+    + utils/libarchive:
+      - Extract libarchive members with the file extension.
+
+  [ Chris Lamb ]
+  * comparators:
+    + utils/file:
+      - Handle case where a file to be "fuzzy" matched does not contain enough
+        entropy despite being over 512 bytes.  Closes: #882981
+    + android:
+      - Add support for Android ROM boot.img introspection.  Closes: #884557
+    + symlink:
+      - Make cleanup of placeholders idempotent.
+
+  [ Juliana Oliveira Rodrigues ]
+  * tests:
+    + utils/tools:
+      - Add a skip_if_tool_version_is() function.
+    + elf:
+      - Skip some tests if readelf is version '2.29', where its behaviour
+        was accidentally changed to exit with code 1 when it previously
+        didn't.  Closes: #877728
+
+  [ Holger Levsen ]
+  * Update Standards-Version to 4.1.2. No changes required.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Fri, 22 Dec 2017 16:36:53 +0100
 
 diffoscope (88) unstable; urgency=medium
 
