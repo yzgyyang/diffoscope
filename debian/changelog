@@ -34,8 +34,6 @@ diffoscope (89) unstable; urgency=medium
     + Allow non-text formats to output an empty diff.
   * debian/clean:
     + Remove the egg file when cleaning.
-  * debian/rules:
-    + Fix tests by adding PYTHONPATH.
 
   [ Chris Lamb ]
   * comparators:
