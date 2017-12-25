@@ -27,6 +27,7 @@ from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.specialize import specialize
 
+from ..utils.tools import skip_unless_tools_exist
 from ..utils.data import load_fixture, get_data
 
 
@@ -129,6 +130,8 @@ def test_compare_non_existing(monkeypatch, deb1):
 bug881937_deb1 = load_fixture('bug881937_1.deb')
 bug881937_deb2 = load_fixture('bug881937_2.deb')
 
+
+@skip_unless_tools_exist('xz')
 def test_compare_different_compression(bug881937_deb1, bug881937_deb2):
     difference = bug881937_deb1.compare(bug881937_deb2)
     assert difference.details[1].source1 == 'control.tar.gz'

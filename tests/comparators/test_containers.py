@@ -22,6 +22,7 @@ import pytest
 import itertools
 
 from ..utils.data import load_fixture, get_data
+from ..utils.tools import skip_unless_tools_exist
 
 gzip1 = load_fixture('containers/a.tar.gz')
 gzip2 = load_fixture('containers/b.tar.gz')
@@ -51,6 +52,7 @@ def expected_type_diff(ext1, ext2):
     return "@@ -1 +1 @@\n-%sFile\n+%sFile\n" % (ext1.capitalize(), ext2.capitalize())
 
 # Compares same content files, but with different extensions
+@skip_unless_tools_exist('xz')
 def test_equal(set1):
     for x, y in itertools.product(TYPES, TYPES):
         diff = set1[x].compare(set1[y])
@@ -62,6 +64,7 @@ def test_equal(set1):
             assert differences[1].unified_diff == expected_type_diff(x, y)
 
 # Compares different content files with different extensions
+@skip_unless_tools_exist('xz')
 def test_different(set1, set2):
     for x, y in itertools.product(TYPES, TYPES):
         expected_diff = get_data('containers/different_files_expected_diff')
