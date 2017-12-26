@@ -1,3 +1,12 @@
+diffoscope (90) UNRELEASED; urgency=medium
+
+  [ Juliana Oliveira ]
+  * tests:
+    + comparators/test_rlib: Fix tests for llvm >= 5.0.  Closes: #877727
+    + Skip some tests if 'xz' is not present.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Tue, 26 Dec 2017 19:49:30 +0100
+
 diffoscope (89) unstable; urgency=medium
 
   [ Mike Hommey ]
