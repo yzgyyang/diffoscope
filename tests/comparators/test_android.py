@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import sys
 import pytest
 
 from diffoscope.config import Config
@@ -29,6 +30,9 @@ from ..utils.tools import skip_unless_tools_exist
 bootimg1 = load_fixture('android1.img')
 bootimg2 = load_fixture('android2.img')
 
+# abootimg misfires on big endian architectures
+# Part of the bug: https://bugs.debian.org/725729
+bearch = sys.byteorder == 'big'
 
 def test_identification(bootimg1):
     assert isinstance(bootimg1, AndroidBootImgFile)
@@ -45,6 +49,7 @@ def differences(bootimg1, bootimg2):
 
 
 @skip_unless_tools_exist('abootimg')
+@pytest.mark.skipif(bearch, reason='abootimg is buggy on BE architectures')
 def test_diff(differences):
     # FIXME
     with open('tests/data/android_expected_diff', 'w') as f:
@@ -54,6 +59,7 @@ def test_diff(differences):
 
 
 @skip_unless_tools_exist('abootimg')
+@pytest.mark.skipif(bearch, reason='abootimg is buggy on BE architectures')
 def test_compare_non_existing(monkeypatch, bootimg1):
     monkeypatch.setattr(Config(), 'new_file', True)
     difference = bootimg1.compare(MissingFile('/nonexisting', bootimg1))
