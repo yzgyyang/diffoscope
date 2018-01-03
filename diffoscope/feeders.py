@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 DIFF_CHUNK = 4096
 
 
-def from_raw_reader(in_file, filter=lambda buf: buf):
+def from_raw_reader(in_file, filter=None):
     def feeder(out_file):
         max_lines = Config().max_diff_input_lines
         end_nl = False
@@ -44,7 +44,7 @@ def from_raw_reader(in_file, filter=lambda buf: buf):
 
         for buf in in_file:
             line_count += 1
-            out = filter(buf)
+            out = buf if filter is None else filter(buf)
 
             if h is not None:
                 h.update(out)
@@ -68,9 +68,13 @@ def from_raw_reader(in_file, filter=lambda buf: buf):
     return feeder
 
 
-def from_text_reader(in_file, filter=lambda text_buf: text_buf):
-    def encoding_filter(text_buf):
-        return filter(text_buf).encode('utf-8')
+def from_text_reader(in_file, filter=None):
+    if filter is None:
+        def encoding_filter(text_buf):
+            return text_buf.encode('utf-8')
+    else:
+        def encoding_filter(text_buf):
+            return filter(text_buf).encode('utf-8')
     return from_raw_reader(in_file, encoding_filter)
 
 
