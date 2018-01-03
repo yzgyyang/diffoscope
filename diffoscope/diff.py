@@ -242,6 +242,70 @@ class FIFOFeeder(threading.Thread):
             raise self._exception
 
 
+class _Feeder:
+    """
+    A 'feeder' is a specialized writer.
+
+    A 'feeder' is a callable that takes as argument a writeable file, and
+    writes to it.  Feeders can transform the written data, truncate it,
+    checksum it, and so on.  The callable must return True to represent that
+    the data had a terminating newline, and False otherwise.
+
+    Feeders are created by the functions make_feeder_from_raw_reader() and
+    empty_file_feeder().  The returned objects are closures, and are not
+    (currently?) instances of any particular class.
+    """
+    pass
+
+
+def empty_file_feeder():
+    """
+    Returns a feeder that simulates an empty file.
+
+    See _Feeder for feeders.
+    """
+    def feeder(f):
+        return False
+    return feeder
+
+
+def make_feeder_from_raw_reader(in_file, filter=None):
+    """
+    Create a feeder that checksums, truncates, and transcodes the data.  The
+    optional argument FILTER is a callable that gets passed each line, and
+    returns the line that should be used in its stead.  (There is no facility
+    for FILTER to discard a line entirely.)
+
+    See _Feeder for feeders.
+    """
+    def feeder(out_file):
+        h = None
+        end_nl = False
+        max_lines = Config().max_diff_input_lines
+        line_count = 0
+
+        if max_lines < float("inf"):
+            h = hashlib.sha1()
+
+        for buf in in_file:
+            line_count += 1
+            out = filter(buf) if filter else buf
+            if h:
+                h.update(out)
+            if line_count < max_lines:
+                out_file.write(out)
+            end_nl = buf[-1] == '\n'
+
+        if h and line_count >= max_lines:
+            out_file.write("[ Too much input for diff (SHA1: {}) ]\n".format(
+                h.hexdigest(),
+            ).encode('utf-8'))
+            end_nl = True
+
+        return end_nl
+    return feeder
+
+
 def diff(feeder1, feeder2):
     tmpdir = get_temporary_directory().name
 
