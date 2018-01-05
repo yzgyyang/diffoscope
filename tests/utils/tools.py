@@ -48,7 +48,7 @@ def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
     )
 
 def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
-    if tools_missing(tool):
+    if tools_missing(tool) and module_is_not_importable(tool):
         return pytest.mark.skipif(True, reason="requires {}".format(tool))
     if callable(actual_ver):
         actual_ver = actual_ver()
@@ -59,7 +59,7 @@ def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
 
 
 def skip_unless_tool_is_at_most(tool, actual_ver, max_ver, vcls=LooseVersion):
-    if tools_missing(tool):
+    if tools_missing(tool) and module_is_not_importable(tool):
         return pytest.mark.skipif(True, reason="requires {}".format(tool))
     if callable(actual_ver):
         actual_ver = actual_ver()
@@ -119,3 +119,5 @@ def skip_unless_module_exists(name):
         module_is_not_importable(name),
         reason="requires {} module".format(name),
     )
+
+
