@@ -67,6 +67,11 @@ class OtoolDisassemble(Otool):
         return super().otool_options() + ['-tdvV']
 
 
+class OtoolDisassembleInternal(Otool):
+    def otool_options(self):
+        return super().otool_options() + ['-tdvVQ']
+
+
 class MachoFile(File):
     FILE_TYPE_RE = re.compile(r'^Mach-O ')
     RE_EXTRACT_ARCHS = re.compile(r'^(?:Architectures in the fat file: .* are|Non-fat file: .* is architecture): (.*)$')
@@ -96,7 +101,24 @@ class MachoFile(File):
                                                        comment="Mach-O headers for architecture %s" % common_arch))
             differences.append(Difference.from_command(OtoolLibraries, self.path, other.path, command_args=[common_arch],
                                                        comment="Mach-O load commands for architecture %s" % common_arch))
-            differences.append(Difference.from_command(OtoolDisassemble, self.path, other.path, command_args=[common_arch],
-                                                       comment="Code for architecture %s" % common_arch))
+
+            x = Difference.from_command(
+                OtoolDisassemble,
+                self.path,
+                other.path,
+                command_args=[common_arch],
+                comment="Code for architecture %s" % common_arch,
+            )
+            differences.append(x)
+
+            # If the LLVM disassembler does not work, try the internal one.
+            if x is None:
+                differences.append(Difference.from_command(
+                    OtoolDisassembleInternal,
+                    self.path,
+                    other.path,
+                    command_args=[common_arch],
+                    comment="Code for architecture %s (internal disassembler)" % common_arch,
+                ))
 
         return differences
