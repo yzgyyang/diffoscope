@@ -54,7 +54,11 @@ def specialize(file):
             logger.debug("File recognized by fallback. Magic says: %s", file.magic_file_type)
             return file
 
-    logger.debug("Unidentified file. Magic says: %s", file.magic_file_type)
+    logger.debug(
+        "File not identified by any comparator. Magic says: %s",
+        file.magic_file_type,
+    )
+
     return file
 
 
