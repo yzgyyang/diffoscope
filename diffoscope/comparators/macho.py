@@ -42,14 +42,11 @@ class Otool(Command):
         return ['-arch', self._arch]
 
     def filter(self, line):
-        try:
-            # Strip the filename itself, it's in the first line on its own,
-            # terminated by a colon
-            if line and line.decode('utf-8').strip() == self._path + ':':
-                return b""
-            return line
-        except UnicodeDecodeError:
-            return line
+        # Strip filename
+        prefix = '{}:'.format(self._path)
+        if line.decode('utf-8', 'ignore').index(prefix) == 0:
+            return line[len(prefix):].strip()
+        return line
 
 
 class OtoolHeaders(Otool):
