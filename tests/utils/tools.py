@@ -119,5 +119,3 @@ def skip_unless_module_exists(name):
         module_is_not_importable(name),
         reason="requires {} module".format(name),
     )
-
-
