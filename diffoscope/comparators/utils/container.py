@@ -71,7 +71,7 @@ class Container(object, metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     def get_path_name(self, dest_dir):
-      return os.path.join(dest_dir, str(uuid.uuid4()))
+        return os.path.join(dest_dir, str(uuid.uuid4()))
 
     def get_filtered_members(self):
         # If your get_member implementation is O(n) then this will be O(n^2)
