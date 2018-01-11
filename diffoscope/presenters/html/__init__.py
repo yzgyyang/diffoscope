@@ -18,4 +18,4 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 from .html import HTMLPresenter, HTMLDirectoryPresenter, \
-    JQUERY_SYSTEM_LOCATIONS
+    JQUERY_SYSTEM_LOCATIONS  # noqa
