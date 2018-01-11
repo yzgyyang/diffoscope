@@ -512,7 +512,8 @@ class HTMLSideBySidePresenter(object):
         truncated = not wrote_all
         child_rows_written = self.spl_rows - self.max_lines_parent
         if truncated and not child_rows_written:
-            # if we didn't write any child rows, just output the error message on the parent page
+            # if we didn't write any child rows, just output the error message
+            # on the parent page
             parent_last_row = self.error_row
         else:
             noun = "pieces" if self.spl_current_page > 1 else "piece"
@@ -542,7 +543,10 @@ class HTMLPresenter(Presenter):
             return
 
         # could be slightly more accurate, whatever
-        est_placeholder_len = max(len(templates.UD_TABLE_FOOTER), len(templates.UD_TABLE_LIMIT_FOOTER)) + 40
+        est_placeholder_len = max(
+            len(templates.UD_TABLE_FOOTER),
+            len(templates.UD_TABLE_LIMIT_FOOTER),
+        ) + 40
         est_size = output.size(est_placeholder_len)
 
         results = {}
@@ -575,7 +579,10 @@ class HTMLPresenter(Presenter):
     def output_difference(self, ctx, root_difference):
         outputs = {}  # nodes to their partial output
         ancestors = {}  # child nodes to ancestor nodes
-        placeholder_len = len(self.output_node_placeholder("XXXXXXXXXXXXXXXX", not ctx.single_page))
+        placeholder_len = len(self.output_node_placeholder(
+            "XXXXXXXXXXXXXXXX",
+            not ctx.single_page,
+        ))
         continuations = {}  # functions to print unified diff continuations (html-dir only)
         printers = {}  # nodes to their printers
 
@@ -597,12 +604,20 @@ class HTMLPresenter(Presenter):
 
             add_to_existing = False
             if ancestor:
-                page_limit = Config().max_page_size if ancestor is root_difference else Config().max_page_size_child
+                page_limit = Config().max_page_size if ancestor is \
+                    root_difference else Config().max_page_size_child
                 page_current = outputs[ancestor].size(placeholder_len)
-                report_current = self.report_printed + sum(p.size(placeholder_len) for p in outputs.values())
+                report_current = self.report_printed + \
+                    sum(p.size(placeholder_len) for p in outputs.values())
                 want_to_add = node_output.size(placeholder_len)
-                logger.debug("report size: %s/%s, page size: %s/%s, want to add %s)",
-                             report_current, self.report_limit, page_current, page_limit, want_to_add)
+                logger.debug(
+                    "report size: %s/%s, page size: %s/%s, want to add %s)",
+                    report_current,
+                    self.report_limit,
+                    page_current,
+                    page_limit,
+                    want_to_add,
+                )
                 if report_current + want_to_add > self.report_limit:
                     make_new_subpage = False
                 elif page_current + want_to_add < page_limit:
@@ -612,17 +627,24 @@ class HTMLPresenter(Presenter):
 
             if add_to_existing:
                 # under limit, add it to an existing page
-                outputs[ancestor] = outputs[ancestor].pformat({node: node_output})
+                outputs[ancestor] = outputs[ancestor].pformat({
+                    node: node_output,
+                })
                 stored = ancestor
 
             else:
                 # over limit (or root), new subpage or continue/break
                 if ancestor:
-                    placeholder = self.output_node_placeholder(pagename, make_new_subpage, node.size())
+                    placeholder = self.output_node_placeholder(
+                        pagename,
+                        make_new_subpage,
+                        node.size(),
+                    )
                     outputs[ancestor] = outputs[ancestor].pformat({node: placeholder})
                     self.maybe_print(ancestor, printers, outputs, continuations)
                     footer = output_footer()
-                    if not make_new_subpage:  # we hit a limit, either max-report-size or single-page
+                    # we hit a limit, either max-report-size or single-page
+                    if not make_new_subpage:
                         if not outputs:
                             # no more holes, don't traverse any more nodes
                             raise StopIteration
@@ -631,7 +653,7 @@ class HTMLPresenter(Presenter):
                             # however there are holes in other pages, so don't break the loop just yet
                             return True
                 else:
-                    # unconditionally write the root node regardless of limits
+                    # Unconditionally write the root node regardless of limits
                     assert node is root_difference
                     footer = output_footer(ctx.jquery_url)
                     pagename = "index"
@@ -640,11 +662,15 @@ class HTMLPresenter(Presenter):
                     output_header(ctx.css_url, ctx.our_css_url, ctx.icon_url) +
                     u'<div class="difference">\n', u'</div>\n' + footer)
                 assert not ctx.single_page or node is root_difference
-                printers[node] = (make_printer, ctx.target) if ctx.single_page else (file_printer, ctx.target, "%s.html" % pagename)
+                printers[node] = (make_printer, ctx.target) if ctx.single_page \
+                    else (file_printer, ctx.target, "%s.html" % pagename)
                 stored = node
 
             for child in node.details:
-                logger.debug("scheduling future html output for: %s", output_diff_path(path + [child]))
+                logger.debug(
+                    "scheduling future html output for: %s",
+                    output_diff_path(path + [child]),
+                )
                 ancestors[child] = stored
 
             conts = continuations.setdefault(stored, [])
@@ -707,9 +733,10 @@ class HTMLPresenter(Presenter):
         Multi-file presenter. Writes to a directory, and puts large diff tables
         into files of their own.
 
-        This uses jQuery. By default it uses /usr/share/javascript/jquery/jquery.js
-        (symlinked, so that you can still share the result over HTTP).
-        You can also pass --jquery URL to diffoscope to use a central jQuery copy.
+        This uses jQuery. By default it uses
+        /usr/share/javascript/jquery/jquery.js (symlinked, so that you can
+        still share the result over HTTP).  You can also pass --jquery URL to
+        diffoscope to use a central jQuery copy.
         """
         if not os.path.exists(directory):
             os.makedirs(directory)
