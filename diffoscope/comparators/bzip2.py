@@ -18,7 +18,6 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
-import os.path
 import logging
 import subprocess
 
