@@ -280,11 +280,12 @@ class ListToolsAction(argparse.Action):
 
         print("External-Tools-Required: ", end='')
         print(', '.join(sorted(tool_required.all)))
+
+        current_os = get_current_os()
+        os_list = [current_os] if (current_os in OS_NAMES) else iter(OS_NAMES)
         if os_override:
             os_list = [os_override]
-        else:
-            current_os = get_current_os()
-            os_list = [current_os] if (current_os in OS_NAMES) else iter(OS_NAMES)
+
         for os_ in os_list:
             tools = set()
             print("Available-in-{}-packages: ".format(OS_NAMES[os_]), end='')
@@ -294,6 +295,7 @@ class ListToolsAction(argparse.Action):
                 except KeyError:
                     pass
             print(', '.join(sorted(tools)))
+
         sys.exit(0)
 
 
