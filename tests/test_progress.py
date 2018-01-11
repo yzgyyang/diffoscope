@@ -22,10 +22,11 @@ import sys
 import json
 import pytest
 
+from distutils.version import LooseVersion
+
 from diffoscope.main import main
 from diffoscope.progress import ProgressManager, StatusFD
 
-from distutils.version import LooseVersion as vcls
 from .utils.tools import skip_unless_module_exists
 
 TEST_TAR1_PATH = os.path.join(os.path.dirname(__file__), 'data', 'test1.tar')
@@ -42,24 +43,24 @@ def run(capsys, *args):
 
 
 def progressbar_version():
-  import progressbar
+    import progressbar
 
-  return progressbar.__version__
+    return progressbar.__version__
 
 
 @pytest.fixture
 def progressbar_err():
-  # This fixture returns an expected error message depending
-  # on progressbar version, from the lowest to the highest.
-  expected_err = { '3.19' : 'ETA', '3.34' : ''}
+    # This fixture returns an expected error message depending on progressbar
+    # version, from the lowest to the highest.
+    expected_err = {'3.19': 'ETA', '3.34': ''}
 
-  actual_ver = progressbar_version()
+    actual_ver = progressbar_version()
 
-  for k,v in expected_err.items():
-    if vcls(actual_ver) < vcls(k):
-      return v
+    for k, v in expected_err.items():
+        if LooseVersion(actual_ver) < LooseVersion(k):
+            return v
 
-  return ''
+    return ''
 
 
 @skip_unless_module_exists('progressbar')
