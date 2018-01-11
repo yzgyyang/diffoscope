@@ -266,7 +266,7 @@ class RangeCompleter(object):
             tmp = end
             end = start
             start = tmp
-        self.choices = range(start, end + 1, int((end-start+1)/divisions))
+        self.choices = range(start, end + 1, int((end - start + 1) / divisions))
 
     def __call__(self, prefix, **kwargs):
         return (str(i) for i in self.choices if str(i).startswith(prefix))
