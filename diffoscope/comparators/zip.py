@@ -105,8 +105,7 @@ class ZipContainer(Archive):
         zipinfo = self.archive.getinfo(member_name)
         if zipinfo.filename[-1] == '/':
             return ZipDirectory(self, member_name)
-        else:
-            return ArchiveMember(self, member_name)
+        return ArchiveMember(self, member_name)
 
 
 class ZipFile(File):
