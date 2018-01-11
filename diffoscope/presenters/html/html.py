@@ -645,13 +645,14 @@ class HTMLPresenter(Presenter):
                     footer = output_footer()
                     # we hit a limit, either max-report-size or single-page
                     if not make_new_subpage:
-                        if not outputs:
-                            # no more holes, don't traverse any more nodes
-                            raise StopIteration
-                        else:
-                            # True = don't traverse this node's children, because they won't be output
-                            # however there are holes in other pages, so don't break the loop just yet
+                        if outputs:
+                            # True = don't traverse this node's children,
+                            # because they won't be output however there are
+                            # holes in other pages, so don't break the loop
+                            # just yet
                             return True
+                        # No more holes, don't traverse any more nodes
+                        raise StopIteration
                 else:
                     # Unconditionally write the root node regardless of limits
                     assert node is root_difference
