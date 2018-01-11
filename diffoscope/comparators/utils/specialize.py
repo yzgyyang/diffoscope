@@ -32,7 +32,7 @@ def try_recognize(file, cls, recognizes):
 
     # Does this file class match?
     with profile('recognizes', file):
-        #logger.debug("trying %s on %s", cls, file)
+        # logger.debug("trying %s on %s", cls, file)
         if not recognizes(file):
             return False
 
