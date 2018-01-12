@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import re
 import pytest
 import os.path
 import subprocess
@@ -43,7 +44,17 @@ def readelf_version():
         out = subprocess.check_output(['readelf', '--version'])
     except subprocess.CalledProcessError as e:
         out = e.output
-    return out.decode('UTF-8').splitlines()[0].split()[-1].strip()
+
+    # Only match GNU readelf; we only need to match some versions
+    m = re.match(
+        r'^GNU readelf .* (?P<version>[\d.]+)\n',
+        out.decode('utf-8'),
+    )
+
+    if m is None:
+        return 'unknown'
+
+    return m.group('version')
 
 
 def test_obj_identification(obj1):
