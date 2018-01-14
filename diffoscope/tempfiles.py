@@ -60,5 +60,7 @@ def clean_all_temp_files():
     for x in _DIRS:
         try:
             x.cleanup()
+        except FileNotFoundError:
+            pass
         except:
             logger.exception("Unable to delete %s", x)

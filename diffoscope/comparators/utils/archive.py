@@ -101,7 +101,10 @@ class ArchiveMember(File):
         if self._path is not None:
             self._path = None
         if self._temp_dir is not None:
-            self._temp_dir.cleanup()
+            try:
+                self._temp_dir.cleanup()
+            except FileNotFoundError:
+                pass
             self._temp_dir = None
         super().cleanup()
 
