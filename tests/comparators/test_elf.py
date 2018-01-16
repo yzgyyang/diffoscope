@@ -51,8 +51,9 @@ def readelf_version():
         out.decode('utf-8'),
     )
 
+    # Return '0' as the version if we can't parse one; it should be harmless.
     if m is None:
-        return 'unknown'
+        return '0'
 
     return m.group('version')
 
