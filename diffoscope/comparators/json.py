@@ -30,8 +30,11 @@ class JSONFile(File):
     def recognizes(cls, file):
         with open(file.path) as f:
             # Try fuzzy matching for JSON files
-            if not file.name.endswith('.json') and \
-                    file.magic_file_type.startswith('ASCII text'):
+            is_text = any(
+                file.magic_file_type.startswith(x)
+                for x in ('ASCII text'),
+            )
+            if is_text and not file.name.endswith('.json'):
                 if '{' not in f.read(10):
                     return False
                 f.seek(0)
