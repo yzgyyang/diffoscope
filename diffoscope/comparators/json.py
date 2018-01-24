@@ -35,22 +35,34 @@ class JSONFile(File):
 
         with open(file.path) as f:
             try:
-                file.parsed = json.load(f, object_pairs_hook=collections.OrderedDict)
+                file.parsed = json.load(
+                    f,
+                    object_pairs_hook=collections.OrderedDict,
+                )
             except ValueError:
                 return False
 
         return True
 
     def compare_details(self, other, source=None):
-        difference = Difference.from_text(self.dumps(self), self.dumps(other),
-                                          self.path, other.path)
+        difference = Difference.from_text(
+            self.dumps(self),
+            self.dumps(other),
+            self.path,
+            other.path,
+        )
+
         if difference:
             return [difference]
 
-        difference = Difference.from_text(self.dumps(self, sort_keys=False),
-                                          self.dumps(other, sort_keys=False),
-                                          self.path, other.path,
-                                          comment="ordering differences only")
+        difference = Difference.from_text(
+            self.dumps(self, sort_keys=False),
+            self.dumps(other, sort_keys=False),
+            self.path,
+            other.path,
+            comment="ordering differences only",
+        )
+
         return [difference]
 
     @staticmethod
