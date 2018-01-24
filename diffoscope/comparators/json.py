@@ -32,7 +32,7 @@ class JSONFile(File):
             # Try fuzzy matching for JSON files
             is_text = any(
                 file.magic_file_type.startswith(x)
-                for x in ('ASCII text'),
+                for x in ('ASCII text', 'UTF-8 Unicode text'),
             )
             if is_text and not file.name.endswith('.json'):
                 if '{' not in f.read(10):
