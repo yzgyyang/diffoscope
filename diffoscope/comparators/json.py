@@ -35,7 +35,8 @@ class JSONFile(File):
                 for x in ('ASCII text', 'UTF-8 Unicode text'),
             )
             if is_text and not file.name.endswith('.json'):
-                if '{' not in f.read(10):
+                buf = f.read(10)
+                if not any(x in buf for x in '{'):
                     return False
                 f.seek(0)
 
