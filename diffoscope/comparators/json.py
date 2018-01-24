@@ -26,14 +26,16 @@ from .utils.file import File
 
 
 class JSONFile(File):
-    FILE_EXTENSION_SUFFIX = '.json'
-
     @classmethod
     def recognizes(cls, file):
-        if not super().recognizes(file):
-            return False
-
         with open(file.path) as f:
+            # Try fuzzy matching for JSON files
+            if not file.name.endswith('.json') and \
+                    file.magic_file_type.startswith('ASCII text'):
+                if '{' not in f.read(10):
+                    return False
+                f.seek(0)
+
             try:
                 file.parsed = json.load(
                     f,
