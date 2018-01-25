@@ -52,6 +52,7 @@ Build-Depends:
  python3-distro <!nocheck>,
  python3-docutils,
  python3-guestfs <!nocheck>,
+ python3-jsondiff <!nocheck>,
  python3-libarchive-c,
  python3-magic,
  python3-progressbar <!nocheck>,

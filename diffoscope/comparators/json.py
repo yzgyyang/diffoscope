@@ -24,6 +24,11 @@ from diffoscope.difference import Difference
 
 from .utils.file import File
 
+try:
+    import jsondiff
+except ImportError:  # noqa
+    jsondiff = None
+
 
 class JSONFile(File):
     @classmethod
@@ -59,6 +64,19 @@ class JSONFile(File):
         )
 
         if difference:
+            if jsondiff is not None:
+                a = getattr(self, 'parsed', {})
+                b = getattr(other, 'parsed', {})
+
+                diff = {repr(x): y for x, y in jsondiff.diff(a, b).items()}
+
+                difference.add_comment("Similarity: {}%".format(
+                    jsondiff.similarity(a, b),
+                ))
+                difference.add_comment("Differences: {}".format(
+                    json.dumps(diff, indent=2, sort_keys=True),
+                ))
+
             return [difference]
 
         difference = Difference.from_text(

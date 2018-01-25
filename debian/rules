@@ -64,6 +64,7 @@ override_dh_python3:
 		--recommends=binwalk \
 		--recommends=defusedxml \
 		--recommends=guestfs \
+		--recommends=jsondiff \
 		--recommends=progressbar \
 		--recommends=python-debian \
 		--recommends=rpm-python \
