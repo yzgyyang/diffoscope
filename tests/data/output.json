@@ -21,6 +21,11 @@
         "symlink"
       ],
       "unified_diff": "@@ -1 +1 @@\n-destination: broken\n+destination: really-broken\n"
+    },
+    {
+      "source1": "stat {}",
+      "source2": "stat {}",
+      "unified_diff": "@@ -1,8 +1,8 @@\n \n   Size: 10240     \tBlocks: 24         IO Block: 4096   regular file\n Links: 1\n Access: (0644/-rw-r--r--)  Uid: ( 1000/   lamby)   Gid: ( 1000/   lamby)\n \n-Modify: 2017-06-18 07:22:17.216540236 +0000\n+Modify: 2017-06-18 07:22:17.196540208 +0000\n \n  Birth: -\n"
     }
   ]
 }

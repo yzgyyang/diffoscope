@@ -137,7 +137,7 @@ def test_html_option_with_file(tmpdir, capsys):
     assert out == ''
     with open(report_path, 'r', encoding='utf-8') as f:
         body = extract_body(f.read())
-        assert body.count('div class="difference"') == 4
+        assert body.count('div class="difference"') == 5
 
 
 @skip_unless_tools_exist('compare', 'convert', 'sng')
@@ -161,13 +161,13 @@ def test_htmldir_option(tmpdir, capsys):
     assert os.path.isdir(html_dir)
     with open(os.path.join(html_dir, 'index.html'), 'r', encoding='utf-8') as f:
         body = extract_body(f.read())
-        assert body.count('div class="difference"') == 4
+        assert body.count('div class="difference"') == 5
 
 
 def test_html_option_with_stdout(capsys):
     body = extract_body(run(capsys, '--html', '-'))
 
-    assert body.count('div class="difference"') == 4
+    assert body.count('div class="difference"') == 5
 
 
 def test_html_regression_875281(tmpdir, capsys):

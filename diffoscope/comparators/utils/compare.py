@@ -50,7 +50,8 @@ class Xxd(Command):
 
 
 def compare_root_paths(path1, path2):
-    from ..directory import FilesystemDirectory, FilesystemFile, compare_directories
+    from ..directory import FilesystemDirectory, FilesystemFile, \
+        compare_directories, compare_meta
 
     if not Config().new_file:
         bail_if_non_existing(path1, path2)
@@ -62,7 +63,15 @@ def compare_root_paths(path1, path2):
     file1 = specialize(FilesystemFile(path1, container=container1))
     container2 = FilesystemDirectory(os.path.dirname(path2)).as_container
     file2 = specialize(FilesystemFile(path2, container=container2))
-    return compare_files(file1, file2)
+    difference = compare_files(file1, file2)
+    meta = compare_meta(path1, path2)
+    if meta:
+        # Create an "empty" difference so we have something to attach file
+        # metadata to.
+        if difference is None:
+            difference = Difference(None, file1.name, file2.name)
+        difference.add_details(meta)
+    return difference
 
 
 def compare_files(file1, file2, source=None, diff_content_only=False):

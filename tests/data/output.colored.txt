@@ -29,3 +29,14 @@
 │ [0;36m@@ -1 +1 @@[0m
 │ [31m-destination: broken[0m
 │ [32m+destination: really-broken[0m
+├── stat {}
+│ [0;36m@@ -1,8 +1,8 @@[0m
+│  
+│    Size: 10240     	Blocks: 24         IO Block: 4096   regular file
+│  Links: 1
+│  Access: (0644/-rw-r--r--)  Uid: ( 1000/   lamby)   Gid: ( 1000/   lamby)
+│  
+│ [31m-Modify: 2017-06-18 07:22:17.216540236 +0000[0m
+│ [32m+Modify: 2017-06-18 07:22:17.196540208 +0000[0m
+│  
+│   Birth: -
