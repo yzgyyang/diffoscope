@@ -118,7 +118,7 @@ def xattr(path1, path2):
         return '\n'.join('{}: {}'.format(
             k.decode('utf-8', 'ignore'),
             v.decode('utf-8', 'ignore'),
-        ) for k, v in xattr.get_all(x))
+        ) for k, v in sorted(xattr.get_all(x)))
 
     return Difference.from_text(
         fn(path1), fn(path2), path1, path2, source='extended file attributes',
