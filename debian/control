@@ -58,6 +58,7 @@ Build-Depends:
  python3-progressbar <!nocheck>,
  python3-pytest <!nocheck>,
  python3-pytest-cov <!nocheck>,
+ python3-pyxattr <!nocheck>,
  python3-rpm <!nocheck>,
  python3-setuptools,
  python3-tlsh (>= 3.4.1) <!nocheck>,

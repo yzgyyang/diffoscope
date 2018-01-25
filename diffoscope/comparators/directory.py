@@ -108,6 +108,22 @@ class Getfacl(Command):
         return ['getfacl', '-p', '-c', self.path]
 
 
+def xattr(path1, path2):
+    try:
+        import xattr
+    except ImportError:
+        return None
+
+    def fn(x):
+        return '\n'.join('{}: {}'.format(
+            k.decode('utf-8', 'ignore'),
+            v.decode('utf-8', 'ignore'),
+        ) for k, v in xattr.get_all(x))
+
+    return Difference.from_text(
+        fn(path1), fn(path2), path1, path2, source='extended file attributes',
+    )
+
 def compare_meta(path1, path2):
     if Config().exclude_directory_metadata:
         logger.debug("Excluding directory metadata for paths (%s, %s)", path1, path2)
@@ -138,8 +154,8 @@ def compare_meta(path1, path2):
         ))
     except RequiredToolNotFound:
         logger.info("Unable to find 'lsattr', some directory metadata differences might not be noticed.")
+    differences.append(xattr(path1, path2))
     return [d for d in differences if d is not None]
-
 
 def compare_directories(path1, path2, source=None):
     return FilesystemDirectory(path1).compare(FilesystemDirectory(path2))
