@@ -318,7 +318,6 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
             'tar',
             'coreutils',
             'diffutils',
-            'e2fsprogs',
             'findutils',
         ):
             tools.discard(x)
