@@ -96,10 +96,6 @@ class Command(object, metaclass=abc.ABCMeta):
         return buf
 
     @property
-    def stderr_content(self):
-        return self.stderr
-
-    @property
     def returncode(self):
         return self._process.returncode
 

@@ -268,16 +268,16 @@ class Difference(object):
         if not difference:
             return None, False
 
-        if command1 and command1.stderr_content:
+        if command1 and command1.stderr:
             difference.add_comment("stderr from `{}`:".format(
                 ' '.join(command1.cmdline()),
             ))
-            difference.add_comment(command1.stderr_content)
-        if command2 and command2.stderr_content:
+            difference.add_comment(command1.stderr)
+        if command2 and command2.stderr:
             difference.add_comment("stderr from `{}`:".format(
                 ' '.join(command2.cmdline()),
             ))
-            difference.add_comment(command2.stderr_content)
+            difference.add_comment(command2.stderr)
 
         return difference, False
 
