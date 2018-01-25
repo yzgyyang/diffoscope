@@ -36,7 +36,7 @@ re_html = re.compile(r'.*<body(?P<body>.*)<div class="footer">', re.MULTILINE | 
 
 def run(capsys, *args, pair=('test1.tar', 'test2.tar')):
     with pytest.raises(SystemExit) as exc, cwd_data():
-        main(args + pair)
+        main(('--exclude-directory-metadata',) + args + pair)
     out, err = capsys.readouterr()
 
     assert err == ''
@@ -137,7 +137,7 @@ def test_html_option_with_file(tmpdir, capsys):
     assert out == ''
     with open(report_path, 'r', encoding='utf-8') as f:
         body = extract_body(f.read())
-        assert body.count('div class="difference"') == 5
+        assert body.count('div class="difference"') == 4
 
 
 @skip_unless_tools_exist('compare', 'convert', 'sng')
@@ -161,21 +161,25 @@ def test_htmldir_option(tmpdir, capsys):
     assert os.path.isdir(html_dir)
     with open(os.path.join(html_dir, 'index.html'), 'r', encoding='utf-8') as f:
         body = extract_body(f.read())
-        assert body.count('div class="difference"') == 5
+        assert body.count('div class="difference"') == 4
 
 
 def test_html_option_with_stdout(capsys):
     body = extract_body(run(capsys, '--html', '-'))
 
-    assert body.count('div class="difference"') == 5
+    assert body.count('div class="difference"') == 4
 
 
 def test_html_regression_875281(tmpdir, capsys):
     # this test fails when you `git revert -Xtheirs ccd926f`
     diff_path = expand_collapsed_json(tmpdir, 'debian-bug-875281')
     report_path = str(tmpdir.join('report.html'))
-    out = run(capsys, '--html', report_path, pair=(diff_path,))
+    with pytest.raises(SystemExit) as exc, cwd_data():
+        main(('--html', report_path, diff_path,))
+    out, err = capsys.readouterr()
+    assert exc.value.code == 1
     assert out == ''
+    assert err == ''
 
 
 def test_limited_print():

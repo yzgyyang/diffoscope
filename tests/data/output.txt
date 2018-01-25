@@ -29,14 +29,3 @@
 │ @@ -1 +1 @@
 │ -destination: broken
 │ +destination: really-broken
-├── stat {}
-│ @@ -1,8 +1,8 @@
-│  
-│    Size: 10240     	Blocks: 24         IO Block: 4096   regular file
-│  Links: 1
-│  Access: (0644/-rw-r--r--)  Uid: ( 1000/   lamby)   Gid: ( 1000/   lamby)
-│  
-│ -Modify: 2017-06-18 07:22:17.216540236 +0000
-│ +Modify: 2017-06-18 07:22:17.196540208 +0000
-│  
-│   Birth: -
