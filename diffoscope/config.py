@@ -29,36 +29,41 @@ class defaultint(int):
     pass
 
 
+# Avoid setting values on this anywhere other than main.run_diffoscope(),
+# otherwise tests may fail unpredictably depending on order-of-execution.
 class Config(object):
-    # GNU diff cannot process arbitrary large files :(
-    max_diff_input_lines = 2 ** 22
-    max_diff_block_lines_saved = float("inf")
-
-    # hard limits, restricts single-file and multi-file formats
-    max_report_size = defaultint(40 * 2 ** 20)  # 40 MB
-    max_diff_block_lines = defaultint(2 ** 10)  # 1024 lines
-    # structural limits, restricts single-file formats
-    # semi-restricts multi-file formats
-    max_page_size = defaultint(400 * 2 ** 10)  # 400 kB
-    max_page_size_child = defaultint(200 * 2 ** 10)  # 200 kB
-    max_page_diff_block_lines = defaultint(2 ** 7)  # 128 lines
-
-    max_text_report_size = 0
-
-    new_file = False
-    fuzzy_threshold = 60
-    enforce_constraints = True
-    excludes = ()
-    exclude_commands = ()
-    exclude_directory_metadata = False
-    compute_visual_diffs = False
-    max_container_depth = 50
-    force_details = False
-
     _singleton = {}
 
     def __init__(self):
         self.__dict__ = self._singleton
+        if not self._singleton:
+            self.reset()
+
+    def reset(self):
+        # GNU diff cannot process arbitrary large files :(
+        self.max_diff_input_lines = 2 ** 22
+        self.max_diff_block_lines_saved = float("inf")
+
+        # hard limits, restricts single-file and multi-file formats
+        self.max_report_size = defaultint(40 * 2 ** 20)  # 40 MB
+        self.max_diff_block_lines = defaultint(2 ** 10)  # 1024 lines
+        # structural limits, restricts single-file formats
+        # semi-restricts multi-file formats
+        self.max_page_size = defaultint(400 * 2 ** 10)  # 400 kB
+        self.max_page_size_child = defaultint(200 * 2 ** 10)  # 200 kB
+        self.max_page_diff_block_lines = defaultint(2 ** 7)  # 128 lines
+
+        self.max_text_report_size = 0
+
+        self.new_file = False
+        self.fuzzy_threshold = 60
+        self.enforce_constraints = True
+        self.excludes = ()
+        self.exclude_commands = ()
+        self.exclude_directory_metadata = False
+        self.compute_visual_diffs = False
+        self.max_container_depth = 50
+        self.force_details = False
 
     def __setattr__(self, k, v):
         super(Config, self).__setattr__(k, v)

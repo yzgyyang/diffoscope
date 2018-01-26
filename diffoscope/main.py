@@ -382,6 +382,12 @@ def run_diffoscope(parsed_args):
         else:
             difference = load_diff_from_path(path1)
     else:
+        if Config().exclude_directory_metadata is None:
+            if os.path.isdir(path1) and os.path.isdir(path2):
+                Config().exclude_directory_metadata = False
+            else:
+                Config().exclude_directory_metadata = True
+
         logger.debug('Starting comparison')
         with Progress():
             with profile('main', 'outputs'):
@@ -426,6 +432,10 @@ def main(args=None):
             pdb.post_mortem()
         sys.exit(2)
     finally:
+        # Helps our tests run more predictably - some of them call main()
+        # which sets Config() values.
+        Config().reset()
+
         with profile('main', 'cleanup'):
             clean_all_temp_files()
 

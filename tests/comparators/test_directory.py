@@ -58,10 +58,6 @@ def differences(tmpdir):
     os.utime(str(tmpdir.join('b/dir')), (0, 0))
     os.utime(str(tmpdir.join('a')), (0, 0))
     os.utime(str(tmpdir.join('b')), (0, 0))
-    # Earlier tests set this to True, unfortunately.
-    # i.e. the Config() singleton pattern does not play nicely
-    # with our tests, eventually that should be cleaned up.
-    Config().exclude_directory_metadata = False
     return compare_directories(str(tmpdir.join('a')), str(tmpdir.join('b'))).details
 
 

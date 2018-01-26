@@ -58,15 +58,9 @@ def compare_root_paths(path1, path2):
     if any_excluded(path1, path2):
         return None
 
-    default_metadata = Config().exclude_directory_metadata is None
-
     if os.path.isdir(path1) and os.path.isdir(path2):
-        if default_metadata:
-            Config().exclude_directory_metadata = False
         return compare_directories(path1, path2)
 
-    if default_metadata:
-        Config().exclude_directory_metadata = True
     container1 = FilesystemDirectory(os.path.dirname(path1)).as_container
     file1 = specialize(FilesystemFile(path1, container=container1))
     container2 = FilesystemDirectory(os.path.dirname(path2)).as_container
