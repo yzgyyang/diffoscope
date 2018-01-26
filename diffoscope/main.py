@@ -185,14 +185,17 @@ def create_parser():
                         'only secondary differences caused by something that '
                         'is already represented elsewhere in the diff.')
     group3.add_argument('--exclude-directory-metadata', '--no-exclude-directory-metadata',
-                        action=BooleanAction, default=False,
+                        action=BooleanAction, default=None,
                         help='Exclude directory metadata. Useful if comparing '
                         'files whose filesystem-level metadata is not intended '
                         'to be distributed to other systems. For example, this '
                         'is true for most distros\' package builders, but not '
                         'true for the output of commands like `make install`. '
                         'Metadata of archive members remain un-excluded. '
-                        'Default: %(default)s')
+                        'Default: False if comparing two directories, else '
+                        'True. Note that "file" metadata is actually a '
+                        'property of its containing directory, and is not '
+                        'relevant when distributing the file across systems.')
     group3.add_argument('--fuzzy-threshold', type=int,
                         help='Threshold for fuzzy-matching '
                         '(0 to disable, %(default)s is default, 400 is high fuzziness)',

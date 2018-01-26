@@ -57,20 +57,30 @@ def compare_root_paths(path1, path2):
         bail_if_non_existing(path1, path2)
     if any_excluded(path1, path2):
         return None
+
+    default_metadata = Config().exclude_directory_metadata is None
+
     if os.path.isdir(path1) and os.path.isdir(path2):
+        if default_metadata:
+            Config().exclude_directory_metadata = False
         return compare_directories(path1, path2)
+
+    if default_metadata:
+        Config().exclude_directory_metadata = True
     container1 = FilesystemDirectory(os.path.dirname(path1)).as_container
     file1 = specialize(FilesystemFile(path1, container=container1))
     container2 = FilesystemDirectory(os.path.dirname(path2)).as_container
     file2 = specialize(FilesystemFile(path2, container=container2))
     difference = compare_files(file1, file2)
-    meta = compare_meta(path1, path2)
-    if meta:
-        # Create an "empty" difference so we have something to attach file
-        # metadata to.
-        if difference is None:
-            difference = Difference(None, file1.name, file2.name)
-        difference.add_details(meta)
+
+    if not Config().exclude_directory_metadata:
+        meta = compare_meta(path1, path2)
+        if meta:
+            # Create an "empty" difference so we have something to attach file
+            # metadata to.
+            if difference is None:
+                difference = Difference(None, file1.name, file2.name)
+            difference.add_details(meta)
     return difference
 
 
