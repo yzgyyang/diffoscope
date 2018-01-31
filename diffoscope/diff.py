@@ -42,7 +42,19 @@ re_diff_change = re.compile(r'^([+-@]).*', re.MULTILINE)
 
 class DiffParser(object):
     RANGE_RE = re.compile(
-        r'^@@\s+-(?P<start1>\d+)(,(?P<len1>\d+))?\s+\+(?P<start2>\d+)(,(?P<len2>\d+))?\s+@@$',
+        # example: '@@ -26814,9 +26814,8 @@'
+        r'''
+          ^
+            @@\s+
+              -
+              (?P<start1>\d+)(,(?P<len1>\d+))?
+            \s+
+              \+
+              (?P<start2>\d+)(,(?P<len2>\d+))?
+            \s+@@
+          $
+        ''',
+        re.VERBOSE,
     )
 
     def __init__(self, output, end_nl_q1, end_nl_q2):
