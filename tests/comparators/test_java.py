@@ -21,7 +21,7 @@ import pytest
 import subprocess
 
 from diffoscope.config import Config
-from diffoscope.comparators.java import ClassFile
+from diffoscope.comparators.java import ClassFile, ProcyonDecompiler, Javap
 from diffoscope.comparators.missing_file import MissingFile
 
 from ..utils.data import load_fixture, get_data
@@ -50,19 +50,45 @@ def test_no_differences(class1):
 
 
 @pytest.fixture
-def differences(class1, class2):
+def differences_procyon(monkeypatch, class1, class2):
+    monkeypatch.setattr(class1, 'decompilers', [ProcyonDecompiler])
     return class1.compare(class2).details
 
 
-@skip_unless_tool_is_at_least('javap', javap_version, '1.8')
-def test_diff(differences):
-    expected_diff = get_data('class_expected_diff')
+@pytest.fixture
+def differences_javap(monkeypatch, class1, class2):
+    monkeypatch.setattr(class1, 'decompilers', [Javap])
+    return class1.compare(class2).details
+
+
+def diff(differences, expected_diff_file):
+    expected_diff = get_data(expected_diff_file)
     assert differences[0].unified_diff == expected_diff
 
 
-@skip_unless_tools_exist('javap')
-def test_compare_non_existing(monkeypatch, class1):
+def compare_non_existing(monkeypatch, class1, decompiler):
     monkeypatch.setattr(Config(), 'new_file', True)
+    monkeypatch.setattr(class1, 'decompilers', [decompiler])
     difference = class1.compare(MissingFile('/nonexisting', class1))
     assert difference.source2 == '/nonexisting'
     assert len(difference.details) > 0
+
+
+@skip_unless_tools_exist('procyon-decompiler')
+def test_diff_procyon(differences_procyon):
+    diff(differences_procyon, 'procyon_class_expected_diff')
+
+
+@skip_unless_tool_is_at_least('javap', javap_version, '1.8')
+def test_diff_javap(differences_javap):
+    diff(differences_javap, 'javap_class_expected_diff')
+
+
+@skip_unless_tools_exist('procyon-decompiler')
+def test_compare_non_existing_procyon(monkeypatch, class1):
+    compare_non_existing(monkeypatch, class1, ProcyonDecompiler)
+
+
+@skip_unless_tools_exist('javap')
+def test_compare_non_existing_javap(monkeypatch, class1):
+    compare_non_existing(monkeypatch, class1, Javap)

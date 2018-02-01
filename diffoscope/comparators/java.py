@@ -20,12 +20,31 @@
 
 import re
 import os.path
+import logging
 
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
+from diffoscope.exc import RequiredToolNotFound
 
 from .utils.file import File
 from .utils.command import Command
+
+logger = logging.getLogger(__name__)
+
+
+class ProcyonDecompiler(Command):
+    def __init__(self, path, *args, **kwargs):
+        super().__init__(path, *args, **kwargs)
+        self.real_path = os.path.realpath(path)
+
+    @tool_required('procyon-decompiler')
+    def cmdline(self):
+        return ['procyon-decompiler', '-ec', self.path]
+
+    def filter(self, line):
+        if re.match(r'^(//)', line.decode('utf-8')):
+            return b''
+        return line
 
 
 class Javap(Command):
@@ -46,5 +65,24 @@ class Javap(Command):
 class ClassFile(File):
     FILE_TYPE_RE = re.compile(r'^compiled Java class data\b')
 
+    decompilers = [ProcyonDecompiler, Javap]
+
     def compare_details(self, other, source=None):
-        return [Difference.from_command(Javap, self.path, other.path)]
+        diff = None
+
+        for decompiler in self.decompilers:
+            try:
+                diff = [Difference.from_command(decompiler,
+                                                self.path,
+                                                other.path)]
+                if diff:
+                    break
+            except RequiredToolNotFound:
+                logger.debug("Unable to find %s. Falling back...",
+                             decompiler.__name__)
+
+        if not diff:
+            raise RequiredToolNotFound(self.decompilers[-1])
+
+        return diff
+

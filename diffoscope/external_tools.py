@@ -257,6 +257,9 @@ EXTERNAL_TOOLS = {
         'arch': 'unzip',
         'FreeBSD': 'unzip',
     },
+    'procyon-decompiler': {
+        'debian': 'procyon-decompiler',
+    },
 }
 
 # May be populated at runtime by remapped names like

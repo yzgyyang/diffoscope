@@ -1,0 +1,9 @@
+@@ -1,7 +1,7 @@
+ 
+ class Test
+ {
+     public static int main(final String[] array) {
+-        return 42;
++        return -1;
+     }
+ }
