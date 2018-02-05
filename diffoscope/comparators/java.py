@@ -54,10 +54,21 @@ class Javap(Command):
 
     @tool_required('javap')
     def cmdline(self):
-        return ['javap', '-verbose', '-constants', '-s', '-l', '-private', self.path]
+        return [
+            'javap',
+            '-verbose',
+            '-constants',
+            '-s',
+            '-l',
+            '-private',
+            self.path
+        ]
 
     def filter(self, line):
-        if re.match(r'^(Classfile %s$|  Last modified |  MD5 checksum )' % re.escape(self.real_path), line.decode('utf-8')):
+        regex = r'^(Classfile {}$|  Last modified |  MD5 checksum )'.format(
+            re.escape(self.real_path)
+        )
+        if re.match(regex, line.decode('utf-8')):
             return b''
         return line
 
@@ -72,9 +83,9 @@ class ClassFile(File):
 
         for decompiler in self.decompilers:
             try:
-                diff = [Difference.from_command(decompiler,
-                                                self.path,
-                                                other.path)]
+                diff = [
+                    Difference.from_command(decompiler, self.path, other.path)
+                ]
                 if diff:
                     break
             except RequiredToolNotFound:
@@ -85,4 +96,3 @@ class ClassFile(File):
             raise RequiredToolNotFound(self.decompilers[-1])
 
         return diff
-
