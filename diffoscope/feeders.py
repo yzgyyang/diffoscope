@@ -86,7 +86,7 @@ def from_command(command):
                 command.filter,
             )
             end_nl = feeder(out_file)
-            returncode = command.wait()
+            returncode = command.returncode
         if returncode not in (0, -signal.SIGTERM):
             raise subprocess.CalledProcessError(
                 returncode,

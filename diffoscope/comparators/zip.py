@@ -120,7 +120,8 @@ class ZipFile(File):
 
 
 class MozillaZipCommandMixin(object):
-    def wait(self):
+    @property
+    def returncode(self):
         # zipinfo emits an error when reading Mozilla-optimized ZIPs,
         # which is fine to ignore.
         return 0

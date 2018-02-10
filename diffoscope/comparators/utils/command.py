@@ -103,5 +103,9 @@ class Command(object, metaclass=abc.ABCMeta):
         return self.stderr
 
     @property
+    def returncode(self):
+        return self._process.returncode
+
+    @property
     def stdout(self):
         return self._process.stdout.splitlines(True)
