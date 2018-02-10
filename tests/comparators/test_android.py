@@ -51,9 +51,6 @@ def differences(bootimg1, bootimg2):
 @skip_unless_tools_exist('abootimg')
 @pytest.mark.skipif(bearch, reason='abootimg is buggy on BE architectures')
 def test_diff(differences):
-    # FIXME
-    with open('tests/data/android_expected_diff', 'w') as f:
-        f.write(differences[0].unified_diff)
     expected_diff = get_data('android_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
