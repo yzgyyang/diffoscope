@@ -79,12 +79,11 @@ class DiffParser(object):
         return self._success
 
     def parse(self):
-        for line in self._output:
+        for line in self._output.splitlines(True):
             self._action = self._action(line.decode('utf-8', errors='replace'))
 
         self._action('')
         self._success = True
-        self._output.close()
 
     def read_headers(self, line):
         if not line:
@@ -177,15 +176,15 @@ def run_diff(fifo1, fifo2, end_nl_q1, end_nl_q2):
 
     logger.debug("Running %s", ' '.join(cmd))
 
-    p = subprocess.Popen(
+    p = subprocess.run(
         cmd,
         bufsize=1,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )
+
     parser = DiffParser(p.stdout, end_nl_q1, end_nl_q2)
     parser.parse()
-    p.wait()
 
     logger.debug(
         "%s: returncode %d, parsed %s",

@@ -123,9 +123,7 @@ class MozillaZipCommandMixin(object):
     def wait(self):
         # zipinfo emits an error when reading Mozilla-optimized ZIPs,
         # which is fine to ignore.
-        super(Zipinfo, self).wait()
         return 0
-
 
 class MozillaZipinfo(MozillaZipCommandMixin, Zipinfo):
     pass

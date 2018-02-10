@@ -28,11 +28,15 @@ logger = logging.getLogger(__name__)
 
 
 class Command(object, metaclass=abc.ABCMeta):
+
+    MAX_STDERR_LINES = 50
+
     def __init__(self, path):
         self._path = path
 
     def start(self):
         logger.debug("Executing %s", ' '.join([shlex.quote(x) for x in self.cmdline()]))
+
         self._stdin = self.stdin()
         # "stdin" used to be a feeder but we didn't need the functionality so
         # it was simplified into the current form. it can be recovered from git
@@ -40,17 +44,15 @@ class Command(object, metaclass=abc.ABCMeta):
         # consider using a shell pipeline ("sh -ec $script") to implement what
         # you need, because that involves much less code - like it or not (I
         # don't) shell is still the most readable option for composing processes
-        self._process = subprocess.Popen(self.cmdline(),
-                                         shell=False, close_fds=True,
-                                         env=self.env(),
-                                         stdin=self._stdin,
-                                         stdout=subprocess.PIPE,
-                                         stderr=subprocess.PIPE)
-        self._stderr = io.BytesIO()
-        self._stderr_line_count = 0
-        self._stderr_reader = threading.Thread(target=self._read_stderr)
-        self._stderr_reader.daemon = True
-        self._stderr_reader.start()
+        self._process = subprocess.run(self.cmdline(),
+                                       shell=False, close_fds=True,
+                                       env=self.env(),
+                                       stdin=self._stdin,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
+
+
+        self.stderr = self._read_stderr()
 
     @property
     def path(self):
@@ -74,42 +76,32 @@ class Command(object, metaclass=abc.ABCMeta):
         return line
 
     def poll(self):
-        return self._process.poll()
+        pass
 
     def terminate(self):
-        return self._process.terminate()
+        pass
 
     def wait(self):
-        self._stderr_reader.join()
-        returncode = self._process.wait()
-        logger.debug(
-            "%s returned (exit code: %d)",
-            ' '.join([shlex.quote(x) for x in self.cmdline()]),
-            returncode,
-        )
-        if self._stdin:
-            self._stdin.close()
-        return returncode
-
-    MAX_STDERR_LINES = 50
+        return self._process.returncode
 
     def _read_stderr(self):
-        for line in iter(self._process.stderr.readline, b''):
-            self._stderr_line_count += 1
-            if self._stderr_line_count <= Command.MAX_STDERR_LINES:
-                self._stderr.write(line)
-        if self._stderr_line_count > Command.MAX_STDERR_LINES:
-            self._stderr.write('[ {} lines ignored ]\n'.format(self._stderr_line_count - Command.MAX_STDERR_LINES).encode('utf-8'))
-        self._process.stderr.close()
+        buf = ""
+        lines = self._process.stderr.splitlines(True)
+        for index, line in enumerate(lines):
+          if index >= Command.MAX_STDERR_LINES:
+              break
+          buf += line.decode('utf-8', errors='replace')
+
+        if len(lines) > Command.MAX_STDERR_LINES:
+          buf += '[ {} lines ignored ]\n'.format(
+            len(lines) - Command.MAX_STDERR_LINES)
+
+        return buf
 
     @property
     def stderr_content(self):
-        return self._stderr.getvalue().decode('utf-8', errors='replace')
-
-    @property
-    def stderr(self):
-        return self._stderr
+        return self.stderr
 
     @property
     def stdout(self):
-        return self._process.stdout
+        return self._process.stdout.splitlines(True)

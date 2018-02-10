@@ -86,14 +86,12 @@ def from_command(command):
                 command.filter,
             )
             end_nl = feeder(out_file)
-            if command.poll() is None:
-                command.terminate()
             returncode = command.wait()
         if returncode not in (0, -signal.SIGTERM):
             raise subprocess.CalledProcessError(
                 returncode,
                 command.cmdline(),
-                output=command.stderr.getvalue(),
+                output=command.stderr,
             )
         return end_nl
     return feeder
