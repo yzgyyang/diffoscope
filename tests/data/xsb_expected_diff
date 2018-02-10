@@ -1,0 +1,153 @@
+@@ -1,101 +1,101 @@
+   Magic cookie: da7ababe
+   Major version: 2
+   Minor version: 24
+   Release number: 0
+   Filetype: FILETYPE_SCHEMAINDEX
+   String pool (41):
+-    1 = "testcase939btype"
+-    2 = "files7c3eelemtype"
+-    3 = "filedesc9392type"
+-    4 = "role21a8attrtype"
+-    5 = "codef72ftype"
+-    6 = "timport22datype"
+-    7 = "downloadedschemaentry1c75type"
+-    8 = "tests5621doctype"
+-    9 = "tests9d6eelemtype"
+-    10 = "testselement"
++    1 = "downloadedschemaentry1c75type"
++    2 = "timport22datype"
++    3 = "testcase939btype"
++    4 = "files7c3eelemtype"
++    5 = "filedesc9392type"
++    6 = "role21a8attrtype"
++    7 = "codef72ftype"
++    8 = "downloadedschemas2dd7doctype"
++    9 = "downloadedschemasb3efelemtype"
++    10 = "downloadedschemaselement"
+     11 = "definitionsc7f1doctype"
+     12 = "definitions05ddelemtype"
+     13 = "definitionselement"
+-    14 = "downloadedschemas2dd7doctype"
+-    15 = "downloadedschemasb3efelemtype"
+-    16 = "downloadedschemaselement"
+-    17 = "http://www.bea.com/2003/05/xmlbean/ltgfmt"
+-    18 = "tests"
++    14 = "tests5621doctype"
++    15 = "tests9d6eelemtype"
++    16 = "testselement"
++    17 = "http://www.bea.com/2003/01/xmlbean/xsdownload"
++    18 = "downloaded-schemas"
+     19 = "http://www.apache.org/internal/xmlbeans/wsdlsubst"
+     20 = "definitions"
+-    21 = "http://www.bea.com/2003/01/xmlbean/xsdownload"
+-    22 = "downloaded-schemas"
+-    23 = "test-case"
+-    24 = "file-desc"
+-    25 = "code"
+-    26 = "TImport"
+-    27 = "downloaded-schema-entry"
+-    28 = "org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument"
++    21 = "http://www.bea.com/2003/05/xmlbean/ltgfmt"
++    22 = "tests"
++    23 = "downloaded-schema-entry"
++    24 = "TImport"
++    25 = "test-case"
++    26 = "file-desc"
++    27 = "code"
++    28 = "org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemasDocument"
+     29 = "org.apache.xmlbeans.impl.xb.substwsdl.DefinitionsDocument"
+-    30 = "org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemasDocument"
+-    31 = "org.apache.xmlbeans.impl.xb.ltgfmt.TestCase"
+-    32 = "org.apache.xmlbeans.impl.xb.ltgfmt.FileDesc"
+-    33 = "org.apache.xmlbeans.impl.xb.ltgfmt.Code"
+-    34 = "org.apache.xmlbeans.impl.xb.substwsdl.TImport"
+-    35 = "org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemaEntry"
+-    36 = "org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument.Tests"
++    30 = "org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument"
++    31 = "org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemaEntry"
++    32 = "org.apache.xmlbeans.impl.xb.substwsdl.TImport"
++    33 = "org.apache.xmlbeans.impl.xb.ltgfmt.TestCase"
++    34 = "org.apache.xmlbeans.impl.xb.ltgfmt.FileDesc"
++    35 = "org.apache.xmlbeans.impl.xb.ltgfmt.Code"
++    36 = "org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemasDocument.DownloadedSchemas"
+     37 = "org.apache.xmlbeans.impl.xb.substwsdl.DefinitionsDocument.Definitions"
+-    38 = "org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemasDocument.DownloadedSchemas"
++    38 = "org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument.Tests"
+     39 = "org.apache.xmlbeans.impl.xb.ltgfmt.TestCase.Files"
+     40 = "org.apache.xmlbeans.impl.xb.ltgfmt.FileDesc.Role"
+   Handle pool (16):
++    downloadedschemaentry1c75type (FILETYPE_SCHEMATYPE)
++    timport22datype (FILETYPE_SCHEMATYPE)
+     testcase939btype (FILETYPE_SCHEMATYPE)
+     files7c3eelemtype (FILETYPE_SCHEMATYPE)
+     filedesc9392type (FILETYPE_SCHEMATYPE)
+     role21a8attrtype (FILETYPE_SCHEMATYPE)
+     codef72ftype (FILETYPE_SCHEMATYPE)
+-    timport22datype (FILETYPE_SCHEMATYPE)
+-    downloadedschemaentry1c75type (FILETYPE_SCHEMATYPE)
+-    tests5621doctype (FILETYPE_SCHEMATYPE)
+-    tests9d6eelemtype (FILETYPE_SCHEMATYPE)
+-    testselement (FILETYPE_SCHEMAELEMENT)
+-    definitionsc7f1doctype (FILETYPE_SCHEMATYPE)
+-    definitions05ddelemtype (FILETYPE_SCHEMATYPE)
+-    definitionselement (FILETYPE_SCHEMAELEMENT)
+     downloadedschemas2dd7doctype (FILETYPE_SCHEMATYPE)
+     downloadedschemasb3efelemtype (FILETYPE_SCHEMATYPE)
+     downloadedschemaselement (FILETYPE_SCHEMAELEMENT)
++    definitionsc7f1doctype (FILETYPE_SCHEMATYPE)
++    definitions05ddelemtype (FILETYPE_SCHEMATYPE)
++    definitionselement (FILETYPE_SCHEMAELEMENT)
++    tests5621doctype (FILETYPE_SCHEMATYPE)
++    tests9d6eelemtype (FILETYPE_SCHEMATYPE)
++    testselement (FILETYPE_SCHEMAELEMENT)
+   Global elements (3):
+-    tests@http://www.bea.com/2003/05/xmlbean/ltgfmt = testselement
+-    definitions@http://www.apache.org/internal/xmlbeans/wsdlsubst = definitionselement
+     downloaded-schemas@http://www.bea.com/2003/01/xmlbean/xsdownload = downloadedschemaselement
++    definitions@http://www.apache.org/internal/xmlbeans/wsdlsubst = definitionselement
++    tests@http://www.bea.com/2003/05/xmlbean/ltgfmt = testselement
+   Global attributes (0):
+   Model groups (0):
+   Attribute groups (0):
+   Identity constraints (0):
+   Global types (5):
++    downloaded-schema-entry@http://www.bea.com/2003/01/xmlbean/xsdownload = downloadedschemaentry1c75type
++    TImport@http://www.apache.org/internal/xmlbeans/wsdlsubst = timport22datype
+     test-case@http://www.bea.com/2003/05/xmlbean/ltgfmt = testcase939btype
+     file-desc@http://www.bea.com/2003/05/xmlbean/ltgfmt = filedesc9392type
+     code@http://www.bea.com/2003/05/xmlbean/ltgfmt = codef72ftype
+-    TImport@http://www.apache.org/internal/xmlbeans/wsdlsubst = timport22datype
+-    downloaded-schema-entry@http://www.bea.com/2003/01/xmlbean/xsdownload = downloadedschemaentry1c75type
+   Document types (3):
+-    tests@http://www.bea.com/2003/05/xmlbean/ltgfmt = tests5621doctype
+-    definitions@http://www.apache.org/internal/xmlbeans/wsdlsubst = definitionsc7f1doctype
+     downloaded-schemas@http://www.bea.com/2003/01/xmlbean/xsdownload = downloadedschemas2dd7doctype
++    definitions@http://www.apache.org/internal/xmlbeans/wsdlsubst = definitionsc7f1doctype
++    tests@http://www.bea.com/2003/05/xmlbean/ltgfmt = tests5621doctype
+   Attribute types (0):
+   All types by classname (13):
+-    org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument = tests5621doctype
+-    org.apache.xmlbeans.impl.xb.substwsdl.DefinitionsDocument = definitionsc7f1doctype
+     org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemasDocument = downloadedschemas2dd7doctype
++    org.apache.xmlbeans.impl.xb.substwsdl.DefinitionsDocument = definitionsc7f1doctype
++    org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument = tests5621doctype
++    org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemaEntry = downloadedschemaentry1c75type
++    org.apache.xmlbeans.impl.xb.substwsdl.TImport = timport22datype
+     org.apache.xmlbeans.impl.xb.ltgfmt.TestCase = testcase939btype
+     org.apache.xmlbeans.impl.xb.ltgfmt.FileDesc = filedesc9392type
+     org.apache.xmlbeans.impl.xb.ltgfmt.Code = codef72ftype
+-    org.apache.xmlbeans.impl.xb.substwsdl.TImport = timport22datype
+-    org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemaEntry = downloadedschemaentry1c75type
+-    org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument.Tests = tests9d6eelemtype
+-    org.apache.xmlbeans.impl.xb.substwsdl.DefinitionsDocument.Definitions = definitions05ddelemtype
+     org.apache.xmlbeans.impl.xb.xsdownload.DownloadedSchemasDocument.DownloadedSchemas = downloadedschemasb3efelemtype
++    org.apache.xmlbeans.impl.xb.substwsdl.DefinitionsDocument.Definitions = definitions05ddelemtype
++    org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument.Tests = tests9d6eelemtype
+     org.apache.xmlbeans.impl.xb.ltgfmt.TestCase.Files = files7c3eelemtype
+     org.apache.xmlbeans.impl.xb.ltgfmt.FileDesc.Role = role21a8attrtype
+   Defined namespaces (3):
+     http://www.bea.com/2003/01/xmlbean/xsdownload
+     http://www.bea.com/2003/05/xmlbean/ltgfmt
+     http://www.apache.org/internal/xmlbeans/wsdlsubst
+   Redefined global types (0):

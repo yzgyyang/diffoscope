@@ -260,6 +260,9 @@ EXTERNAL_TOOLS = {
     'procyon-decompiler': {
         'debian': 'procyon-decompiler',
     },
+    'dumpxsb': {
+        'debian': 'xmlutils',
+    }
 }
 
 # May be populated at runtime by remapped names like

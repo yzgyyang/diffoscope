@@ -90,6 +90,7 @@ class ComparatorManager(object):
         ('pgp.PgpFile',),
         ('dtb.DeviceTreeFile',),
         ('ogg.OggFile',),
+        ('xsb.XsbFile',),
     )
 
     _singleton = {}

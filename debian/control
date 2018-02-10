@@ -70,6 +70,7 @@ Build-Depends:
  squashfs-tools <!nocheck>,
  tcpdump <!nocheck>,
  unzip <!nocheck>,
+ xmlbeans <!nocheck>,
  xxd <!nocheck> | vim-common <!nocheck>,
 Standards-Version: 4.1.2
 Rules-Requires-Root: no
