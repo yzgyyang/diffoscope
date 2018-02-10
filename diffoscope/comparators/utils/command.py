@@ -81,9 +81,6 @@ class Command(object, metaclass=abc.ABCMeta):
     def terminate(self):
         pass
 
-    def wait(self):
-        return self._process.returncode
-
     def _read_stderr(self):
         buf = ""
         lines = self._process.stderr.splitlines(True)
