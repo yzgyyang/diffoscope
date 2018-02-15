@@ -24,6 +24,9 @@ EXTERNAL_TOOLS = {
     'apktool': {
         'debian': 'apktool',
     },
+    'db_dump': {
+        'debian': 'db-util',
+    },
     'bsdtar': {
         'debian': 'libarchive-tools',
         'arch': 'libarchive',

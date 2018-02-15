@@ -15,6 +15,7 @@ Build-Depends:
  binutils-multiarch <!nocheck>,
  caca-utils <!nocheck>,
  colord <!nocheck>,
+ db-util <!nocheck>,
  debhelper (>= 11~),
  default-jdk-headless <!nocheck> | default-jdk <!nocheck>,
  dh-python (>= 2.20160818~),

@@ -1,0 +1,66 @@
+@@ -9,61 +9,29 @@
+ 	magic: 0x53162
+ 	version: 9
+ 	pagesize: 4096
+ 	type: 9
+ 	metaflags 0
+ 	keys: 0	records: 0
+ 	free list: 0
+-	last_pgno: 7
++	last_pgno: 3
+ 	flags: 0x20 (multiple-databases)
+ 	minkey: 2
+ 	root: 1
+ page 1: btree leaf: LSN [0][1]: level 1
+-	prev:    0 next:    0 entries:    6 offset: 4000
+-	[000] 4040 len:  19 data: unstable|main|amd64
+-	[001] 4032 len:   4 data: 00000004
+-	[002] 4072 len:  18 data: unstable|main|i386
+-	[003] 4064 len:   4 data: 00000002
+-	[004] 4008 len:  20 data: unstable|main|source
+-	[005] 4000 len:   4 data: 00000006
++	prev:    0 next:    0 entries:    2 offset: 4064
++	[000] 4072 len:  19 data: compressedfilelists
++	[001] 4064 len:   4 data: 00000002
+ page 2: btree metadata: LSN [0][1]: level 0
+ 	magic: 0x53162
+ 	version: 9
+ 	pagesize: 4096
+ 	type: 9
+ 	metaflags 0
+ 	keys: 0	records: 0
+ 	free list: 0
+ 	last_pgno: 2
+ 	flags: 0x20 (multiple-databases)
+ 	minkey: 2
+ 	root: 3
+ page 3: btree leaf: LSN [0][1]: level 1
+ 	prev:    0 next:    0 entries:    0 offset: 4096
+-page 4: btree metadata: LSN [0][1]: level 0
+-	magic: 0x53162
+-	version: 9
+-	pagesize: 4096
+-	type: 9
+-	metaflags 0
+-	keys: 0	records: 0
+-	free list: 0
+-	last_pgno: 4
+-	flags: 0x20 (multiple-databases)
+-	minkey: 2
+-	root: 5
+-page 5: btree leaf: LSN [0][1]: level 1
+-	prev:    0 next:    0 entries:    0 offset: 4096
+-page 6: btree metadata: LSN [0][1]: level 0
+-	magic: 0x53162
+-	version: 9
+-	pagesize: 4096
+-	type: 9
+-	metaflags 0
+-	keys: 0	records: 0
+-	free list: 0
+-	last_pgno: 6
+-	flags: 0x20 (multiple-databases)
+-	minkey: 2
+-	root: 7
+-page 7: btree leaf: LSN [0][1]: level 1
+-	prev:    0 next:    0 entries:    0 offset: 4096

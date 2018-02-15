@@ -91,6 +91,7 @@ class ComparatorManager(object):
         ('dtb.DeviceTreeFile',),
         ('ogg.OggFile',),
         ('xsb.XsbFile',),
+        ('berkeley_db.BerkeleyDBFile',),
     )
 
     _singleton = {}
