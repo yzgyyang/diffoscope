@@ -46,8 +46,8 @@ class JSONFile(File):
                 f.seek(0)
 
             try:
-                file.parsed = json.load(
-                    f,
+                file.parsed = json.loads(
+                    f.read().decode('utf-8', errors='ignore'),
                     object_pairs_hook=collections.OrderedDict,
                 )
             except ValueError:
