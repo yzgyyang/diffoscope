@@ -9,9 +9,9 @@ Copyright: 2012-2013 Olivier Matz <zer0@droids-corp.org>
                 2012 scito <info@scito.ch>
            2014-2015 Jérémy Bobbio <lunar@debian.org>
                 2015 Helmut Grohne <helmut@subdivi.de>
-           2015-2017 Chris Lamb <lamby@debian.org>
+           2015-2018 Chris Lamb <lamby@debian.org>
            2015-2016 Reiner Herrmann <reiner@reiner-h.de>
-           2016-2017 Mattia Rizzolo <mattia@debian.org>
+           2016-2018 Mattia Rizzolo <mattia@debian.org>
 License: GPL-3+
 
 Files: diffoscope/changes.py
