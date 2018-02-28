@@ -33,7 +33,7 @@ except ImportError:  # noqa
 class JSONFile(File):
     @classmethod
     def recognizes(cls, file):
-        with open(file.path) as f:
+        with open(file.path, 'rb') as f:
             # Try fuzzy matching for JSON files
             is_text = any(
                 file.magic_file_type.startswith(x)
@@ -41,7 +41,7 @@ class JSONFile(File):
             )
             if is_text and not file.name.endswith('.json'):
                 buf = f.read(10)
-                if not any(x in buf for x in '{['):
+                if not any(x in buf for x in b'{['):
                     return False
                 f.seek(0)
 
