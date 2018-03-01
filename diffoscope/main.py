@@ -22,6 +22,7 @@
 
 import os
 import sys
+import json
 import signal
 import logging
 import argparse
@@ -380,7 +381,14 @@ def run_diffoscope(parsed_args):
         if path1 is None or path1 == '-':
             difference = load_diff(sys.stdin, "stdin")
         else:
-            difference = load_diff_from_path(path1)
+            try:
+                difference = load_diff_from_path(path1)
+            except json.JSONDecodeError:
+                traceback.print_exc()
+                print("E: Could not parse diff from '{}'. (Are you sure you"
+                      "only meant to specify a single file?)".format(path1),
+                      file=sys.stderr)
+                return 1
     else:
         if Config().exclude_directory_metadata is None:
             if os.path.isdir(path1) and os.path.isdir(path2):
