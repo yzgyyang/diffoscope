@@ -410,5 +410,4 @@ class File(object, metaclass=abc.ABCMeta):
 def maybe_decode(s):
     if type(s) is bytes:
         return s.decode('utf-8')
-    else:
-        return s
+    return s
