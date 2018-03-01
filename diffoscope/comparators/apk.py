@@ -41,6 +41,7 @@ class ApkContainer(Archive):
         return self._path
 
     @tool_required('apktool')
+    @tool_required('zipinfo')
     def open_archive(self):
         self._members = []
         self._unpacked = os.path.join(
@@ -55,6 +56,11 @@ class ApkContainer(Archive):
         subprocess.check_call((
             'apktool', 'd', '-k', '-m', '-o', self._unpacked, self.source.path,
         ), shell=False, stderr=None, stdout=subprocess.PIPE)
+
+        # Additionally extract the classes.dex file; apktool does not do this.
+        subprocess.check_call((
+            'unzip', '-d', self._unpacked, self.source.path, 'classes.dex',
+        ), stderr=None, stdout=subprocess.PIPE)
 
         for root, _, files in os.walk(self._unpacked):
             current_dir = []
