@@ -107,8 +107,7 @@ class ApkContainer(Archive):
         return self._members
 
     def extract(self, member_name, dest_dir):
-        src_path = os.path.join(self._unpacked, member_name)
-        return src_path
+        return os.path.join(self._unpacked, member_name)
 
     def compare_manifests(self, other):
         my_android_manifest = self.get_android_manifest()
