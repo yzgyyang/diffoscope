@@ -1,4 +1,4 @@
-diffoscope (91) UNRELEASED; urgency=medium
+diffoscope (91) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
   * d/clean: Remove .cache/.
@@ -59,7 +59,7 @@ diffoscope (91) UNRELEASED; urgency=medium
     + Move the defaults into a Config.reset() method.
     + reset() the configuration at the end of main(), to help the testsuite.
 
- -- Mattia Rizzolo <mattia@debian.org>  Wed, 28 Feb 2018 21:30:18 +0100
+ -- Mattia Rizzolo <mattia@debian.org>  Thu, 01 Mar 2018 13:40:48 +0100
 
 diffoscope (90) unstable; urgency=medium
 
