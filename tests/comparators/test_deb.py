@@ -138,4 +138,3 @@ def test_compare_different_compression(bug881937_deb1, bug881937_deb2):
     assert difference.details[1].source2 == 'control.tar.xz'
     expected_diff = get_data('bug881937_control_expected_diff')
     assert difference.details[1].details[2].details[1].unified_diff == expected_diff
-
