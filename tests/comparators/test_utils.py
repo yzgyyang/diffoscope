@@ -112,10 +112,12 @@ def test_trim_stderr_in_command():
         def stdin(self):
             r, w = os.pipe()
             r, w = os.fdopen(r), os.fdopen(w, "w")
+
             def write():
                 for dummy in range(0, Command.MAX_STDERR_LINES + 1):
                     w.write('error {}\n'.format(self.path))
             threading.Thread(target=write).start()
+
             return r
     difference = Difference.from_command(FillStderr, 'dummy1', 'dummy2')
     assert '[ 1 lines ignored ]' in difference.comment
