@@ -27,8 +27,8 @@ def diff_ignore_line_numbers(diff):
     return re_diff_line_numbers.sub(r"\1@@ -XX,XX +XX,XX @@", diff)
 
 def _collapse_line(line, escape=html.escape):
-    l = len(escape(line))
-    return str(l - 1) + "\n" if line[-1] == "\n" else str(l)
+    len_ = len(escape(line))
+    return str(len_ - 1) + "\n" if line[-1] == "\n" else str(len_)
 
 def _diff_collapse_line(line):
     return line[0] + _collapse_line(line[1:]) if line and line[0] in '+- ' else line

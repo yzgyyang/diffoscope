@@ -444,14 +444,14 @@ def linediff_wagnerfischer(s, t):
                           (d[i][j-1][0] + 1, (i, j-1)),
                           (d[i-1][j-1][0] + cost, (i-1, j-1)))
 
-    l = []
+    coords = []
     coord = (m, n)
     while coord != (0, 0):
-        l.insert(0, coord)
+        coords.insert(0, coord)
         x, y = coord
         coord = d[x][y][1]
 
-    for coord in l:
+    for coord in coords:
         cx, cy = coord
         child_val = d[cx][cy][0]
 

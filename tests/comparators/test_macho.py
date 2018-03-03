@@ -58,9 +58,14 @@ def test_obj_compare_non_existing(monkeypatch, obj1):
 @skip_unless_tools_exist('otool', 'lipo')
 def test_diff(obj_differences):
     assert len(obj_differences) == 4
-    l = ['macho_expected_diff_arch', 'macho_expected_diff_headers', 'macho_expected_diff_loadcommands', 'macho_expected_diff_disassembly']
+    diffs = [
+        'macho_expected_diff_arch',
+        'macho_expected_diff_headers',
+        'macho_expected_diff_loadcommands',
+        'macho_expected_diff_disassembly',
+    ]
     for idx, diff in enumerate(obj_differences):
-        with open(os.path.join(os.path.dirname(__file__), '../data', l[idx]), 'w') as f:
+        with open(os.path.join(os.path.dirname(__file__), '../data', diffs[idx]), 'w') as f:
             print(diff.unified_diff, file=f)
     expected_diff = get_data('macho_expected_diff')
     assert obj_differences[0].unified_diff == expected_diff

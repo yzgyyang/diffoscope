@@ -32,11 +32,11 @@ class DbDump(Command):
         return ('db_dump', '-d', 'a', self.path)
 
     def filter(self, line):
-        l = line.decode('utf-8')
+        val = line.decode('utf-8')
         # We must strip some fields as libdb itself does not repeatedly read
         # its own metadata reliably, even on the same file.
         for x in ('h_hash: ', 'bt_compare: ', '\tuid: '):
-            if l.startswith(x):
+            if val.startswith(x):
                 return b''
         return line
 
