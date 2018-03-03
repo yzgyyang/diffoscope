@@ -61,9 +61,9 @@ def clean_all_temp_files():
         try:
             x.cleanup()
         except PermissionError:
-            # Recursively reset the permissions of temporary directories prior to
-            # deletion to ensure that non-writable permissions such as 0555 are
-            # removed and do not cause a traceback. (#891363)
+            # Recursively reset the permissions of temporary directories prior
+            # to deletion to ensure that non-writable permissions such as 0555
+            # are removed and do not cause a traceback. (#891363)
             for dirpath, ys, _ in os.walk(x.name):
                 for y in ys:
                     os.chmod(os.path.join(dirpath, y), 0o777)
