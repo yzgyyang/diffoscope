@@ -104,9 +104,9 @@ class Difference(object):
             reverse_unified_diff(self.unified_diff) if self.unified_diff is not None else None,
             self.source2,
             self.source1,
-            comment=self._comments, # already copied by fmap in get_reverse
+            comment=self._comments,  # already copied by fmap in get_reverse
             has_internal_linenos=self.has_internal_linenos,
-            details=self._details, # already reversed by fmap in get_reverse, no need to copy
+            details=self._details,  # already reversed by fmap in get_reverse, no need to copy
         )
 
     def get_reverse(self):
