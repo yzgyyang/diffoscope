@@ -24,7 +24,7 @@ import logging
 @contextlib.contextmanager
 def setup_logging(debug, log_handler):
     logger = logging.getLogger()
-    oldLevel = logger.getEffectiveLevel()
+    old_level = logger.getEffectiveLevel()
     logger.setLevel(logging.DEBUG if debug else logging.WARNING)
 
     ch = log_handler or logging.StreamHandler()
@@ -43,4 +43,4 @@ def setup_logging(debug, log_handler):
         # like "ValueError: I/O operation on closed file", see
         # https://github.com/pytest-dev/pytest/issues/14#issuecomment-272243656
         logger.removeHandler(ch)
-        logger.setLevel(oldLevel)
+        logger.setLevel(old_level)
