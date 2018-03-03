@@ -58,6 +58,13 @@ def clean_all_temp_files():
     logger.debug("Cleaning %d temporary directories", len(_DIRS))
 
     for x in _DIRS:
+        # Recursively reset the permissions of temporary directories prior to
+        # deletion to ensure that non-writable permissions such as 0555 are
+        # removed and do not cause a traceback. (#891363)
+        for dirpath, ys, _ in os.walk(x.name):
+            for y in ys:
+                os.chmod(os.path.join(dirpath, y), 0o777)
+
         try:
             x.cleanup()
         except FileNotFoundError:
