@@ -21,8 +21,8 @@
 import pytest
 import subprocess
 
+from distutils.version import LooseVersion
 from diffoscope.comparators.ar import ArFile
-from distutils.version import LooseVersion as vcls
 
 from ..utils import diff_ignore_line_numbers
 from ..utils.data import load_fixture, get_data
@@ -56,10 +56,10 @@ def differences(rlib1, rlib2):
 def rlib_dis_expected_diff():
     actual_ver = llvm_version()
 
-    if (vcls(str(actual_ver)) >= vcls("3.8")):
+    if (LooseVersion(str(actual_ver)) >= LooseVersion("3.8")):
         diff_file = 'rlib_llvm_dis_expected_diff'
 
-    if (vcls(str(actual_ver)) >= vcls("5.0")):
+    if (LooseVersion(str(actual_ver)) >= LooseVersion("5.0")):
         diff_file = 'rlib_llvm_dis_expected_diff_5'
 
     return get_data(diff_file)
