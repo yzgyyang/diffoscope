@@ -19,7 +19,6 @@
 
 import os
 import glob
-import pytest
 import diffoscope
 
 BASE_DIR = os.path.dirname(os.path.abspath(diffoscope.__file__))

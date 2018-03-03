@@ -22,7 +22,6 @@ import logging
 import subprocess
 
 from diffoscope.tools import tool_required
-from diffoscope.difference import Difference
 
 
 from .utils.file import File

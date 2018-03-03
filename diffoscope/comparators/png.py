@@ -19,7 +19,6 @@
 
 import re
 import logging
-import functools
 import subprocess
 
 from diffoscope.config import Config

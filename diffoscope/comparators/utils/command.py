@@ -17,12 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
-import io
 import abc
 import logging
 import shlex
 import subprocess
-import threading
 
 logger = logging.getLogger(__name__)
 

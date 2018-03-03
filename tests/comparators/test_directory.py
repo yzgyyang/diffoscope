@@ -22,7 +22,6 @@ import os
 import shutil
 import pytest
 
-from diffoscope.config import Config
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.directory import compare_directories
 from diffoscope.comparators.utils.specialize import specialize
