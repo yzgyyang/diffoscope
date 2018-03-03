@@ -41,9 +41,6 @@ debian/diffoscope.bash-completion:
 	register-python-argcomplete diffoscope > $@
 
 override_dh_auto_build: debian/diffoscope.bash-completion
-	@# Let's avoid plonking everything in the "DOS/MBR" category, this is really not
-	@# a sustainable filetype testing solution (e.g. c051ba9d and c1442405).
-	! grep 'DOS/MBR' -R diffoscope
 	dh_auto_build -O--buildsystem=pybuild
 	dh_auto_build -O--buildsystem=makefile -Ddoc
 
