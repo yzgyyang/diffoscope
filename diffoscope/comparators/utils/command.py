@@ -26,7 +26,6 @@ logger = logging.getLogger(__name__)
 
 
 class Command(object, metaclass=abc.ABCMeta):
-
     MAX_STDERR_LINES = 50
 
     def __init__(self, path):
@@ -48,7 +47,6 @@ class Command(object, metaclass=abc.ABCMeta):
                                        stdin=self._stdin,
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE)
-
 
         self.stderr = self._read_stderr()
 
@@ -82,14 +80,16 @@ class Command(object, metaclass=abc.ABCMeta):
     def _read_stderr(self):
         buf = ""
         lines = self._process.stderr.splitlines(True)
+
         for index, line in enumerate(lines):
-          if index >= Command.MAX_STDERR_LINES:
-              break
-          buf += line.decode('utf-8', errors='replace')
+            if index >= Command.MAX_STDERR_LINES:
+                break
+            buf += line.decode('utf-8', errors='replace')
 
         if len(lines) > Command.MAX_STDERR_LINES:
-          buf += '[ {} lines ignored ]\n'.format(
-            len(lines) - Command.MAX_STDERR_LINES)
+            buf += '[ {} lines ignored ]\n'.format(
+                len(lines) - Command.MAX_STDERR_LINES,
+            )
 
         return buf
 
