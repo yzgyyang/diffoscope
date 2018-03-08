@@ -372,7 +372,7 @@ class File(object, metaclass=abc.ABCMeta):
             except subprocess.CalledProcessError as e:
                 difference = self.compare_bytes(other, source=source)
                 if e.output:
-                    output = re.sub(r'^', '    ', e.output.decode('utf-8', errors='replace'), flags=re.MULTILINE)
+                    output = re.sub(r'^', '    ', e.output, flags=re.MULTILINE)
                 else:
                     output = '<none>'
                 cmd = ' '.join(e.cmd)
