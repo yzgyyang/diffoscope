@@ -26,5 +26,5 @@ BASE_DIR = os.path.dirname(os.path.abspath(diffoscope.__file__))
 
 def test_dos_mbr():
     for x in glob.iglob(os.path.join(BASE_DIR, '**', '*.py'), recursive=True):
-        with open(x, encoding='utf-8', errors='replace') as f:
-            assert 'DOS/MBR' not in f.read()
+        with open(x, 'rb') as f:
+            assert b'DOS/MBR' not in f.read()
