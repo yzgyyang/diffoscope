@@ -110,19 +110,28 @@ class Getfacl(Command):
 
 def xattr(path1, path2):
     try:
-        import xattr
+        import xattr as xattr_
     except ImportError:
         return None
+
+    # Support the case where the python3-xattr package is installed but
+    # python3-pyxattr is not; python3-xattr has an xattr class that can be used
+    # like a dict.
+    try:
+        get_all = xattr_.get_all
+    except AttributeError:
+        get_all = lambda x: xattr_.xattr(x).items()
 
     def fn(x):
         return '\n'.join('{}: {}'.format(
             k.decode('utf-8', 'ignore'),
             v.decode('utf-8', 'ignore'),
-        ) for k, v in sorted(xattr.get_all(x)))
+        ) for k, v in get_all(x))
 
     return Difference.from_text(
         fn(path1), fn(path2), path1, path2, source='extended file attributes',
     )
+
 
 def compare_meta(path1, path2):
     if Config().exclude_directory_metadata:
