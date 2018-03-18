@@ -1,9 +1,9 @@
-@@ -31,13 +31,13 @@
+@@ -34,13 +34,13 @@
          line 1: 0
  
    public static int main(java.lang.String[]);
      descriptor: ([Ljava/lang/String;)I
-     flags: ACC_PUBLIC, ACC_STATIC
+     flags: (0x0009) ACC_PUBLIC, ACC_STATIC
      Code:
        stack=1, locals=1, args_size=1
 -         0: bipush        42

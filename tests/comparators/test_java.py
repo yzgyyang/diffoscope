@@ -79,7 +79,7 @@ def test_diff_procyon(differences_procyon):
     diff(differences_procyon, 'procyon_class_expected_diff')
 
 
-@skip_unless_tool_is_at_least('javap', javap_version, '1.8')
+@skip_unless_tool_is_at_least('javap', javap_version, '9.0.4')
 def test_diff_javap(differences_javap):
     diff(differences_javap, 'javap_class_expected_diff')
 
