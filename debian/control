@@ -102,5 +102,4 @@ Description: in-depth comparison of files, archives, and directories
  compare two tarballs, ISO images, or PDF just as easily. The differences can
  be shown in a text or HTML report.
  .
- diffoscope is developed as part of the “reproducible builds” Debian
- project.
+ diffoscope is developed as part of the “reproducible builds” project.
