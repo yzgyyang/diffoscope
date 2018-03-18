@@ -220,6 +220,9 @@ EXTERNAL_TOOLS = {
     'sng': {
         'debian': 'sng',
     },
+    'ssconvert': {
+        'debian': 'gnumeric',
+    },
     'ssh-keygen': {
         'debian': 'openssh-client',
         'arch': 'openssh',
