@@ -61,7 +61,7 @@ def differences(dex1, dex2):
 
 
 @skip_unless_tools_exist('enjarify', 'zipinfo', 'javap')
-@skip_unless_tool_is_at_least('javap', javap_version, '1.8')
+@skip_unless_tool_is_at_least('javap', javap_version, '9.0.4')
 @skip_unless_tool_is_at_least('enjarify', enjarify_version, '1.0.3')
 def test_differences(differences):
     assert differences[0].source1 == 'test1.jar'

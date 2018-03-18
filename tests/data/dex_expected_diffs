@@ -15,7 +15,7 @@
    length of file comment:                         0 characters
    disk number on which file begins:               disk 1
    apparent file type:                             binary
-@@ -17,16 +17,16 @@
+@@ -20,16 +20,16 @@
    #12 = Methodref          #4.#11         // android/app/Activity.onCreate:(Landroid/os/Bundle;)V
    #13 = Integer            2130903040
    #14 = Float              1.7412887E38f
@@ -31,6 +31,6 @@
  {
    public com.example.MainActivity();
      descriptor: ()V
-     flags: ACC_PUBLIC
+     flags: (0x0001) ACC_PUBLIC
      Code:
        stack=300, locals=1, args_size=1
