@@ -18,7 +18,7 @@ SED_rst2man_output_to_h2m_input = \
 all: $(PACKAGE).1
 
 $(PACKAGE).1: $(PACKAGE).h2m ../$(PACKAGE)/__init__.py
-	help2man --version-string=$(VERSION) ./$(PACKAGE) -N --include="$<" | \
+	help2man --version-string=$(VERSION) ../bin/$(PACKAGE) -N --include="$<" | \
 	  sed $(SED_rm_python_usage_msg) > "$@"
 
 $(PACKAGE).h2m: $(PACKAGE).h2m.0 ../README.rst Makefile
