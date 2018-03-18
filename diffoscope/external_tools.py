@@ -265,7 +265,7 @@ EXTERNAL_TOOLS = {
     },
     'dumpxsb': {
         'debian': 'xmlutils',
-    }
+    },
 }
 
 # May be populated at runtime by remapped names like
