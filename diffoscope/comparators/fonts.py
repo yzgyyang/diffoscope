@@ -36,6 +36,7 @@ class Showttf(Command):
 
 
 class TtfFile(File):
+    DESCRIPTION = "TrueType font files"
     FILE_TYPE_RE = re.compile(r'^(TrueType|OpenType) font data', re.IGNORECASE)
 
     def compare_details(self, other, source=None):

@@ -28,6 +28,7 @@ from .utils.file import File
 
 
 class GitIndexFile(File):
+    DESCRIPTION = "Git repositories"
     FILE_TYPE_RE = re.compile(r'^Git index')
 
     def compare_details(self, other, source=None):

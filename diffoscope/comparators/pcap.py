@@ -39,6 +39,7 @@ class Tcpdump(Command):
 
 
 class PcapFile(File):
+    DESCRIPTION = "tcpdump capture files (.pcap)"
     FILE_TYPE_RE = re.compile(r'^tcpdump capture file\b')
 
     def compare_details(self, other, source=None):

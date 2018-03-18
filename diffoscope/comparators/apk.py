@@ -152,6 +152,7 @@ class ApkContainer(Archive):
 
 
 class ApkFile(File):
+    DESCRIPTION = "Android APK files"
     FILE_TYPE_HEADER_PREFIX = b"PK\x03\x04"
     FILE_TYPE_RE = re.compile(r'^(Java|Zip) archive data.*\b')
     FILE_EXTENSION_SUFFIX = '.apk'

@@ -31,6 +31,8 @@ logger = logging.getLogger(__name__)
 
 
 class Device(File):
+    DESCRIPTION = "character/block devices"
+
     @classmethod
     def recognizes(cls, file):
         return file.is_device()

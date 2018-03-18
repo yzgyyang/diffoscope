@@ -77,6 +77,7 @@ class FsImageContainer(Archive):
 
 
 class FsImageFile(File):
+    DESCRIPTION = "ext2/ext3/ext4/btrfs filesystems"
     CONTAINER_CLASS = FsImageContainer
     FILE_TYPE_RE = re.compile(r'^(Linux.*filesystem data|BTRFS Filesystem).*')
 

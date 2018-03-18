@@ -42,6 +42,7 @@ class Sng(Command):
 
 
 class PngFile(File):
+    DESCRIPTION = "PNG images"
     FILE_TYPE_RE = re.compile(r'^PNG image data\b')
 
     def compare_details(self, other, source=None):

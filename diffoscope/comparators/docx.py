@@ -37,6 +37,7 @@ class Docx2txt(Command):
 
 
 class DocxFile(File):
+    DESCRIPTION = "Microsoft Word .docx files"
     FILE_TYPE_RE = re.compile(r'^Microsoft Word 2007+\b')
 
     def compare_details(self, other, source=None):

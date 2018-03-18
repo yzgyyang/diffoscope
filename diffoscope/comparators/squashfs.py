@@ -299,6 +299,7 @@ class SquashfsContainer(Archive):
 
 
 class SquashfsFile(File):
+    DESCRIPTION = "SquashFS filesystems"
     CONTAINER_CLASS = SquashfsContainer
     FILE_TYPE_RE = re.compile(r'^Squashfs filesystem\b')
 

@@ -74,6 +74,7 @@ class Javap(Command):
 
 
 class ClassFile(File):
+    DESCRIPTION = "Java .class files"
     FILE_TYPE_RE = re.compile(r'^compiled Java class data\b')
 
     decompilers = [ProcyonDecompiler, Javap]

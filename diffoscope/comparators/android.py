@@ -80,6 +80,7 @@ class AndroidBootImgContainer(Archive):
 
 
 class AndroidBootImgFile(File):
+    DESCRIPTION = "Android boot images"
     FILE_TYPE_RE = re.compile(r'^Android bootimg\b')
     CONTAINER_CLASS = AndroidBootImgContainer
 

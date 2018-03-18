@@ -67,6 +67,7 @@ def can_compose_gif_images(image1, image2):
 
 
 class GifFile(File):
+    DESCRIPTION = "GIF image files"
     FILE_TYPE_RE = re.compile(r'^GIF image data\b')
 
     def compare_details(self, other, source=None):

@@ -175,6 +175,8 @@ def compare_directories(path1, path2, source=None):
 
 
 class Directory(object):
+    DESCRIPTION = "directories"
+
     @classmethod
     def recognizes(cls, file):
         return file.is_directory()

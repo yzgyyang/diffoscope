@@ -36,6 +36,7 @@ class Dumpxsb(Command):
 
 
 class XsbFile(File):
+    DESCRIPTION = "XML binary schemas (.xsb)"
     FILE_EXTENSION_SUFFIX = '.xsb'
 
     def compare_details(self, other, source=None):

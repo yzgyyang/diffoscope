@@ -34,6 +34,7 @@ class Pedump(Command):
 
 
 class MonoExeFile(File):
+    DESCRIPTION = "Mono 'Portable Executable' files"
     FILE_TYPE_RE = re.compile(r'\bPE[0-9]+\b.*\bMono\b')
 
     def compare_details(self, other, source=None):

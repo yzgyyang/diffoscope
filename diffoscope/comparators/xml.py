@@ -71,6 +71,8 @@ class XMLFile(File):
     Attributes:
         FILE_EXTENSION_SUFFIX (str): xml file extension suffix
     """
+
+    DESCRIPTION = "XML files"
     FILE_EXTENSION_SUFFIX = '.xml'
 
     @classmethod

@@ -52,6 +52,7 @@ class XzContainer(Archive):
 
 
 class XzFile(File):
+    DESCRIPTION = "XZ compressed files"
     CONTAINER_CLASS = XzContainer
     FILE_TYPE_RE = re.compile(r'^XZ compressed data$')
 

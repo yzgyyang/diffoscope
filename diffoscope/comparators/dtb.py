@@ -34,6 +34,7 @@ class DeviceTreeContents(Command):
 
 
 class DeviceTreeFile(File):
+    DESCRIPTION = "Device Tree Compiler blob files"
     FILE_TYPE_RE = re.compile(r'^Device Tree Blob')
 
     def compare_details(self, other, source=None):

@@ -69,6 +69,7 @@ class HiFile(File):
     So the version of this file has 4 characters, and it's 7103. Note how all
     this information is stored as big endian.
     """
+    DESCRIPTION = "GHC Haskell .hi files"
     RE_FILE_EXTENSION = re.compile(r'\.(p_|dyn_)?hi$')
 
     @classmethod

@@ -161,6 +161,7 @@ class DebControlFile(File):
 
 
 class DotChangesFile(DebControlFile):
+    DESCRIPTION = "Debian .changes files"
     FILE_EXTENSION_SUFFIX = '.changes'
 
     @classmethod
@@ -202,6 +203,7 @@ class DotChangesFile(DebControlFile):
 
 
 class DotDscFile(DebControlFile):
+    DESCRIPTION = "Debian source packages (.dsc)"
     FILE_EXTENSION_SUFFIX = '.dsc'
 
     @classmethod
@@ -254,6 +256,7 @@ class DotBuildinfoContainer(DebControlContainer):
 
 
 class DotBuildinfoFile(DebControlFile):
+    DESCRIPTION = "Debian .buildinfo files"
     CONTAINER_CLASS = DotBuildinfoContainer
     FILE_EXTENSION_SUFFIX = '.buildinfo'
 

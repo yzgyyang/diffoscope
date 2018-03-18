@@ -25,6 +25,7 @@ from .utils.file import File
 
 
 class FontconfigCacheFile(File):
+    DESCRIPTION = "FreeDesktop Fontconfig cache files"
     FILE_TYPE_HEADER_PREFIX = struct.pack('<H', 0xFC04)
     FILE_EXTENSION_SUFFIX = '-le64.cache-4'
 

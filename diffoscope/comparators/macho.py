@@ -70,6 +70,7 @@ class OtoolDisassembleInternal(Otool):
 
 
 class MachoFile(File):
+    DESCRIPTION = "MacOS binaries"
     FILE_TYPE_RE = re.compile(r'^Mach-O ')
     RE_EXTRACT_ARCHS = re.compile(r'^(?:Architectures in the fat file: .* are|Non-fat file: .* is architecture): (.*)$')
 

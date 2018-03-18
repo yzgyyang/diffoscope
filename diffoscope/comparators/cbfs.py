@@ -99,6 +99,7 @@ def is_header_valid(buf, size, offset=0):
 
 
 class CbfsFile(File):
+    DESCRIPTION = "Coreboot CBFS filesystem images"
     CONTAINER_CLASS = CbfsContainer
 
     @classmethod

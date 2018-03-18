@@ -58,6 +58,7 @@ class Ppudump(Command):
 
 
 class PpuFile(File):
+    DESCRIPTION = "FreePascal files (.ppu)"
     FILE_EXTENSION_SUFFIX = '.ppu'
 
     @classmethod

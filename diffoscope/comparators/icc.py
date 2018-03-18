@@ -33,6 +33,7 @@ class Iccdump(Command):
 
 
 class IccFile(File):
+    DESCRIPTION = "ColorSync colour profiles (.icc)"
     FILE_TYPE_RE = re.compile(r'\bColorSync (ICC|color) [Pp]rofile')
 
     def compare_details(self, other, source=None):

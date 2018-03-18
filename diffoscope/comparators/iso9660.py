@@ -68,6 +68,7 @@ class ISO9660Listing(Command):
 
 
 class Iso9660File(File):
+    DESCRIPTION = "ISO 9660 CD images"
     CONTAINER_CLASS = LibarchiveContainer
     FILE_TYPE_RE = re.compile(r'\bISO 9660\b')
 

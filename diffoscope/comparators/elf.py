@@ -558,6 +558,7 @@ class ElfContainer(Container):
 
 
 class ElfFile(File):
+    DESCRIPTION = "ELF binaries"
     CONTAINER_CLASS = ElfContainer
     FILE_TYPE_RE = re.compile(r'^ELF ')
 
@@ -566,6 +567,7 @@ class ElfFile(File):
 
 
 class StaticLibFile(File):
+    DESCRIPTION = "statically-linked binaries"
     CONTAINER_CLASS = ElfContainer
     FILE_TYPE_RE = re.compile(r'\bar archive\b')
     FILE_EXTENSION_SUFFIX = '.a'

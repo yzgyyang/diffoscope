@@ -43,6 +43,7 @@ class LlvmBcDisassembler(Command):
 
 
 class LlvmBitCodeFile(File):
+    DESCRIPTION = "LLVM IR bitcode files"
     FILE_TYPE_RE = re.compile(r'^LLVM IR bitcode')
 
     def compare_details(self, other, source=None):

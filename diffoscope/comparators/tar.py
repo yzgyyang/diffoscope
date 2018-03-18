@@ -30,6 +30,7 @@ class TarContainer(LibarchiveContainer):
 
 
 class TarFile(File):
+    DESCRIPTION = "tape archives (.tar)"
     CONTAINER_CLASS = TarContainer
     FILE_TYPE_RE = re.compile(r'\btar archive\b')
 

@@ -33,6 +33,7 @@ class SSHKeyList(Command):
 
 
 class PublicKeyFile(File):
+    DESCRIPTION = "OpenSSH public keys"
     FILE_TYPE_RE = re.compile(r'^OpenSSH \S+ public key')
 
     def compare_details(self, other, source=None):

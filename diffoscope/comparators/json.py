@@ -31,6 +31,8 @@ except ImportError:  # noqa
 
 
 class JSONFile(File):
+    DESCRIPTION = "JSON files"
+
     @classmethod
     def recognizes(cls, file):
         with open(file.path, 'rb') as f:

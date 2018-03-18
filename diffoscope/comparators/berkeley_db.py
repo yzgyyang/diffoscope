@@ -42,6 +42,7 @@ class DbDump(Command):
 
 
 class BerkeleyDBFile(File):
+    DESCRIPTION = "Berkeley DB database files"
     FILE_TYPE_RE = re.compile(r'^Berkeley DB ')
 
     def compare_details(self, other, source=None):

@@ -68,6 +68,8 @@ class RdsReader(Command):
 
 
 class RdsFile(File):
+    DESCRIPTION = "GNU R Rscript files (.rds)"
+
     @classmethod
     def recognizes(cls, file):
         if check_rds_extension(file) or \
@@ -87,6 +89,7 @@ class RdbReader(Command):
 
 
 class RdbFile(File):
+    DESCRIPTION = "GNU R database files (.rdb)"
     FILE_EXTENSION_SUFFIX = '.rdb'
 
     def compare_details(self, other, source=None):

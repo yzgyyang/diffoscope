@@ -37,6 +37,7 @@ class Odt2txt(Command):
 
 
 class OdtFile(File):
+    DESCRIPTION = "OpenOffice .odt files"
     FILE_TYPE_RE = re.compile(r'^OpenDocument Text\b')
 
     def compare_details(self, other, source=None):

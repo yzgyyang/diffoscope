@@ -42,6 +42,7 @@ class Pdftk(Command):
 
 
 class PdfFile(File):
+    DESCRIPTION = "PDF documents"
     FILE_TYPE_RE = re.compile(r'^PDF document\b')
 
     def compare_details(self, other, source=None):

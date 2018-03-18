@@ -61,6 +61,7 @@ class Msgunfmt(Command):
 
 
 class MoFile(File):
+    DESCRIPTION = "Gettext message catalogues"
     FILE_TYPE_RE = re.compile(r'^GNU message catalog\b')
 
     def compare_details(self, other, source=None):

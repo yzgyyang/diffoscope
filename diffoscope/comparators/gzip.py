@@ -52,6 +52,7 @@ class GzipContainer(Archive):
 
 
 class GzipFile(File):
+    DESCRIPTION = "Gzipped files"
     CONTAINER_CLASS = GzipContainer
     FILE_TYPE_RE = re.compile(r'^gzip compressed data\b')
 

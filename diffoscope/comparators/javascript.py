@@ -31,6 +31,7 @@ class JavaScriptBeautify(Command):
 
 
 class JavaScriptFile(File):
+    DESCRIPTION = "JavaScript files"
     FILE_EXTENSION_SUFFIX = '.js'
 
     def compare_details(self, other, source=None):

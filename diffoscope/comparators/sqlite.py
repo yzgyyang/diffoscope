@@ -33,6 +33,7 @@ class Sqlite3Dump(Command):
 
 
 class Sqlite3Database(File):
+    DESCRIPTION = "SQLite databases"
     FILE_TYPE_RE = re.compile(r'^SQLite 3.x database')
 
     def compare_details(self, other, source=None):

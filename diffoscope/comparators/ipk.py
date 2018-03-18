@@ -22,4 +22,5 @@ from .gzip import GzipFile
 
 
 class IpkFile(GzipFile):
+    DESCRIPTION = "OpenWRT package archives (.ipk)"
     FILE_EXTENSION_SUFFIX = '.ipk'

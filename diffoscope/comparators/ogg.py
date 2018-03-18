@@ -33,6 +33,7 @@ class OggDump(Command):
 
 
 class OggFile(File):
+    DESCRIPTION = "Ogg Vorbis audio files"
     FILE_TYPE_RE = re.compile(r'^Ogg data')
 
     def compare_details(self, other, source=None):
