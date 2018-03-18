@@ -126,3 +126,10 @@ class ComparatorManager(object):
                 ))
 
         logger.debug("Loaded %d comparator classes", len(self.classes))
+
+    def get_descriptions(self):
+        for x in self.classes:
+            try:
+                yield x.DESCRIPTION
+            except AttributeError:
+                pass

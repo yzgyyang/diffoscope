@@ -73,7 +73,7 @@ class BooleanAction(argparse.Action):
 def create_parser():
     parser = argparse.ArgumentParser(
         description='Calculate differences between two files or directories',
-        add_help=False)
+        add_help=False, formatter_class=HelpFormatter)
     parser.add_argument('path1', nargs='?', help='First file or directory to '
                         'compare. If omitted, tries to read a diffoscope diff from stdin.')
     parser.add_argument('path2', nargs='?', help='Second file or directory to '
@@ -263,6 +263,15 @@ def create_parser():
                 logger.warning("Loading diff instead of calculating it, but diff-calculation flags were given; they will be ignored:")
                 logger.warning(ineffective_flags)
     return parser, post_parse
+
+
+class HelpFormatter(argparse.HelpFormatter):
+    def format_help(self, *args, **kwargs):
+        val = super().format_help(*args, **kwargs)
+        val = '{}\n\nfile formats supported:\n'.format(val)
+        for x in sorted(ComparatorManager().get_descriptions(), key=str.title):
+            val = '{}{}- {}{}.\n\n'.format(val, ' ' * 24, x[0].upper(), x[1:])
+        return val
 
 
 class RangeCompleter(object):
