@@ -177,17 +177,17 @@ def create_parser():
                         help='Treat absent files as empty')
     group3.add_argument('--exclude', dest='excludes',
                         metavar='GLOB_PATTERN', action='append', default=[],
-                        help='Exclude files that match %(metavar)s')
+                        help='Exclude/ignore files that match %(metavar)s')
     group3.add_argument('--exclude-command', dest='exclude_commands',
                         metavar='REGEX_PATTERN', action='append', default=[],
-                        help='Exclude commands that match %(metavar)s. For '
+                        help='Exclude/ignore commands that match %(metavar)s. For '
                         "example, '^readelf.*\s--debug-dump=info' takes by far "
                         'the longest time, and differences here are probably '
                         'only secondary differences caused by something that '
                         'is already represented elsewhere in the diff.')
     group3.add_argument('--exclude-directory-metadata', '--no-exclude-directory-metadata',
                         action=BooleanAction, default=None,
-                        help='Exclude (ignore) directory metadata.  Useful if '
+                        help='Exclude/ignore directory metadata.  Useful if '
                         'comparing files whose filesystem-level metadata is not '
                         'intended to be distributed to other systems. For '
                         "example, this is true for most distros' package "
