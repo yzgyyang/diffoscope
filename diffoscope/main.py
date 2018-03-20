@@ -177,27 +177,30 @@ def create_parser():
                         help='Treat absent files as empty')
     group3.add_argument('--exclude', dest='excludes',
                         metavar='GLOB_PATTERN', action='append', default=[],
-                        help='Exclude/ignore files that match %(metavar)s')
+                        help='Exclude files that match %(metavar)s. Use this '
+                        'option to ignore files based on their names.')
     group3.add_argument('--exclude-command', dest='exclude_commands',
                         metavar='REGEX_PATTERN', action='append', default=[],
-                        help='Exclude/ignore commands that match %(metavar)s. For '
-                        "example, '^readelf.*\s--debug-dump=info' takes by far "
-                        'the longest time, and differences here are probably '
-                        'only secondary differences caused by something that '
-                        'is already represented elsewhere in the diff.')
+                        help='Exclude commands that match %(metavar)s. For '
+                        "example '^readelf.*\s--debug-dump=info' can take a long "
+                        'time and differences here are likely secondary '
+                        'differences caused by something represented '
+                        'elsewhere. Use this option to disable commands that '
+                        'use a lot of resources.')
     group3.add_argument('--exclude-directory-metadata', '--no-exclude-directory-metadata',
                         action=BooleanAction, default=None,
-                        help='Exclude/ignore directory metadata.  Useful if '
-                        'comparing files whose filesystem-level metadata is not '
-                        'intended to be distributed to other systems. For '
-                        "example, this is true for most distros' package "
-                        'builders, but not true for the output of commands like '
-                        '`make install`. '
+                        help='Exclude directory metadata. Useful if comparing '
+                        'files whose filesystem-level metadata is not intended '
+                        'to be distributed to other systems. This is true for '
+                        'most distributions package builders, but not true '
+                        'for the output of commands such as `make install`. '
                         'Metadata of archive members remain un-excluded. '
-                        'Default: False if comparing two directories, else '
-                        'True. Note that "file" metadata is actually a '
-                        'property of its containing directory, and is not '
-                        'relevant when distributing the file across systems.')
+                        'Use this option to ignore permissions, timestamps, '
+                        'xattrs etc. Default: False if comparing two ',
+                        'directories, else True. Note that "file" metadata '
+                        'actually a property of its containing directory, '
+                        'and is not relevant when distributing the file across '
+                        'systems.')
     group3.add_argument('--fuzzy-threshold', type=int,
                         help='Threshold for fuzzy-matching '
                         '(0 to disable, %(default)s is default, 400 is high fuzziness)',
