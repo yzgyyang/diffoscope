@@ -196,7 +196,7 @@ def create_parser():
                         'for the output of commands such as `make install`. '
                         'Metadata of archive members remain un-excluded. '
                         'Use this option to ignore permissions, timestamps, '
-                        'xattrs etc. Default: False if comparing two ',
+                        'xattrs etc. Default: False if comparing two '
                         'directories, else True. Note that "file" metadata '
                         'actually a property of its containing directory, '
                         'and is not relevant when distributing the file across '
