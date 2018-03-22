@@ -1,3 +1,60 @@
+diffoscope (92) unstable; urgency=medium
+
+  [ Chris Lamb ]
+
+  * New features:
+    - Show the list of supported file types in the manual and --help output. We
+      can copy-paste this into the website, etc.. Thanks to Jonathan Dowland
+      for the suggestion. (Closes: #893443)
+    - Add support for comparing Gnumeric spreadsheets. (Closes: #893311)
+
+  * Bug fixes:
+    - Additionally extract the classes.dex file from .apk files; apktool does
+      not do this by default which was preventing us from recursing into it to
+      find differences. Thanks to Hans-Christoph Steiner for the report.
+      (Closes: #890904)
+    - Recursively reset the permissions of temporary directories prior to
+      deletion to ensure that non-writable permissions such as 0555 are removed
+      and do not cause a traceback. (Closes: #891363)
+    - Support the case where the python3-xattr package is installed but
+      python3-pyxattr is not. Based on an patch by Doug Freed; thanks!
+      (Closes: #892240)
+    - Update Java tests for openjdk-9. (Closes: #893183)
+
+  * Output:
+    - Print a nicer error message if you only specify one file to compare.
+    - Don't show progress bar if we passed --debug as it just gets in the way.
+
+  * Code tidying:
+    - Avoid some necessary indentation around unconditional control flow.
+    - Tidy unnecessary assignments.
+    - Move the documentation for maybe_decode into a docstring on the method
+      itself.
+    - Import LooseVersion as LooseVersion.
+    - Use more Pythonic `old_level` variable names (over `oldLabel`) and avoid
+      using ambiguous `l` variable names.
+    - Add whitespace around operators and ensure 4-line indentation throughout.
+
+  * debian/*:
+    - Move DOS/MBR check into the testsuite.
+    - Add explicit runtime dependency on python3-distutils as it was dropped in
+      src:python3.6 3.6.5~rc1-2.
+
+  * Misc:
+    - Clarify that the Reproducible Builds project is not just about
+    - Drop executable bit on doc/Makefile.
+    - Use our bin/diffoscope wrapper in manpage generation to ensure we are
+      using the local version of diffoscope.
+
+  [ Mattia Rizzolo ]
+  * Update terminology used in docs about exclusion options. Thanks to Paul
+    Wise for the idea. (Closes: #893324)
+  * Don't try to decode a string in comparators.utils.file. (Closes: #891903)
+  * Save a bunch of system calls by resetting tempfile permissions when
+    we actually need to do it.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 22 Mar 2018 10:28:44 -0400
+
 diffoscope (91) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
