@@ -3,7 +3,7 @@
 # make fixes here.
 
 PACKAGE = diffoscope
-VERSION = "92"
+VERSION = $$(cd .. && python3 setup.py -V)
 SED_fix_package_quirks = -e 's,bin/diffoscope,diffoscope,g'
 
 SED_rm_python_usage_msg = -e '/end_of_description_header/,/positional arguments/{d}'
