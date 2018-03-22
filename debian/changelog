@@ -41,7 +41,7 @@ diffoscope (92) unstable; urgency=medium
       src:python3.6 3.6.5~rc1-2.
 
   * Misc:
-    - Clarify that the Reproducible Builds project is not just about
+    - Clarify that the Reproducible Builds project is not just about Debian.
     - Drop executable bit on doc/Makefile.
     - Use our bin/diffoscope wrapper in manpage generation to ensure we are
       using the local version of diffoscope.
