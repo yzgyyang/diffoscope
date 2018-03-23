@@ -271,6 +271,11 @@ def create_parser():
 class HelpFormatter(argparse.HelpFormatter):
     def format_help(self, *args, **kwargs):
         val = super().format_help(*args, **kwargs)
+
+        # Only append the file formats if --help is passed.
+        if not set(sys.argv) & {'--help', '-h'}:
+            return val
+
         val = '{}\n\nfile formats supported:\n'.format(val)
         for x in sorted(ComparatorManager().get_descriptions(), key=str.title):
             val = '{}{}- {}{}.\n\n'.format(val, ' ' * 24, x[0].upper(), x[1:])
