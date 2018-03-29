@@ -1,3 +1,12 @@
+diffoscope (93) unstable; urgency=medium
+
+  * Only append the file formats if --help is passed, otherwise we spam
+    #debian-devel-changes et al. (re. #893443)
+  * doc/Makefile: Reinstate accidental version parsing change; my sed call
+    was over-eager.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 29 Mar 2018 10:03:03 +0100
+
 diffoscope (92) unstable; urgency=medium
 
   [ Chris Lamb ]
