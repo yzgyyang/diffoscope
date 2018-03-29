@@ -1,7 +1,7 @@
 diffoscope (93) unstable; urgency=medium
 
   * Only append the file formats if --help is passed, otherwise we spam
-    #debian-devel-changes et al. (re. #893443)
+    #debian-reproducible-changes et al. (re. #893443)
   * doc/Makefile: Reinstate accidental version parsing change; my sed call
     was over-eager.
 
