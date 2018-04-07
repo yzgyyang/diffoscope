@@ -222,6 +222,7 @@ EXTERNAL_TOOLS = {
     },
     'ssconvert': {
         'debian': 'gnumeric',
+        'arch': 'gnumeric',
     },
     'ssh-keygen': {
         'debian': 'openssh-client',
