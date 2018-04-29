@@ -28,7 +28,7 @@ from diffoscope.presenters.json import JSONPresenter
 
 from .utils import diff_expand
 from .utils.data import cwd_data, data, get_data
-from .utils.tools import skip_unless_tools_exist
+from .utils.tools import skip_unless_tools_exist, skip_unless_file_version_is_at_least
 
 re_html = re.compile(r'.*<body(?P<body>.*)<div class="footer">', re.MULTILINE | re.DOTALL)
 
@@ -75,6 +75,7 @@ def test_text_option_is_default(capsys):
     assert out == get_data('output.txt')
 
 
+@skip_unless_file_version_is_at_least('5.33')
 def test_text_proper_indentation(capsys):
     out = run(capsys, pair=('archive1.tar', 'archive2.tar'))
 

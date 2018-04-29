@@ -27,6 +27,7 @@ from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.specialize import specialize, is_direct_instance
 
 from ..utils.data import load_fixture, get_data
+from ..utils.tools import skip_unless_file_version_is_at_least
 
 
 gzip1 = load_fixture('test1.gz')
@@ -56,6 +57,7 @@ def differences(gzip1, gzip2):
     return gzip1.compare(gzip2).details
 
 
+@skip_unless_file_version_is_at_least('5.33')
 def test_metadata(differences):
     assert differences[0].source1.startswith('filetype')
     assert differences[0].source2.startswith('filetype')

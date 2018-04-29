@@ -24,6 +24,7 @@ from diffoscope.comparators.ipk import IpkFile
 from diffoscope.comparators.missing_file import MissingFile
 
 from ..utils.data import load_fixture, get_data
+from ..utils.tools import skip_unless_file_version_is_at_least
 
 
 ipk1 = load_fixture('base-files_157-r45695_ar71xx.ipk')
@@ -44,6 +45,7 @@ def differences(ipk1, ipk2):
     return ipk1.compare(ipk2).details
 
 
+@skip_unless_file_version_is_at_least('5.33')
 def test_metadata(differences):
     assert differences[0].source1.startswith('filetype')
     expected_diff = get_data('ipk_metadata_expected_diff')

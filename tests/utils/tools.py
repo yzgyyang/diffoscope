@@ -26,6 +26,11 @@ import subprocess
 from distutils.spawn import find_executable
 from distutils.version import LooseVersion
 
+def file_version():
+    return subprocess.check_output(
+        ('file', '-v'),
+    ).decode('utf-8').splitlines()[0].split('-')[-1]
+
 
 def tools_missing(*required):
     return not required or any(find_executable(x) is None for x in required)
@@ -119,3 +124,7 @@ def skip_unless_module_exists(name):
         module_is_not_importable(name),
         reason="requires {} module".format(name),
     )
+
+
+def skip_unless_file_version_is_at_least(version):
+    return skip_unless_tool_is_at_least('file', file_version, version)

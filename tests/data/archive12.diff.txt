@@ -7,8 +7,8 @@
 ├── compressed.gz
 │ ├── filetype from file(1)
 │ │ @@ -1 +1 @@
-│ │ -gzip compressed data, max compression, from Unix
-│ │ +gzip compressed data, was "compressed", last modified: Sun Mar 19 22:27:42 2017, max compression, from Unix
+│ │ -gzip compressed data, max compression, from Unix, original size 2
+│ │ +gzip compressed data, was "compressed", last modified: Sun Mar 19 22:27:42 2017, max compression, from Unix, original size 2
 │ ├── compressed
 │ │ @@ -1 +1 @@
 │ │ -a
