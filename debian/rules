@@ -47,6 +47,7 @@ override_dh_auto_build: debian/diffoscope.bash-completion
 override_dh_auto_clean:
 	dh_auto_clean -O--buildsystem=pybuild
 	dh_auto_clean -O--buildsystem=makefile -Ddoc
+	find -type d -name '__pycache__' -empty -delete
 
 override_dh_python3:
 	dh_python3 -p diffoscope \
