@@ -1,3 +1,20 @@
+diffoscope (94) unstable; urgency=medium
+
+  [ Chris Lamb ]
+  * Update tests to prevent FTBFS under file 5.33. (Closes: #897099)
+  * Remove all __pycache__ directories to avoid source-contains-empty-directory
+    Lintian warning.
+  * Remove unused test1.txt test data file.
+  * Bump Standards-Version to 4.1.4.
+
+  [ anthraxx ]
+  * Add gnumeric to the list of ArchLinux tools.
+
+  [ Paul Wise ]
+  * Sort the Debian dependencies.
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 05 May 2018 22:44:44 -0700
+
 diffoscope (93) unstable; urgency=medium
 
   * Only append the file formats if --help is passed, otherwise we spam
