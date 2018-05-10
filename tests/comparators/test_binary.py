@@ -145,9 +145,8 @@ def test_with_compare_details_and_failed_process():
 
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
-            subprocess.check_output(
+            subprocess.check_call(
                 ['sh', '-c', 'echo "%s"; exit 42' % output],
-                encoding='utf-8',
             )
             raise Exception('should not be run')
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
