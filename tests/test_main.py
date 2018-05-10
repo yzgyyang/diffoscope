@@ -143,3 +143,19 @@ def test_profiling(capsys):
     assert ret == 0
     assert "Profiling output for" in out
     assert err == ''
+
+
+def test_non_unicode_filename(capsys, tmpdir):
+    # Bug reference: https://bugs.debian.org/898022
+    path = str(tmpdir.dirpath()).encode('utf-8')
+    a = os.path.join(path, b'\xf0\x28\x8c\x28')
+    b = os.path.join(path, b'\xf0\x28\x8c\x29')
+    with open(a, 'w'), open(b, 'w'):
+        pass
+
+    # sys.argv does pretty much this decoding to arguments
+    files = [x.decode('utf-8', errors='surrogateescape') for x in (a, b)]
+    ret, out, err = run(capsys, *files)
+
+    assert ret == 0
+    assert out == err == ''

@@ -68,7 +68,9 @@ class File(object, metaclass=abc.ABCMeta):
             if not hasattr(self, '_mimedb'):
                 self._mimedb = magic.open(magic.NONE)
                 self._mimedb.load()
-            return self._mimedb.file(path)
+            return self._mimedb.file(
+                path.encode('utf-8', errors='surrogateescape')
+            )
 
         @classmethod
         def guess_encoding(self, path):
