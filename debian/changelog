@@ -1,3 +1,9 @@
+diffoscope (95) UNRELEASED; urgency=medium
+
+  * foo bar.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Thu, 10 May 2018 15:02:36 +0200
+
 diffoscope (94) unstable; urgency=medium
 
   [ Chris Lamb ]
