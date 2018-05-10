@@ -19,6 +19,7 @@
 
 import pytest
 
+from diffoscope.tools import get_current_os
 from diffoscope.comparators.git import GitIndexFile
 
 from ..utils.data import get_data, load_fixture
@@ -42,5 +43,8 @@ def differences(git1, git2):
 
 
 def test_diff(differences):
-    expected_diff = get_data('git_expected_diff')
+    if get_current_os == 'FreeBSD':
+        expected_diff = get_data('git_expected_diff_freebsd')
+    else:
+        expected_diff = get_data('git_expected_diff')
     assert differences[0].unified_diff == expected_diff
