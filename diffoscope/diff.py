@@ -43,7 +43,7 @@ re_diff_change = re.compile(r'^([+-@]).*', re.MULTILINE)
 class DiffParser(object):
     RANGE_RE = re.compile(
         # example: '@@ -26814,9 +26814,8 @@'
-        r'''
+        rb'''
           ^
             @@\s+
               -
@@ -62,7 +62,7 @@ class DiffParser(object):
         self._end_nl_q1 = end_nl_q1
         self._end_nl_q2 = end_nl_q2
         self._action = self.read_headers
-        self._diff = io.StringIO()
+        self._diff = io.BytesIO()
         self._success = False
         self._remaining_hunk_lines = None
         self._block_len = None
@@ -72,27 +72,27 @@ class DiffParser(object):
 
     @property
     def diff(self):
-        return self._diff.getvalue()
+        return self._diff.getvalue().decode('UTF-8', errors='replace')
 
     @property
     def success(self):
         return self._success
 
     def parse(self):
-        for line in self._output.splitlines(True):
-            self._action = self._action(line.decode('utf-8', errors='replace'))
+        for line in self._output.split(b'\n'):
+            self._action = self._action(line)
 
-        self._action('')
+        self._action = None
         self._success = True
 
     def read_headers(self, line):
         if not line:
             return None
 
-        if line.startswith('---'):
+        if line.startswith(b'---'):
             return self.read_headers
 
-        if line.startswith('+++'):
+        if line.startswith(b'+++'):
             return self.read_headers
 
         found = DiffParser.RANGE_RE.match(line)
@@ -100,7 +100,7 @@ class DiffParser(object):
         if not found:
             raise ValueError('Unable to parse diff headers: %r' % line)
 
-        self._diff.write(line)
+        self._diff.write(line + b'\n')
         if found.group('len1'):
             self._remaining_hunk_lines = int(found.group('len1'))
         else:
@@ -118,13 +118,13 @@ class DiffParser(object):
         if not line:
             return None
 
-        if line[0] == ' ':
+        if line[:1] == b' ':
             self._remaining_hunk_lines -= 2
-        elif line[0] == '+':
+        elif line[:1] == b'+':
             self._remaining_hunk_lines -= 1
-        elif line[0] == '-':
+        elif line[:1] == b'-':
             self._remaining_hunk_lines -= 1
-        elif line[0] == '\\':
+        elif line[:1] == b'\\':
             # When both files don't end with \n, do not show it as a difference
             if self._end_nl is None:
                 end_nl1 = self._end_nl_q1.get()
@@ -137,28 +137,28 @@ class DiffParser(object):
         else:
             raise ValueError('Unable to parse diff hunk: %r' % line)
 
-        self._diff.write(line)
+        self._diff.write(line + b'\n')
 
-        if line[0] in ('-', '+'):
-            if line[0] == self._direction:
+        if line[:1] in (b'-', b'+'):
+            if line[:1] == self._direction:
                 self._block_len += 1
             else:
                 self._block_len = 1
-                self._direction = line[0]
+                self._direction = line[:1]
 
             if self._block_len >= self._max_lines:
                 return self.skip_block
         else:
             self._block_len = 1
-            self._direction = line[0]
+            self._direction = line[:1]
 
         return self.read_hunk
 
     def skip_block(self, line):
-        if self._remaining_hunk_lines == 0 or line[0] != self._direction:
+        if self._remaining_hunk_lines == 0 or line[:1] != self._direction:
             removed = self._block_len - Config().max_diff_block_lines_saved
             if removed:
-                self._diff.write('%s[ %d lines removed ]\n' % (
+                self._diff.write(b'%s[ %d lines removed ]\n' % (
                     self._direction,
                     removed,
                 ))
@@ -335,29 +335,34 @@ def diff_split_lines(diff, keepends=True):
 
 
 def reverse_unified_diff(diff):
+    assert isinstance(diff, str)
     res = []
+    # XXX - should move to just use plain bytes nearly everywhere until ready
+    # to print instead of using strings internally as well.
     for line in diff_split_lines(diff):
+        line = line.encode('utf-8', errors='replace')
+        assert isinstance(line, bytes)
         found = DiffParser.RANGE_RE.match(line)
 
         if found:
             before = found.group('start2')
             if found.group('len2') is not None:
-                before += ',' + found.group('len2')
+                before += b',' + found.group('len2')
 
             after = found.group('start1')
             if found.group('len1') is not None:
-                after += ',' + found.group('len1')
+                after += b',' + found.group('len1')
 
-            res.append('@@ -%s +%s @@\n' % (before, after))
-        elif line.startswith('-'):
-            res.append('+')
+            res.append(b'@@ -%s +%s @@\n' % (before, after))
+        elif line.startswith(b'-'):
+            res.append(b'+')
             res.append(line[1:])
-        elif line.startswith('+'):
-            res.append('-')
+        elif line.startswith(b'+'):
+            res.append(b'-')
             res.append(line[1:])
         else:
             res.append(line)
-    return ''.join(res)
+    return b''.join(res).decode('utf-8', errors='replace')
 
 
 def color_unified_diff(diff):

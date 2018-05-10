@@ -28,6 +28,8 @@ from ..utils.nonexisting import assert_non_existing
 
 pdf1 = load_fixture('test1.pdf')
 pdf2 = load_fixture('test2.pdf')
+pdf1a = load_fixture('test_weird_non_unicode_chars1.pdf')
+pdf2a = load_fixture('test_weird_non_unicode_chars1.pdf')
 
 
 def test_identification(pdf1):
@@ -38,6 +40,10 @@ def test_no_differences(pdf1):
     difference = pdf1.compare(pdf1)
     assert difference is None
 
+def test_differences_found_with_weird_encoding(pdf1a, pdf2a):
+    # diffoscope used to crash here due to weird encoding
+    difference = pdf1a.compare(pdf2a)
+    assert difference
 
 @pytest.fixture
 def differences(pdf1, pdf2):
