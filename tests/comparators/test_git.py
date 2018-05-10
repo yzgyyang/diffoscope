@@ -43,7 +43,7 @@ def differences(git1, git2):
 
 
 def test_diff(differences):
-    if get_current_os == 'FreeBSD':
+    if get_current_os() == 'FreeBSD':
         expected_diff = get_data('git_expected_diff_freebsd')
     else:
         expected_diff = get_data('git_expected_diff')
