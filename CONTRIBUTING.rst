@@ -23,7 +23,7 @@ If you're on a Debian-based system, you can install and use the ``reportbug``
 package to help walk you through the process.
 
 You can also submit patches to the Debian bug tracker. Start by cloning the `Git
-repository <https://anonscm.debian.org/git/reproducible/diffoscope.git/>`__,
+repository <https://salsa.debian.org/reproducible-builds/diffoscope.git/>`__,
 make your changes and commit them as you normally would. You can then use
 Git's ``format-patch`` command to save your changes as a series of patches that
 can be attached to the report you submit. For example:

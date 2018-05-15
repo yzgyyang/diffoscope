@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: diffoscope
-Source: https://anonscm.debian.org/git/reproducible/diffoscope.git
+Source: https://salsa.debian.org/reproducible-builds/diffoscope.git
 
 Files: *
 Copyright: 2012-2013 Olivier Matz <zer0@droids-corp.org>
