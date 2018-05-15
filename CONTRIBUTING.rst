@@ -30,7 +30,7 @@ can be attached to the report you submit. For example:
 
 ::
 
-    git clone git://anonscm.debian.org/reproducible/diffoscope.git
+    git clone https://salsa.debian.org/reproducible-builds/diffoscope.git
     cd diffoscope
     git checkout origin/master -b <topicname>
     # <edits>
