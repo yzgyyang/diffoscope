@@ -276,9 +276,13 @@ class HelpFormatter(argparse.HelpFormatter):
         if not set(sys.argv) & {'--help', '-h'}:
             return val
 
-        val = '{}\n\nfile formats supported:\n'.format(val)
-        for x in sorted(ComparatorManager().get_descriptions(), key=str.title):
-            val = '{}{}- {}{}.\n\n'.format(val, ' ' * 24, x[0].upper(), x[1:])
+        descriptions = list(sorted(ComparatorManager().get_descriptions()))
+        val = '{}\n\nfile formats supported:\n{}{} and {}.\n'.format(
+            val,
+            ' ' * 24,
+            ', '.join(descriptions[:-1]),
+            descriptions[-1],
+        )
         return val
 
 
