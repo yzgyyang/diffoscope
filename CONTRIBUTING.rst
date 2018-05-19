@@ -57,7 +57,8 @@ Please also release a signed tarball::
     $ VERSION=FIXME
     $ git archive --format=tar --prefix=diffoscope-${VERSION}/ ${VERSION} | bzip2 -9 > diffoscope-${VERSION}.tar.bz2
     $ gpg --detach-sig --armor --output=diffoscope-${VERSION}.tar.bz2.asc < diffoscope-${VERSION}.tar.bz2
-    $ scp diffoscope-${VERSION}* alioth.debian.org:/home/groups/reproducible/htdocs/releases/diffoscope
+
+And commit them to our LFS repository at https://salsa.debian.org/reproducible-builds/reproducible-lfs
 
 After uploading, please also update the version on PyPI using::
 
