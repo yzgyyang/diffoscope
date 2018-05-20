@@ -1,4 +1,4 @@
-diffoscope (95) UNRELEASED; urgency=medium
+diffoscope (95) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
   * tests:
@@ -16,7 +16,7 @@ diffoscope (95) UNRELEASED; urgency=medium
   * The Git repository has been migrated to salsa, update all the references.
   * Drop extra whitespace in supported file format output.
 
- -- Mattia Rizzolo <mattia@debian.org>  Sun, 20 May 2018 15:09:57 +0200
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 20 May 2018 17:46:57 +0200
 
 diffoscope (94) unstable; urgency=medium
 
