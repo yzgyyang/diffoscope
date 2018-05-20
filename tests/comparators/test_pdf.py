@@ -29,7 +29,7 @@ from ..utils.nonexisting import assert_non_existing
 pdf1 = load_fixture('test1.pdf')
 pdf2 = load_fixture('test2.pdf')
 pdf1a = load_fixture('test_weird_non_unicode_chars1.pdf')
-pdf2a = load_fixture('test_weird_non_unicode_chars1.pdf')
+pdf2a = load_fixture('test_weird_non_unicode_chars2.pdf')
 
 
 def test_identification(pdf1):
