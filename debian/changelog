@@ -1,8 +1,22 @@
 diffoscope (95) UNRELEASED; urgency=medium
 
-  * foo bar.
+  [ Mattia Rizzolo ]
+  * tests:
+    + test_binary: Don't capture unused output from subprocess.
+    + test_git: Fix test failure on FreeBSD.  Closes: #872826
+      Thanks to Ximin Luo <infinity0@debian.org> for the initial patch
+  * Fix handling of filesnames with non-unicode chars.  Closes: #898022
+  * diff: Use bytes as much as possible, to prevent possible encoding issues.
+  * d/control: Make the dependency on python3-distutils an alternative on the
+    previous versions of libpython3.*-stdlib that used to ship it.
+    Closes: #898683
+  * d/watch: Update URL to the new archive.
 
- -- Mattia Rizzolo <mattia@debian.org>  Thu, 10 May 2018 15:02:36 +0200
+  [ Chris Lamb ]
+  * The Git repository has been migrated to salsa, update all the references.
+  * Drop extra whitespace in supported file format output.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 20 May 2018 15:09:57 +0200
 
 diffoscope (94) unstable; urgency=medium
 
