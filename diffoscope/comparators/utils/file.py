@@ -370,7 +370,7 @@ class File(object, metaclass=abc.ABCMeta):
                     if difference is None:
                         return None
                     suffix = ' ({})'.format(self.magic_file_type) \
-                        if self.magic_file_type != 'data'
+                        if self.magic_file_type != 'data':
                     difference.add_comment(
                         "Format-specific differences are supported for this "
                         "file format but none were detected{}".format(suffix))
