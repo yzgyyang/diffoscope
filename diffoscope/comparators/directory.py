@@ -122,7 +122,8 @@ def xattr(path1, path2):
     try:
         get_all = xattr_.get_all
     except AttributeError:
-        get_all = lambda x: xattr_.xattr(x).items()
+        def get_all(x):
+            return xattr_.xattr(x).items()
 
     def fn(x):
         return '\n'.join('{}: {}'.format(
