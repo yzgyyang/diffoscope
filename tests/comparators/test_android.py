@@ -34,6 +34,7 @@ bootimg2 = load_fixture('android2.img')
 # Part of the bug: https://bugs.debian.org/725729
 bearch = sys.byteorder == 'big'
 
+
 def test_identification(bootimg1):
     assert isinstance(bootimg1, AndroidBootImgFile)
 

@@ -26,6 +26,7 @@ import subprocess
 from distutils.spawn import find_executable
 from distutils.version import LooseVersion
 
+
 def file_version():
     return subprocess.check_output(
         ('file', '-v'),
@@ -41,6 +42,7 @@ def skip_unless_tools_exist(*required):
         tools_missing(*required),
         reason="requires {}".format(" and ".join(required)),
     )
+
 
 def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
     if tools_missing(tool):

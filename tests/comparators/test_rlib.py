@@ -52,6 +52,7 @@ def test_no_differences(rlib1):
 def differences(rlib1, rlib2):
     return rlib1.compare(rlib2).details
 
+
 @pytest.fixture
 def rlib_dis_expected_diff():
     actual_ver = llvm_version()

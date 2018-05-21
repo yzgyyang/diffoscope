@@ -126,6 +126,7 @@ class MozillaZipCommandMixin(object):
         # which is fine to ignore.
         return 0
 
+
 class MozillaZipinfo(MozillaZipCommandMixin, Zipinfo):
     pass
 

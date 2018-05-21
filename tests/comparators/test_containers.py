@@ -35,23 +35,29 @@ bzip2 = load_fixture('containers/b.tar.bz2')
 
 TYPES = "gzip bzip2 xz".split()
 
+
 @pytest.fixture
 def set1(gzip1, bzip1, xz1):
     return dict(zip(TYPES, [gzip1, bzip1, xz1]))
 
+
 @pytest.fixture
 def set2(gzip2, bzip2, xz2):
     return dict(zip(TYPES, [gzip2, bzip2, xz2]))
+
 
 def expected_magic_diff(ext1, ext2):
     meta1 = get_data('containers/magic_%s' % ext1)
     meta2 = get_data('containers/magic_%s' % ext2)
     return "@@ -1 +1 @@\n" + "-" + meta1 + "+" + meta2
 
+
 def expected_type_diff(ext1, ext2):
     return "@@ -1 +1 @@\n-%sFile\n+%sFile\n" % (ext1.capitalize(), ext2.capitalize())
 
 # Compares same content files, but with different extensions
+
+
 @skip_unless_tools_exist('xz')
 @skip_unless_file_version_is_at_least('5.33')
 def test_equal(set1):
@@ -65,6 +71,8 @@ def test_equal(set1):
             assert differences[1].unified_diff == expected_type_diff(x, y)
 
 # Compares different content files with different extensions
+
+
 @skip_unless_tools_exist('xz')
 @skip_unless_file_version_is_at_least('5.33')
 def test_different(set1, set2):
