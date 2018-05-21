@@ -368,8 +368,10 @@ class File(object, metaclass=abc.ABCMeta):
                     if difference is None:
                         return None
                     difference.add_comment(
-                        "No file format specific differences found inside, "
-                        "yet data differs ({})".format(self.magic_file_type),
+                        "Format-specific differences are supported for this "
+                        "file format but none were detected ({})".format(
+                            self.magic_file_type,
+                        ),
                     )
             except subprocess.CalledProcessError as e:
                 difference = self.compare_bytes(other, source=source)
