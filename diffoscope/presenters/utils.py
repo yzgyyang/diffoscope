@@ -29,7 +29,7 @@ def round_sigfig(num, s):
     # https://stackoverflow.com/questions/3410976/how-to-round-a-number-to-significant-figures-in-python
     # This was too painful :/
     x = float(('%%.%sg' % s) % num)
-    return x if abs(x) < (10**(s-1)) else int(x)
+    return x if abs(x) < (10 ** (s -1)) else int(x)
 
 
 def sizeof_fmt(num, suffix='B', sigfig=3):

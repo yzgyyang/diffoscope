@@ -431,23 +431,23 @@ def linediff_wagnerfischer(s, t):
     quadratic performance O(m*n).
     '''
     m, n = len(s), len(t)
-    d = [[(0, 0) for i in range(n+1)] for i in range(m+1)]
+    d = [[(0, 0) for i in range(n + 1)] for i in range(m + 1)]
 
     d[0][0] = (0, (0, 0))
-    for i in range(1, m+1):
-        d[i][0] = (i, (i-1, 0))
-    for j in range(1, n+1):
-        d[0][j] = (j, (0, j-1))
+    for i in range(1, m + 1):
+        d[i][0] = (i, (i -1, 0))
+    for j in range(1, n + 1):
+        d[0][j] = (j, (0, j - 1))
 
-    for i in range(1, m+1):
-        for j in range(1, n+1):
-            if s[i-1] == t[j-1]:
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s[i - 1] == t[j - 1]:
                 cost = 0
             else:
                 cost = 1
-            d[i][j] = min((d[i-1][j][0] + 1, (i-1, j)),
-                          (d[i][j-1][0] + 1, (i, j-1)),
-                          (d[i-1][j-1][0] + cost, (i-1, j-1)))
+            d[i][j] = min((d[i - 1][j][0] + 1, (i -1, j)),
+                          (d[i][j - 1][0] + 1, (i, j - 1)),
+                          (d[i - 1][j - 1][0] + cost, (i - 1, j - 1)))
 
     coords = []
     coord = (m, n)
@@ -464,13 +464,13 @@ def linediff_wagnerfischer(s, t):
         fx, fy = father_coord
         father_val = d[fx][fy][0]
 
-        diff = (cx-fx, cy-fy)
+        diff = (cx - fx, cy - fy)
 
         if diff == (0, 1):
             yield (False, ""), (True, t[fy])
         elif diff == (1, 0):
             yield (True, s[fx]), (False, "")
-        elif child_val-father_val == 1:
+        elif child_val - father_val == 1:
             yield (True, s[fx]), (True, t[fy])
         else:
             assert s[fx] == t[fy]

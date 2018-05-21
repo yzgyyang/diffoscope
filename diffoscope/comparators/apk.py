@@ -81,10 +81,10 @@ class ApkContainer(Archive):
                     current_dir.insert(0, relpath)
                     continue
 
-                relpath = abspath[len(self._unpacked)+1:]
+                relpath = abspath[len(self._unpacked) + 1:]
 
                 if filename == 'AndroidManifest.xml':
-                    containing_dir = root[len(self._unpacked)+1:]
+                    containing_dir = root[len(self._unpacked) + 1:]
                     if containing_dir == 'original':
                         self._andmanifest_orig = relpath
                     if containing_dir == '':

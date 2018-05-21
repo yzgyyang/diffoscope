@@ -129,7 +129,7 @@ def convert(s, ponct=0, tag=''):
             n = TABSIZE - (i % TABSIZE)
             if n == 0:
                 n = TABSIZE
-            t.write('<span class="diffponct">\xbb</span>'+'\xa0'*(n-1))
+            t.write('<span class="diffponct">\xbb</span>' + '\xa0' * (n - 1))
         elif c == " " and ponct == 1:
             t.write('<span class="diffponct">\xb7</span>')
         elif c == "\n" and ponct == 1:
@@ -215,7 +215,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
 
     visuals = u""
     for visual in difference.visuals:
-        visuals += output_visual(visual, path, indentstr, indentnum+1)
+        visuals += output_visual(visual, path, indentstr, indentnum + 1)
 
     udiff = u""
     ud_cont = None
@@ -240,7 +240,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
 
     # Add holes for child nodes
     for d in difference.details:
-        child = output_node_frame(d, path + [d], indentstr, indentnum+1, PartialString.of(d))
+        child = output_node_frame(d, path + [d], indentstr, indentnum +1, PartialString.of(d))
         child = PartialString.numl(u"""{0[1]}<div class="difference">
 {1}{0[1]}</div>
 {-1}""", 2, cont).pformatl(indent, child)
@@ -600,7 +600,7 @@ class HTMLPresenter(Presenter):
 
             ancestor = ancestors.pop(node, None)
             assert ancestor in path or (ancestor is None and node is root_difference)
-            node_output, node_continuation = output_node(ctx, node, path, "  ", len(path)-1)
+            node_output, node_continuation = output_node(ctx, node, path, "  ", len(path) - 1)
 
             add_to_existing = False
             if ancestor:

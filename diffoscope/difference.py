@@ -149,7 +149,7 @@ class Difference(object):
         yield self
         if depth != 0:
             for d in self._details:
-                yield from d.traverse_depth(depth-1)
+                yield from d.traverse_depth(depth - 1)
 
     def traverse_breadth(self, queue=None):
         queue = queue if queue is not None else [self]
