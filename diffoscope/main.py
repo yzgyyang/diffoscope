@@ -401,7 +401,7 @@ def run_diffoscope(parsed_args):
     Config().exclude_directory_metadata = parsed_args.exclude_directory_metadata
     Config().compute_visual_diffs = PresenterManager().compute_visual_diffs()
     Config().check_constraints()
-    tool_prepend_prefix(parsed_args.tool_prefix_binutils, * \
+    tool_prepend_prefix(parsed_args.tool_prefix_binutils, *
                         "ar as ld ld.bfd nm objcopy objdump ranlib readelf strip".split())
     set_path()
     set_locale()

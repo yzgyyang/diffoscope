@@ -396,7 +396,7 @@ class PartialString(object):
         return cls("{0}", cont), cont
 
     def frame(self, header, footer):
-        frame = self.__class__(self.escape(header) + \
+        frame = self.__class__(self.escape(header) +
                                "{0}" + self.escape(footer), None)
         return frame.pformat({None: self})
 

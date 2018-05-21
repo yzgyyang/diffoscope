@@ -624,7 +624,7 @@ class SideBySideDiff(object):
                     self.buf[-1] = (self.buf[-1][0],
                                     self.buf[-1][1] + '\n' + l[2:])
                 else:
-                    self.buf[-1] = (self.buf[-1][0] + '\n' + \
+                    self.buf[-1] = (self.buf[-1][0] + '\n' +
                                     l[2:], self.buf[-1][1])
                 continue
 
