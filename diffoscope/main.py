@@ -147,8 +147,7 @@ def create_parser():
     group2.add_argument('--max-page-size', metavar='BYTES', type=int,
                         help='Maximum bytes of the top-level (--html-dir) or sole '
                         '(--html) page. (default: %(default)s, remains in effect '
-                        'even with --no-default-limits)', default=
-                        Config().max_page_size).completer = RangeCompleter(
+                        'even with --no-default-limits)', default=Config().max_page_size).completer = RangeCompleter(
         Config().max_page_size)
     group2.add_argument('--max-page-size-child', metavar='BYTES', type=int,
                         help='In --html-dir output, this is the maximum bytes of '
@@ -165,8 +164,7 @@ def create_parser():
                         'spilling it into child pages (--html-dir) or skipping the '
                         'rest of the diff block. Child pages are limited instead by '
                         '--max-page-size-child. (default: %(default)s, remains in '
-                        'effect even with --no-default-limits)', default=
-                        Config().max_page_diff_block_lines).completer = RangeCompleter(
+                        'effect even with --no-default-limits)', default=Config().max_page_diff_block_lines).completer = RangeCompleter(
         Config().max_page_diff_block_lines)
     # TODO: old flag kept for backwards-compat, drop 6 months after v84
     group2.add_argument("--max-diff-block-lines-parent", metavar='LINES', type=int,
