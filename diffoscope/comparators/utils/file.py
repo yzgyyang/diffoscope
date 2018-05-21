@@ -369,11 +369,11 @@ class File(object, metaclass=abc.ABCMeta):
                     difference = self.compare_bytes(other, source=source)
                     if difference is None:
                         return None
+                    suffix = ' ({})'.format(self.magic_file_type) \
+                        if self.magic_file_type != 'data'
                     difference.add_comment(
                         "Format-specific differences are supported for this "
-                        "file format but none were detected ({})".format(
-                            self.magic_file_type,
-                        ),
+                        "file format but none were detected{}".format(suffix))
                     )
             except subprocess.CalledProcessError as e:
                 difference = self.compare_bytes(other, source=source)
