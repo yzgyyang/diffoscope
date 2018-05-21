@@ -47,5 +47,5 @@ class LlvmBitCodeFile(File):
     FILE_TYPE_RE = re.compile(r'^LLVM IR bitcode')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(LlvmBcAnalyzer,   self.path, other.path),
+        return [Difference.from_command(LlvmBcAnalyzer, self.path, other.path),
                 Difference.from_command(LlvmBcDisassembler, self.path, other.path)]
