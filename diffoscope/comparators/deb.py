@@ -108,7 +108,8 @@ class DebFile(File):
     def md5sums(self):
         if not hasattr(self, '_md5sums'):
             control_tar = self.as_container.control_tar
-            md5sums_file = control_tar.as_container.lookup_file('./md5sums') if control_tar else None
+            md5sums_file = control_tar.as_container.lookup_file(
+                './md5sums') if control_tar else None
             if md5sums_file:
                 self._md5sums = md5sums_file.parse()
             else:
@@ -122,7 +123,8 @@ class DebFile(File):
             return None
 
         if not hasattr(self, '_control'):
-            control_file = self.as_container.control_tar.as_container.lookup_file('./control')
+            control_file = self.as_container.control_tar.as_container.lookup_file(
+                './control')
             if control_file:
                 with open(control_file.path, 'rb') as f:
                     self._control = deb822.Deb822(f)
@@ -143,7 +145,8 @@ class Md5sumsFile(File):
             isinstance(file.container.source, ArchiveMember) and \
             isinstance(file.container.source.container.source, ArchiveMember) and \
             DebContainer.RE_CONTROL_TAR.match(file.container.source.container.source.name) and \
-            isinstance(file.container.source.container.source.container.source, DebFile)
+            isinstance(
+                file.container.source.container.source.container.source, DebFile)
 
     def parse(self):
         try:

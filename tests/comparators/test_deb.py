@@ -115,7 +115,8 @@ def test_skip_comparison_of_known_identical_files(deb1, deb2, monkeypatch):
     def probe(file1, file2, **kwargs):
         compared.add(file1.name)
         return orig_func(file1, file2, **kwargs)
-    monkeypatch.setattr(diffoscope.comparators.utils.compare, 'compare_files', probe)
+    monkeypatch.setattr(diffoscope.comparators.utils.compare,
+                        'compare_files', probe)
     deb1.compare(deb2)
     assert './usr/share/doc/test/README.Debian' not in compared
 

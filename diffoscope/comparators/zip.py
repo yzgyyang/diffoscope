@@ -96,7 +96,8 @@ class ZipContainer(Archive):
         # We don't really want to crash if the filename in the zip archive
         # can't be encoded using the filesystem encoding. So let's replace
         # any weird character so we can get to the bytes.
-        targetpath = os.path.join(dest_dir, os.path.basename(member_name)).encode(sys.getfilesystemencoding(), errors='replace')
+        targetpath = os.path.join(dest_dir, os.path.basename(member_name)).encode(
+            sys.getfilesystemencoding(), errors='replace')
         with self.archive.open(member_name) as source, open(targetpath, 'wb') as target:
             shutil.copyfileobj(source, target)
         return targetpath.decode(sys.getfilesystemencoding())
@@ -110,7 +111,8 @@ class ZipContainer(Archive):
 
 class ZipFile(File):
     CONTAINER_CLASS = ZipContainer
-    FILE_TYPE_RE = re.compile(r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template))\b')
+    FILE_TYPE_RE = re.compile(
+        r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template))\b')
 
     def compare_details(self, other, source=None):
         zipinfo_difference = Difference.from_command(Zipinfo, self.path, other.path) or \

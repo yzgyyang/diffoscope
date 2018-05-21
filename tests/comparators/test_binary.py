@@ -116,7 +116,8 @@ def test_with_compare_details():
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
             return [d]
-    difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH), source='source')
+    difference = MockFile(TEST_FILE1_PATH).compare(
+        MockFile(TEST_FILE2_PATH), source='source')
     assert difference.details[0] == d
 
 

@@ -96,7 +96,8 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
 
     if has_same_content:
         if not force_details:
-            logger.debug("has_same_content_as returned True; skipping further comparisons")
+            logger.debug(
+                "has_same_content_as returned True; skipping further comparisons")
             return None
         if diff_content_only:
             return None
@@ -121,7 +122,8 @@ def bail_if_non_existing(*paths):
     if not all(map(os.path.lexists, paths)):
         for path in paths:
             if not os.path.lexists(path):
-                sys.stderr.write('%s: %s: No such file or directory\n' % (sys.argv[0], path))
+                sys.stderr.write(
+                    '%s: %s: No such file or directory\n' % (sys.argv[0], path))
         sys.exit(2)
 
 

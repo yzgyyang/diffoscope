@@ -90,11 +90,13 @@ class ArchiveMember(File):
     @property
     def path(self):
         if self._path is None:
-            logger.debug("Unpacking %s from %s", self._name, self.container.source.name)
+            logger.debug("Unpacking %s from %s", self._name,
+                         self.container.source.name)
             assert self._temp_dir is None
             self._temp_dir = get_temporary_directory()
             with profile('container_extract', self.container):
-                self._path = self.container.extract(self._name, self._temp_dir.name)
+                self._path = self.container.extract(
+                    self._name, self._temp_dir.name)
         return self._path
 
     def cleanup(self):

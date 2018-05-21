@@ -67,7 +67,8 @@ def test_equal(set1):
             assert diff is None
         else:
             differences = diff.details
-            assert differences[0].unified_diff == expected_magic_diff(x, y), "{} {}".format(x, y)
+            assert differences[0].unified_diff == expected_magic_diff(
+                x, y), "{} {}".format(x, y)
             assert differences[1].unified_diff == expected_type_diff(x, y)
 
 # Compares different content files with different extensions
@@ -82,6 +83,7 @@ def test_different(set1, set2):
         if x == y:
             assert differences[0].details[1].unified_diff == expected_diff
         else:
-            assert differences[0].unified_diff == expected_magic_diff(x, y), "{} {}".format(x, y)
+            assert differences[0].unified_diff == expected_magic_diff(
+                x, y), "{} {}".format(x, y)
             assert differences[1].unified_diff == expected_type_diff(x, y)
             assert differences[2].details[1].unified_diff == expected_diff

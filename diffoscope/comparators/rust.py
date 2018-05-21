@@ -51,7 +51,8 @@ class RustObjectContainer(Archive):
         with open(dest_path, 'wb') as fpw, open(self.source.path, 'rb') as fpr:
             raw_deflate = fpr.read()[RLIB_BYTECODE_OBJECT_V1_DATA_OFFSET:]
             # decompressobj() ignores the (non-existent) checksum; a zlib.decompress() would error
-            raw_inflate = zlib.decompressobj().decompress(ZLIB_DEFAULT_COMPRESSION + raw_deflate)
+            raw_inflate = zlib.decompressobj().decompress(
+                ZLIB_DEFAULT_COMPRESSION + raw_deflate)
             fpw.write(raw_inflate)
         return dest_path
 

@@ -46,7 +46,8 @@ class Msgunfmt(Command):
         if not self._encoding:
             self._header.write(line)
             if line == b'\n':
-                logger.debug("unable to determine PO encoding, let's hope it's utf-8")
+                logger.debug(
+                    "unable to determine PO encoding, let's hope it's utf-8")
                 self._encoding = 'utf-8'
                 return self._header.getvalue()
             found = Msgunfmt.CHARSET_RE.match(line)

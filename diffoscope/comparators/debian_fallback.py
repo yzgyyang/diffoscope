@@ -27,7 +27,8 @@ class DotChangesFile(TextFile):
         difference = super().compare(other, *args, **kwargs)
         if not difference:
             return None
-        difference.add_comment('Unable to find Python debian module. Falling back to text comparison.')
+        difference.add_comment(
+            'Unable to find Python debian module. Falling back to text comparison.')
         return difference
 
 
@@ -38,7 +39,8 @@ class DotDscFile(TextFile):
         difference = super().compare(other, *args, **kwargs)
         if not difference:
             return None
-        difference.add_comment('Unable to find Python debian module. Falling back to text comparison.')
+        difference.add_comment(
+            'Unable to find Python debian module. Falling back to text comparison.')
         return difference
 
 
@@ -49,5 +51,6 @@ class DotBuildinfoFile(TextFile):
         difference = super().compare(other, *args, **kwargs)
         if not difference:
             return None
-        difference.add_comment('Unable to find Python debian module. Falling back to text comparison.')
+        difference.add_comment(
+            'Unable to find Python debian module. Falling back to text comparison.')
         return difference

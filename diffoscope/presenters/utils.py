@@ -277,7 +277,8 @@ class PartialString(object):
         fmt = self.formatter
         # use parse_no_escape so lengths are preserved
         pieces = [(len(l), f) for l, f, _, _ in fmt.parse_no_escape(fmtstr)]
-        used_args = set(fmt.arg_of_field_name(f, holes) for _, f in pieces if f is not None)
+        used_args = set(fmt.arg_of_field_name(f, holes)
+                        for _, f in pieces if f is not None)
         self.num_holes = sum(1 for _, f in pieces if f is not None)
         self.base_len = sum(l for l, _ in pieces)
 
@@ -395,7 +396,8 @@ class PartialString(object):
         return cls("{0}", cont), cont
 
     def frame(self, header, footer):
-        frame = self.__class__(self.escape(header) + "{0}" + self.escape(footer), None)
+        frame = self.__class__(self.escape(header) + \
+                               "{0}" + self.escape(footer), None)
         return frame.pformat({None: self})
 
 

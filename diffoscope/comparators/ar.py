@@ -46,7 +46,8 @@ class ArContainer(LibarchiveContainer):
         filtered_out = [p for p in members if p[0] in known_ignores]
         if filtered_out:
             for k, v in filtered_out:
-                logger.debug("ignored ar member '%s' because %s", k, known_ignores[k])
+                logger.debug("ignored ar member '%s' because %s",
+                             k, known_ignores[k])
         return [p for p in members if p[0] not in known_ignores]
 
 

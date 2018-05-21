@@ -72,15 +72,18 @@ class OtoolDisassembleInternal(Otool):
 class MachoFile(File):
     DESCRIPTION = "MacOS binaries"
     FILE_TYPE_RE = re.compile(r'^Mach-O ')
-    RE_EXTRACT_ARCHS = re.compile(r'^(?:Architectures in the fat file: .* are|Non-fat file: .* is architecture): (.*)$')
+    RE_EXTRACT_ARCHS = re.compile(
+        r'^(?:Architectures in the fat file: .* are|Non-fat file: .* is architecture): (.*)$')
 
     @staticmethod
     @tool_required('lipo')
     def get_arch_from_macho(path):
-        lipo_output = subprocess.check_output(['lipo', '-info', path]).decode('utf-8')
+        lipo_output = subprocess.check_output(
+            ['lipo', '-info', path]).decode('utf-8')
         lipo_match = MachoFile.RE_EXTRACT_ARCHS.match(lipo_output)
         if lipo_match is None:
-            raise ValueError('lipo -info on Mach-O file %s did not produce expected output. Output was: %s' % path, lipo_output)
+            raise ValueError(
+                'lipo -info on Mach-O file %s did not produce expected output. Output was: %s' % path, lipo_output)
         return lipo_match.group(1).split()
 
     def compare_details(self, other, source=None):

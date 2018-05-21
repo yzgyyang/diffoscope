@@ -102,7 +102,8 @@ def test_item3_deflate_llvm_bitcode(differences, rlib_dis_expected_diff):
     assert differences[3].source2 == 'alloc_system-d16b8f0e.0.bytecode.deflate'
     expected_diff = rlib_dis_expected_diff
     actual_diff = differences[3].details[0].details[1].unified_diff
-    assert diff_ignore_line_numbers(actual_diff) == diff_ignore_line_numbers(expected_diff)
+    assert diff_ignore_line_numbers(
+        actual_diff) == diff_ignore_line_numbers(expected_diff)
 
 
 @skip_unless_tools_exist('nm')

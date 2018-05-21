@@ -37,7 +37,8 @@ logger = logging.getLogger(__name__)
 class CbfsListing(Command):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._header_re = re.compile(r'^.*: ([^,]+, bootblocksize [0-9]+, romsize [0-9]+, offset 0x[0-9A-Fa-f]+)$')
+        self._header_re = re.compile(
+            r'^.*: ([^,]+, bootblocksize [0-9]+, romsize [0-9]+, offset 0x[0-9A-Fa-f]+)$')
 
     @tool_required('cbfstool')
     def cmdline(self):
@@ -75,9 +76,11 @@ class CbfsContainer(Archive):
     @tool_required('cbfstool')
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, os.path.basename(member_name))
-        cmd = ['cbfstool', self.source.path, 'extract', '-n', member_name, '-f', dest_path]
+        cmd = ['cbfstool', self.source.path, 'extract',
+            '-n', member_name, '-f', dest_path]
         logger.debug("cbfstool extract %s to %s", member_name, dest_path)
-        subprocess.check_call(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        subprocess.check_call(
+            cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
         return dest_path
 
 
@@ -91,7 +94,8 @@ CBFS_MAXIMUM_FILE_SIZE = 24 * 2 ** 20  # 24 MiB
 
 
 def is_header_valid(buf, size, offset=0):
-    magic, version, romsize, bootblocksize, align, cbfs_offset, architecture, pad = struct.unpack_from('!IIIIIIII', buf, offset)
+    magic, version, romsize, bootblocksize, align, cbfs_offset, architecture, pad = struct.unpack_from(
+        '!IIIIIIII', buf, offset)
     return magic == CBFS_HEADER_MAGIC and \
         (version == CBFS_HEADER_VERSION1 or version == CBFS_HEADER_VERSION2) and \
         (romsize <= size) and \
@@ -122,7 +126,8 @@ class CbfsFile(File):
             elif not file.name.endswith('.rom'):
                 return False
             else:
-                logger.debug('CBFS relative offset seems wrong, scanning whole image')
+                logger.debug(
+                    'CBFS relative offset seems wrong, scanning whole image')
             f.seek(0, io.SEEK_SET)
             offset = 0
             buf = f.read(CBFS_HEADER_SIZE)

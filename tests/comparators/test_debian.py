@@ -54,7 +54,8 @@ def dot_changes1(tmpdir):
     dot_changes_path = str(tmpdir.join('a/test_1.changes'))
     shutil.copy(TEST_DOT_CHANGES_FILE1_PATH, dot_changes_path)
     shutil.copy(TEST_DEB_FILE1_PATH, str(tmpdir.join('a/test_1_all.deb')))
-    shutil.copy(TEST_DOT_BUILDINFO_FILE1_PATH, str(tmpdir.join('a/test_1.buildinfo')))
+    shutil.copy(TEST_DOT_BUILDINFO_FILE1_PATH, str(
+        tmpdir.join('a/test_1.buildinfo')))
     return specialize(FilesystemFile(dot_changes_path))
 
 
@@ -64,7 +65,8 @@ def dot_changes2(tmpdir):
     dot_changes_path = str(tmpdir.join('b/test_1.changes'))
     shutil.copy(TEST_DOT_CHANGES_FILE2_PATH, dot_changes_path)
     shutil.copy(TEST_DEB_FILE2_PATH, str(tmpdir.join('b/test_1_all.deb')))
-    shutil.copy(TEST_DOT_BUILDINFO_FILE2_PATH, str(tmpdir.join('b/test_2.buildinfo')))
+    shutil.copy(TEST_DOT_BUILDINFO_FILE2_PATH, str(
+        tmpdir.join('b/test_2.buildinfo')))
     return specialize(FilesystemFile(dot_changes_path))
 
 
@@ -74,7 +76,8 @@ def dot_changes3(tmpdir):
     dot_changes_path = str(tmpdir.join('c/test_3.changes'))
     shutil.copy(TEST_DOT_CHANGES_FILE3_PATH, dot_changes_path)
     shutil.copy(TEST_DEB_FILE1_PATH, str(tmpdir.join('c/test_1_all.deb')))
-    shutil.copy(TEST_DOT_BUILDINFO_FILE2_PATH, str(tmpdir.join('c/test_2.buildinfo')))
+    shutil.copy(TEST_DOT_BUILDINFO_FILE2_PATH, str(
+        tmpdir.join('c/test_2.buildinfo')))
     return specialize(FilesystemFile(dot_changes_path))
 
 
@@ -84,7 +87,8 @@ def dot_changes4(tmpdir):
     dot_changes_path = str(tmpdir.join('d/test_4.changes'))
     shutil.copy(TEST_DOT_CHANGES_FILE4_PATH, dot_changes_path)
     shutil.copy(TEST_DEB_FILE2_PATH, str(tmpdir.join('d/test_1_all.deb')))
-    shutil.copy(TEST_DOT_BUILDINFO_FILE1_PATH, str(tmpdir.join('d/test_2.buildinfo')))
+    shutil.copy(TEST_DOT_BUILDINFO_FILE1_PATH, str(
+        tmpdir.join('d/test_2.buildinfo')))
     return specialize(FilesystemFile(dot_changes_path))
 
 
@@ -141,8 +145,10 @@ def test_dot_changes_no_differences_exclude_buildinfo(dot_changes1, dot_changes3
 @skip_unless_module_exists('debian.deb822')
 def test_dot_changes_identical_contents_and_different_files(dot_changes_differences_identical_contents_and_different_files):
     assert dot_changes_differences_identical_contents_and_different_files[0]
-    expected_diff = get_data('dot_changes_identical_contents_and_different_files_expected_diff')
-    assert dot_changes_differences_identical_contents_and_different_files[0].unified_diff == expected_diff
+    expected_diff = get_data(
+        'dot_changes_identical_contents_and_different_files_expected_diff')
+    assert dot_changes_differences_identical_contents_and_different_files[
+        0].unified_diff == expected_diff
 
 
 @skip_unless_module_exists('debian.deb822')
@@ -150,9 +156,12 @@ def test_dot_changes_different_contents_and_identical_files(dot_changes_differen
     assert dot_changes_differences_different_contents_and_identical_files[0]
     assert dot_changes_differences_different_contents_and_identical_files[1]
     expected_diff_contents = get_data('dot_changes_description_expected_diff')
-    expected_diff_files = get_data('dot_changes_different_contents_and_identical_files_expected_diff')
-    assert dot_changes_differences_different_contents_and_identical_files[0].unified_diff == expected_diff_contents
-    assert dot_changes_differences_different_contents_and_identical_files[1].unified_diff == expected_diff_files
+    expected_diff_files = get_data(
+        'dot_changes_different_contents_and_identical_files_expected_diff')
+    assert dot_changes_differences_different_contents_and_identical_files[
+        0].unified_diff == expected_diff_contents
+    assert dot_changes_differences_different_contents_and_identical_files[
+        1].unified_diff == expected_diff_files
 
 
 TEST_DOT_DSC_FILE1_PATH = data('test1.dsc')

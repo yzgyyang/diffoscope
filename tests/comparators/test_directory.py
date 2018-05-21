@@ -34,12 +34,14 @@ TEST_FILE2_PATH = data('text_ascii2')
 
 
 def test_no_differences():
-    difference = compare_directories(os.path.dirname(__file__), os.path.dirname(__file__))
+    difference = compare_directories(
+        os.path.dirname(__file__), os.path.dirname(__file__))
     assert difference is None
 
 
 def test_no_differences_with_extra_slash():
-    difference = compare_directories(os.path.dirname(__file__) + '/', os.path.dirname(__file__))
+    difference = compare_directories(os.path.dirname(
+        __file__) + '/', os.path.dirname(__file__))
     assert difference is None
 
 

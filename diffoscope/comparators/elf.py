@@ -376,7 +376,8 @@ def get_build_id(path):
         logger.debug("Unable to get Build ID for %s: %s", path, e)
         return None
 
-    m = re.search(r'^\s+Build ID: ([0-9a-f]+)$', output.decode('utf-8'), flags=re.MULTILINE)
+    m = re.search(r'^\s+Build ID: ([0-9a-f]+)$',
+                  output.decode('utf-8'), flags=re.MULTILINE)
     if not m:
         return None
 
@@ -394,7 +395,8 @@ def get_debug_link(path):
         logger.debug("Unable to get Build Id for %s: %s", path, e)
         return None
 
-    m = re.search(r'^\s+\[\s+0\]\s+(\S+)$', output.decode('utf-8', errors='replace'), flags=re.MULTILINE)
+    m = re.search(r'^\s+\[\s+0\]\s+(\S+)$', output.decode('utf-8',
+                  errors='replace'), flags=re.MULTILINE)
     if not m:
         return None
 
@@ -415,8 +417,10 @@ class ElfContainer(Container):
         super().__init__(*args, **kwargs)
         logger.debug("Creating ElfContainer for %s", self.source.path)
 
-        cmd = [get_tool_name('readelf'), '--wide', '--section-headers', self.source.path]
-        output = subprocess.check_output(cmd, shell=False, stderr=subprocess.DEVNULL)
+        cmd = [get_tool_name('readelf'), '--wide',
+                             '--section-headers', self.source.path]
+        output = subprocess.check_output(
+            cmd, shell=False, stderr=subprocess.DEVNULL)
         has_debug_symbols = False
 
         try:
@@ -448,7 +452,8 @@ class ElfContainer(Container):
                     for x in flags if x in ElfContainer.SECTION_FLAG_MAPPING
                 ][0]
 
-                logger.debug("Adding section %s (%s) as %s", name, type, elf_class)
+                logger.debug("Adding section %s (%s) as %s",
+                             name, type, elf_class)
                 self._sections[name] = elf_class(self, name)
 
         except Exception as e:
@@ -492,7 +497,8 @@ class ElfContainer(Container):
             deb.container.dbgsym_build_id_map = get_build_id_map(deb.container)
 
         if build_id not in deb.container.dbgsym_build_id_map:
-            logger.debug('Unable to find a matching debug package for Build Id %s', build_id)
+            logger.debug(
+                'Unable to find a matching debug package for Build Id %s', build_id)
             return
 
         dbgsym_package = deb.container.dbgsym_build_id_map[build_id]
@@ -500,9 +506,11 @@ class ElfContainer(Container):
             build_id[:2],
             build_id[2:],
         )
-        debug_file = dbgsym_package.as_container.data_tar.as_container.lookup_file(debug_file_path)
+        debug_file = dbgsym_package.as_container.data_tar.as_container.lookup_file(
+            debug_file_path)
         if not debug_file:
-            logger.debug('Unable to find the matching debug file %s in %s', debug_file_path, dbgsym_package)
+            logger.debug('Unable to find the matching debug file %s in %s',
+                         debug_file_path, dbgsym_package)
             return
 
         # Create a .debug directory and link the debug symbols there with the
@@ -529,7 +537,8 @@ class ElfContainer(Container):
             prefix='{}.debuglink.'.format(self.source.path),
         ).name
 
-        objcopy('--only-section=.gnu_debuglink', self.source.path, debuglink_path)
+        objcopy('--only-section=.gnu_debuglink',
+                self.source.path, debuglink_path)
 
         # 2. Monkey-patch the ElfSection object created for the .gnu_debuglink
         # to change the path to point to this new file

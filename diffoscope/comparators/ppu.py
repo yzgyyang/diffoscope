@@ -73,7 +73,8 @@ class PpuFile(File):
         if not hasattr(PpuFile, 'ppu_version'):
             try:
                 with profile('command', 'ppudump'):
-                    subprocess.check_output(['ppudump', '-vh', file.path], shell=False, stderr=subprocess.STDOUT)
+                    subprocess.check_output(
+                        ['ppudump', '-vh', file.path], shell=False, stderr=subprocess.STDOUT)
                 PpuFile.ppu_version = ppu_version
             except subprocess.CalledProcessError as e:
                 error = e.output.decode('utf-8', errors='ignore')

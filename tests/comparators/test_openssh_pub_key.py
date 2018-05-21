@@ -62,6 +62,7 @@ def test_diff(differences):
 @skip_unless_tools_exist('ssh-keygen')
 def test_compare_non_existing(monkeypatch, opensshpubkey1):
     monkeypatch.setattr(Config(), 'new_file', True)
-    difference = opensshpubkey1.compare(MissingFile('/nonexisting', opensshpubkey1))
+    difference = opensshpubkey1.compare(
+        MissingFile('/nonexisting', opensshpubkey1))
     assert difference.source2 == '/nonexisting'
     assert len(difference.details) > 0

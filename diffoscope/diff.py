@@ -484,7 +484,8 @@ def linediff_simplify(g):
         if not current:
             current = l, r
         elif current[0][0] == l[0] and current[1][0] == r[0]:
-            current = (l[0], current[0][1] + l[1]), (r[0], current[1][1] + r[1])
+            current = (l[0], current[0][1] + l[1]
+                       ), (r[0], current[1][1] + r[1])
         else:
             yield current
             current = l, r
@@ -620,9 +621,11 @@ class SideBySideDiff(object):
 
             if re.match(r"^\\ No newline", l):
                 if self.hunk_size2 == 0:
-                    self.buf[-1] = (self.buf[-1][0], self.buf[-1][1] + '\n' + l[2:])
+                    self.buf[-1] = (self.buf[-1][0],
+                                    self.buf[-1][1] + '\n' + l[2:])
                 else:
-                    self.buf[-1] = (self.buf[-1][0] + '\n' + l[2:], self.buf[-1][1])
+                    self.buf[-1] = (self.buf[-1][0] + '\n' + \
+                                    l[2:], self.buf[-1][1])
                 continue
 
             if self.hunk_size1 <= 0 and self.hunk_size2 <= 0:

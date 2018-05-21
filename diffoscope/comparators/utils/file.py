@@ -205,7 +205,8 @@ class File(object, metaclass=abc.ABCMeta):
                 return self._other_file.__class__.CONTAINER_CLASS(self)
             return None
         if not hasattr(self, '_as_container'):
-            logger.debug('instantiating %s for %s', self.__class__.CONTAINER_CLASS, self)
+            logger.debug('instantiating %s for %s',
+                         self.__class__.CONTAINER_CLASS, self)
             try:
                 self._as_container = self.__class__.CONTAINER_CLASS(self)
             except RequiredToolNotFound:
@@ -316,7 +317,8 @@ class File(object, metaclass=abc.ABCMeta):
                 msg = "Reached max container depth ({})".format(depth)
                 logger.debug(msg)
                 difference.add_comment(msg)
-            details.extend(self.as_container.compare(other.as_container, no_recurse=no_recurse))
+            details.extend(self.as_container.compare(
+                other.as_container, no_recurse=no_recurse))
 
         details = [x for x in details if x]
         if not details:
@@ -392,7 +394,8 @@ class File(object, metaclass=abc.ABCMeta):
                     "'%s' not available in path. Falling back to binary comparison." % e.command)
                 package = e.get_package()
                 if package:
-                    difference.add_comment("Install '%s' to get a better output." % package)
+                    difference.add_comment(
+                        "Install '%s' to get a better output." % package)
             except OutputParsingError as e:
                 difference = self.compare_bytes(other, source=source)
                 if difference is None:

@@ -29,7 +29,8 @@ logger = logging.getLogger(__name__)
 def command_excluded(command):
     for y in Config().exclude_commands:
         if re.search(y, command):
-            logger.debug("Excluding command '%s' as it matches pattern '%s'", command, y)
+            logger.debug(
+                "Excluding command '%s' as it matches pattern '%s'", command, y)
             return True
     return False
 

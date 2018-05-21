@@ -89,7 +89,8 @@ class SquashfsMember(ArchiveMember):
 class SquashfsRegularFile(SquashfsMember):
     # Example line:
     # -rw-r--r-- user/group   446 2015-06-24 14:49 squashfs-root/text
-    LINE_RE = re.compile(r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$')
+    LINE_RE = re.compile(
+        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$')
 
     @staticmethod
     def parse(line):
@@ -105,7 +106,8 @@ class SquashfsRegularFile(SquashfsMember):
 class SquashfsDirectory(Directory, SquashfsMember):
     # Example line:
     # drwxr-xr-x user/group    51 2015-06-24 14:47 squashfs-root
-    LINE_RE = re.compile(r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$')
+    LINE_RE = re.compile(
+        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$')
 
     @staticmethod
     def parse(line):
@@ -125,7 +127,8 @@ class SquashfsDirectory(Directory, SquashfsMember):
 
     @property
     def path(self):
-        raise NotImplementedError("SquashfsDirectory is not meant to be extracted.")
+        raise NotImplementedError(
+            "SquashfsDirectory is not meant to be extracted.")
 
     def is_directory(self):
         return True
@@ -186,7 +189,8 @@ class SquashfsDevice(Device, SquashfsMember):
             d['mode'] = SquashfsDevice.KIND_MAP[d['kind']]
             del d['kind']
         except KeyError:
-            raise SquashfsInvalidLineFormat("unknown device kind %s" % d['kind'])
+            raise SquashfsInvalidLineFormat(
+                "unknown device kind %s" % d['kind'])
 
         try:
             d['major'] = int(d['major'])

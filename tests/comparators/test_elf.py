@@ -148,13 +148,15 @@ TEST_DBGSYM_DEB2_PATH = data('dbgsym/mult/test-dbgsym_1_amd64.deb')
 
 @pytest.fixture
 def dbgsym_dir1():
-    container = FilesystemDirectory(os.path.dirname(TEST_DBGSYM_DEB1_PATH)).as_container
+    container = FilesystemDirectory(
+        os.path.dirname(TEST_DBGSYM_DEB1_PATH)).as_container
     return specialize(FilesystemFile(TEST_DBGSYM_DEB1_PATH, container=container))
 
 
 @pytest.fixture
 def dbgsym_dir2():
-    container = FilesystemDirectory(os.path.dirname(TEST_DBGSYM_DEB2_PATH)).as_container
+    container = FilesystemDirectory(
+        os.path.dirname(TEST_DBGSYM_DEB2_PATH)).as_container
     return specialize(FilesystemFile(TEST_DBGSYM_DEB2_PATH, container=container))
 
 

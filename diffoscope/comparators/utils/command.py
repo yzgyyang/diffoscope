@@ -32,7 +32,8 @@ class Command(object, metaclass=abc.ABCMeta):
         self._path = path
 
     def start(self):
-        logger.debug("Executing %s", ' '.join([shlex.quote(x) for x in self.cmdline()]))
+        logger.debug("Executing %s", ' '.join(
+            [shlex.quote(x) for x in self.cmdline()]))
 
         self._stdin = self.stdin()
         # "stdin" used to be a feeder but we didn't need the functionality so

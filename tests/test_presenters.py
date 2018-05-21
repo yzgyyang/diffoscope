@@ -30,7 +30,8 @@ from .utils import diff_expand
 from .utils.data import cwd_data, data, get_data
 from .utils.tools import skip_unless_tools_exist, skip_unless_file_version_is_at_least
 
-re_html = re.compile(r'.*<body(?P<body>.*)<div class="footer">', re.MULTILINE | re.DOTALL)
+re_html = re.compile(
+    r'.*<body(?P<body>.*)<div class="footer">', re.MULTILINE | re.DOTALL)
 
 
 def run(capsys, *args, pair=('test1.tar', 'test2.tar')):
@@ -201,7 +202,8 @@ def test_partial_string():
     assert tmpl.pformat({b: "World!"}) == PartialString('{0} World!', a)
     assert tmpl.base_len, tmpl.num_holes == (1, 2)
     assert tmpl.size(hole_size=33) == 67
-    assert tmpl.pformat({a: PartialString('{0}', b)}) == PartialString('{0} {0}', b)
+    assert tmpl.pformat({a: PartialString('{0}', b)}
+                        ) == PartialString('{0} {0}', b)
     assert tmpl.pformat({a: tmpl}) == PartialString('{0} {1} {1}', a, b)
     assert tmpl.pformat({b: tmpl}) == PartialString('{0} {0} {1}', a, b)
     PartialString("{1}", a, b)
@@ -229,10 +231,12 @@ def test_partial_string_numl():
 def test_partial_string_escape():
     tmpl = PartialString.numl("find {0} -name {1} " +
                               PartialString.escape("-exec ls -la {} \;"), 2)
-    assert tmpl == PartialString('find {0} -name {1} -exec ls -la {{}} \\;', *tmpl.holes)
+    assert tmpl == PartialString(
+        'find {0} -name {1} -exec ls -la {{}} \\;', *tmpl.holes)
     assert tmpl.size() == 33
     assert tmpl.size(4) == 39
-    assert tmpl == PartialString.numl("find {0} -name {1} -exec ls -la {2} \;", 3).pformat({2: "{}"})
+    assert tmpl == PartialString.numl(
+        "find {0} -name {1} -exec ls -la {2} \;", 3).pformat({2: "{}"})
 
     assert (tmpl.pformatl("my{}path", "my{}file") ==
             PartialString('find my{{}}path -name my{{}}file -exec ls -la {{}} \\;'))

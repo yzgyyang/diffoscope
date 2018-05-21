@@ -130,7 +130,8 @@ class Container(object, metaclass=abc.ABCMeta):
     def comparisons(self, other):
         my_members = OrderedDict(self.get_adjusted_members_sizes())
         other_members = OrderedDict(other.get_adjusted_members_sizes())
-        total_size = sum(x[1] for x in itertools.chain(my_members.values(), other_members.values()))
+        total_size = sum(x[1] for x in itertools.chain(
+            my_members.values(), other_members.values()))
         # TODO: progress could be a bit more accurate here, give more weight to fuzzy-hashed files
         # TODO: merge DirectoryContainer.comparisons() into this
 
@@ -149,7 +150,8 @@ class Container(object, metaclass=abc.ABCMeta):
 
             other_names = set(other_members.keys())
             # keep it sorted like my_members
-            both_names = [name for name in my_members.keys() if name in other_names]
+            both_names = [name for name in my_members.keys()
+                                                           if name in other_names]
             for name in both_names:
                 yield prep_yield(name, name)
 
@@ -171,7 +173,8 @@ class Container(object, metaclass=abc.ABCMeta):
         from .compare import compare_files
 
         def compare_pair(file1, file2, comment):
-            difference = compare_files(file1, file2, source=None, diff_content_only=no_recurse)
+            difference = compare_files(
+                file1, file2, source=None, diff_content_only=no_recurse)
             if comment:
                 if difference is None:
                     difference = Difference(None, file1.name, file2.name)

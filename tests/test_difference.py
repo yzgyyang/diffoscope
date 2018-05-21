@@ -29,7 +29,8 @@ def assert_size(diff, size):
     assert size == diff.size()
     assert size == sum(d.size_self() for d in diff.traverse_breadth())
     g = itertools.count()
-    assert size == sum(d.size_self() for d in diff.traverse_heapq(lambda x, _: next(g)))
+    assert size == sum(d.size_self()
+                       for d in diff.traverse_heapq(lambda x, _: next(g)))
 
 
 def assert_algebraic_properties(d, size):
@@ -41,7 +42,8 @@ def test_too_much_input_for_diff(monkeypatch):
     monkeypatch.setattr(Config(), 'max_diff_input_lines', 20)
     too_long_text_a = io.StringIO("a\n" * 21)
     too_long_text_b = io.StringIO("b\n" * 21)
-    difference = Difference.from_text_readers(too_long_text_a, too_long_text_b, 'a', 'b')
+    difference = Difference.from_text_readers(
+        too_long_text_a, too_long_text_b, 'a', 'b')
     assert '[ Too much input for diff ' in difference.unified_diff
     assert_algebraic_properties(difference, 290)
 
@@ -51,7 +53,8 @@ def test_too_long_diff_block_lines(monkeypatch):
     monkeypatch.setattr(Config(), 'max_diff_block_lines_saved', 10)
     too_long_text_a = io.StringIO("a\n" * 21)
     too_long_text_b = io.StringIO("b\n" * 21)
-    difference = Difference.from_text_readers(too_long_text_a, too_long_text_b, 'a', 'b')
+    difference = Difference.from_text_readers(
+        too_long_text_a, too_long_text_b, 'a', 'b')
     assert '[ 11 lines removed ]' in difference.unified_diff
     assert_algebraic_properties(difference, 124)
 
@@ -91,7 +94,8 @@ def test_traverse_heapq():
         return depth, node.size_self()
     assert_size(diff, 284)
     results = [d.source1[6:] for d in diff.traverse_heapq(f)]
-    assert results == ['', 'a', 'c', 'b', 'c/1', 'a/3', 'a/2', 'b/2', 'b/3', 'c/3', 'b/1', 'a/1', 'c/2']
+    assert results == ['', 'a', 'c', 'b', 'c/1', 'a/3',
+        'a/2', 'b/2', 'b/3', 'c/3', 'b/1', 'a/1', 'c/2']
 
 
 def test_non_str_arguments_to_source1_source2():

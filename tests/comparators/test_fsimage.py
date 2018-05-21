@@ -82,7 +82,8 @@ def test_differences(differences, guestfs_tempdir):
     assert encodingdiff.source1 == 'encoding'
     assert encodingdiff.source2 == 'encoding'
     expected_diff = get_data('ext4_expected_diffs')
-    found_diff = tarinfo.unified_diff + tardiff.unified_diff + encodingdiff.unified_diff
+    found_diff = tarinfo.unified_diff + \
+        tardiff.unified_diff + encodingdiff.unified_diff
     assert expected_diff == found_diff
 
 

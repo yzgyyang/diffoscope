@@ -77,7 +77,8 @@ def test_remove_temp_files_on_sigterm(capsys, tmpdir, monkeypatch):
     if pid == 0:
         def suicide(*args):
             os.kill(os.getpid(), signal.SIGTERM)
-        monkeypatch.setattr('diffoscope.comparators.text.TextFile.compare', suicide)
+        monkeypatch.setattr(
+            'diffoscope.comparators.text.TextFile.compare', suicide)
         tempfile.tempdir = str(tmpdir)
 
         ret, _, _ = run(capsys, *TEST_TARS)

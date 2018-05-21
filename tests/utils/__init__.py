@@ -20,7 +20,8 @@
 import html
 import re
 
-re_diff_line_numbers = re.compile(r"(^|\n)@@ -(\d+),(\d+) \+(\d+),(\d+) @@(?=\n|$)")
+re_diff_line_numbers = re.compile(
+    r"(^|\n)@@ -(\d+),(\d+) \+(\d+),(\d+) @@(?=\n|$)")
 
 
 def diff_ignore_line_numbers(diff):

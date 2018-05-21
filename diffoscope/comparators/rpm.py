@@ -99,7 +99,8 @@ class RpmContainer(Archive):
         dest_path = os.path.join(dest_dir, 'content')
         cmd = ['rpm2cpio', self.source.path]
         with open(dest_path, 'wb') as dest:
-            subprocess.check_call(cmd, shell=False, stdout=dest, stderr=subprocess.PIPE)
+            subprocess.check_call(
+                cmd, shell=False, stdout=dest, stderr=subprocess.PIPE)
         return dest_path
 
 

@@ -41,8 +41,10 @@ def list_files(path):
     path = os.path.realpath(path)
     all_files = []
     for root, dirs, names in os.walk(path):
-        all_files.extend([os.path.join(root[len(path) + 1:], dir) for dir in dirs])
-        all_files.extend([os.path.join(root[len(path) + 1:], name) for name in names])
+        all_files.extend([os.path.join(root[len(path) + 1:], dir)
+                         for dir in dirs])
+        all_files.extend([os.path.join(root[len(path) + 1:], name)
+                         for name in names])
     all_files.sort()
     return all_files
 
@@ -135,7 +137,8 @@ def xattr(path1, path2):
 
 def compare_meta(path1, path2):
     if Config().exclude_directory_metadata:
-        logger.debug("Excluding directory metadata for paths (%s, %s)", path1, path2)
+        logger.debug(
+            "Excluding directory metadata for paths (%s, %s)", path1, path2)
         return []
 
     logger.debug('compare_meta(%s, %s)', path1, path2)
@@ -154,7 +157,8 @@ def compare_meta(path1, path2):
     try:
         differences.append(Difference.from_command(Getfacl, path1, path2))
     except RequiredToolNotFound:
-        logger.warning("Unable to find 'getfacl', some directory metadata differences might not be noticed.")
+        logger.warning(
+            "Unable to find 'getfacl', some directory metadata differences might not be noticed.")
     try:
         lsattr1 = lsattr(path1)
         lsattr2 = lsattr(path2)
@@ -166,9 +170,11 @@ def compare_meta(path1, path2):
             source='lsattr',
         ))
     except RequiredToolNotFound:
-        logger.info("Unable to find 'lsattr', some directory metadata differences might not be noticed.")
+        logger.info(
+            "Unable to find 'lsattr', some directory metadata differences might not be noticed.")
     differences.append(xattr(path1, path2))
     return [d for d in differences if d is not None]
+
 
 def compare_directories(path1, path2, source=None):
     return FilesystemDirectory(path1).compare(FilesystemDirectory(path2))
@@ -255,8 +261,10 @@ class DirectoryContainer(Container):
 
     def comparisons(self, other):
         my_members = collections.OrderedDict(self.get_adjusted_members_sizes())
-        other_members = collections.OrderedDict(other.get_adjusted_members_sizes())
-        total_size = sum(x[1] for x in my_members.values()) + sum(x[1] for x in other_members.values())
+        other_members = collections.OrderedDict(
+            other.get_adjusted_members_sizes())
+        total_size = sum(x[1] for x in my_members.values()) + \
+                         sum(x[1] for x in other_members.values())
 
         to_compare = set(my_members.keys()).intersection(other_members.keys())
         with Progress(total_size) as p:

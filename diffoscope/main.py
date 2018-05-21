@@ -64,7 +64,8 @@ class BooleanAction(argparse.Action):
     def __init__(self, option_strings, dest, nargs=None, **kwargs):
         if nargs is not None:
             raise ValueError("nargs not allowed for BooleanAction")
-        super(BooleanAction, self).__init__(option_strings, dest, nargs=0, **kwargs)
+        super(BooleanAction, self).__init__(
+            option_strings, dest, nargs=0, **kwargs)
 
     def __call__(self, parser, namespace, values, option_string=None):
         setattr(namespace, self.dest, not option_string.startswith("--no"))
@@ -130,7 +131,8 @@ def create_parser():
     # everything marked with default=None below is affected by no-default-limits
     group2.add_argument('--max-text-report-size', metavar='BYTES', type=int,
                         help='Maximum bytes written in --text report. (0 to '
-                        'disable, default: %d)' % Config().max_text_report_size,
+                        'disable, default: %d)' % Config(
+                        ).max_text_report_size,
                         default=None)
     group2.add_argument('--max-report-size', metavar='BYTES', type=int,
                         help='Maximum bytes of a report in a given format, '
@@ -250,7 +252,8 @@ def create_parser():
     if argcomplete:
         argcomplete.autocomplete(parser)
     elif '_ARGCOMPLETE' in os.environ:
-        logger.error('Argument completion requested but the "argcomplete" module is not installed. It can be obtained at https://pypi.python.org/pypi/argcomplete')
+        logger.error(
+            'Argument completion requested but the "argcomplete" module is not installed. It can be obtained at https://pypi.python.org/pypi/argcomplete')
         sys.exit(1)
 
     def post_parse(parsed_args):
@@ -261,7 +264,8 @@ def create_parser():
                                  if getattr(parsed_args, x.dest) != x.default
                                  for f in x.option_strings]
             if ineffective_flags:
-                logger.warning("Loading diff instead of calculating it, but diff-calculation flags were given; they will be ignored:")
+                logger.warning(
+                    "Loading diff instead of calculating it, but diff-calculation flags were given; they will be ignored:")
                 logger.warning(ineffective_flags)
     return parser, post_parse
 
@@ -290,7 +294,8 @@ class RangeCompleter(object):
             tmp = end
             end = start
             start = tmp
-        self.choices = range(start, end + 1, int((end - start + 1) / divisions))
+        self.choices = range(
+            start, end + 1, int((end - start + 1) / divisions))
 
     def __call__(self, prefix, **kwargs):
         return (str(i) for i in self.choices if str(i).startswith(prefix))
@@ -364,20 +369,24 @@ def run_diffoscope(parsed_args):
     PresenterManager().configure(parsed_args)
     logger.debug("Starting diffoscope %s", VERSION)
     if not tlsh and Config().fuzzy_threshold != parsed_args.fuzzy_threshold:
-        logger.warning('Fuzzy-matching is currently disabled as the "tlsh" module is unavailable.')
+        logger.warning(
+            'Fuzzy-matching is currently disabled as the "tlsh" module is unavailable.')
     maybe_set_limit(Config(), parsed_args, "max_report_size")
     maybe_set_limit(Config(), parsed_args, "max_text_report_size")
     maybe_set_limit(Config(), parsed_args, "max_diff_block_lines")
     Config().max_page_size = parsed_args.max_page_size
     # TODO: old flag kept for backwards-compat, drop 6 months after v84
     if parsed_args.max_report_size_child is not None:
-        logger.warning("Detected deprecated flag --max-report-size-child; use --max-page-size-child instead.")
+        logger.warning(
+            "Detected deprecated flag --max-report-size-child; use --max-page-size-child instead.")
         Config().max_page_size_child = parsed_args.max_report_size_child
     Config().max_page_size_child = parsed_args.max_page_size_child
     # TODO: old flag kept for backwards-compat, drop 6 months after v84
     if parsed_args.max_diff_block_lines_parent is not None:
-        logger.warning("Detected deprecated flag --max-diff-block-lines-parent; use --max-page-diff-block-lines instead.")
-        logger.warning("Note that the new flag --max-page-diff-block-lines also applies to --html output.")
+        logger.warning(
+            "Detected deprecated flag --max-diff-block-lines-parent; use --max-page-diff-block-lines instead.")
+        logger.warning(
+            "Note that the new flag --max-page-diff-block-lines also applies to --html output.")
         Config().max_page_diff_block_lines = parsed_args.max_diff_block_lines_parent
     Config().max_page_diff_block_lines = parsed_args.max_page_diff_block_lines
 
@@ -392,7 +401,8 @@ def run_diffoscope(parsed_args):
     Config().exclude_directory_metadata = parsed_args.exclude_directory_metadata
     Config().compute_visual_diffs = PresenterManager().compute_visual_diffs()
     Config().check_constraints()
-    tool_prepend_prefix(parsed_args.tool_prefix_binutils, *"ar as ld ld.bfd nm objcopy objdump ranlib readelf strip".split())
+    tool_prepend_prefix(parsed_args.tool_prefix_binutils, * \
+                        "ar as ld ld.bfd nm objcopy objdump ranlib readelf strip".split())
     set_path()
     set_locale()
     path1, path2 = parsed_args.path1, parsed_args.path2

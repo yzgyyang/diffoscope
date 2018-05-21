@@ -74,10 +74,12 @@ class Difference(object):
     def map_lines(self, f_diff, f_comment):
         unified_diff = self.unified_diff
         return self.__class__(
-            "".join(map(f_diff, diff_split_lines(unified_diff))) if unified_diff is not None else None,
+            "".join(map(f_diff, diff_split_lines(unified_diff))
+                    ) if unified_diff is not None else None,
             self.source1,
             self.source2,
-            comment=["".join(map(f_comment, diff_split_lines(comment))) for comment in self._comments],
+            comment=["".join(map(f_comment, diff_split_lines(comment)))
+                             for comment in self._comments],
             has_internal_linenos=self.has_internal_linenos,
             details=self._details[:],
             visuals=self._visuals[:],
@@ -101,7 +103,8 @@ class Difference(object):
                 "_reverse_self on VisualDifference is not yet implemented",
             )
         return self.__class__(
-            reverse_unified_diff(self.unified_diff) if self.unified_diff is not None else None,
+            reverse_unified_diff(
+                self.unified_diff) if self.unified_diff is not None else None,
             self.source2,
             self.source1,
             comment=self._comments,  # already copied by fmap in get_reverse
@@ -125,7 +128,8 @@ class Difference(object):
 
     def size(self):
         if self._size_cache is None:
-            self._size_cache = sum(d.size_self() for d in self.traverse_depth())
+            self._size_cache = sum(d.size_self()
+                                   for d in self.traverse_depth())
         return self._size_cache
 
     def size_self(self):

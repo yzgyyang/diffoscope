@@ -68,7 +68,8 @@ def skip_unless_tool_is_at_least():
 @skip_unless_module_exists('tlsh')
 def test_fuzzy_matching(fuzzy_tar1, fuzzy_tar2):
     differences = fuzzy_tar1.compare(fuzzy_tar2).details
-    expected_diff = codecs.open(data('text_iso8859_expected_diff'), encoding='utf-8').read()
+    expected_diff = codecs.open(
+        data('text_iso8859_expected_diff'), encoding='utf-8').read()
     assert differences[1].source1 == './matching'
     assert differences[1].source2 == './fuzzy'
     assert 'similar' in differences[1].comment
