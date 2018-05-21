@@ -138,24 +138,24 @@ def create_parser():
                         'as --html, may be restricted by even smaller limits '
                         'such as --max-page-size. (0 to disable, default: %d)' %
                         Config().max_report_size, default=None).completer = RangeCompleter(
-                        Config().max_report_size)
+        Config().max_report_size)
     group2.add_argument('--max-diff-block-lines', metavar='LINES', type=int,
                         help='Maximum number of lines output per unified-diff '
                         'block, across all pages. (0 to disable, default: %d)' %
                         Config().max_diff_block_lines, default=None).completer = RangeCompleter(
-                        Config().max_diff_block_lines)
+        Config().max_diff_block_lines)
     group2.add_argument('--max-page-size', metavar='BYTES', type=int,
                         help='Maximum bytes of the top-level (--html-dir) or sole '
                         '(--html) page. (default: %(default)s, remains in effect '
                         'even with --no-default-limits)', default=
                         Config().max_page_size).completer = RangeCompleter(
-                        Config().max_page_size)
+        Config().max_page_size)
     group2.add_argument('--max-page-size-child', metavar='BYTES', type=int,
                         help='In --html-dir output, this is the maximum bytes of '
                         'each child page (default: %(default)s, remains in '
                         'effect even with --no-default-limits)', default=str(
-                        Config().max_page_size_child)).completer = RangeCompleter(
-                        Config().max_page_size_child)
+                            Config().max_page_size_child)).completer = RangeCompleter(
+        Config().max_page_size_child)
     # TODO: old flag kept for backwards-compat, drop 6 months after v84
     group2.add_argument('--max-report-size-child', metavar='BYTES', type=int,
                         help=argparse.SUPPRESS, default=None)
@@ -167,7 +167,7 @@ def create_parser():
                         '--max-page-size-child. (default: %(default)s, remains in '
                         'effect even with --no-default-limits)', default=
                         Config().max_page_diff_block_lines).completer = RangeCompleter(
-                        Config().max_page_diff_block_lines)
+        Config().max_page_diff_block_lines)
     # TODO: old flag kept for backwards-compat, drop 6 months after v84
     group2.add_argument("--max-diff-block-lines-parent", metavar='LINES', type=int,
                         help=argparse.SUPPRESS, default=None)
@@ -214,7 +214,7 @@ def create_parser():
                         '(0 to disable, default: %d)' %
                         Config().max_diff_input_lines,
                         default=None).completer = RangeCompleter(
-                        Config().max_diff_input_lines)
+        Config().max_diff_input_lines)
     group3.add_argument('--max-container-depth', metavar='DEPTH', type=int,
                         help='Maximum depth to recurse into containers. '
                         '(Cannot be disabled for security reasons, default: '

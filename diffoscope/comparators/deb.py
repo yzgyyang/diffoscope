@@ -139,11 +139,11 @@ class Md5sumsFile(File):
     @classmethod
     def recognizes(cls, file):
         return isinstance(file, ArchiveMember) and \
-               file.name == './md5sums' and \
-               isinstance(file.container.source, ArchiveMember) and \
-               isinstance(file.container.source.container.source, ArchiveMember) and \
-               DebContainer.RE_CONTROL_TAR.match(file.container.source.container.source.name) and \
-               isinstance(file.container.source.container.source.container.source, DebFile)
+            file.name == './md5sums' and \
+            isinstance(file.container.source, ArchiveMember) and \
+            isinstance(file.container.source.container.source, ArchiveMember) and \
+            DebContainer.RE_CONTROL_TAR.match(file.container.source.container.source.name) and \
+            isinstance(file.container.source.container.source.container.source, DebFile)
 
     def parse(self):
         try:
@@ -193,9 +193,9 @@ class DebDataTarFile(File):
     @classmethod
     def recognizes(cls, file):
         return isinstance(file, ArchiveMember) and \
-               isinstance(file.container.source, ArchiveMember) and \
-               DebContainer.RE_DATA_TAR.match(file.container.source.name) and \
-               isinstance(file.container.source.container.source, DebFile)
+            isinstance(file.container.source, ArchiveMember) and \
+            DebContainer.RE_DATA_TAR.match(file.container.source.name) and \
+            isinstance(file.container.source.container.source, DebFile)
 
     def compare_details(self, other, source=None):
         return [Difference.from_text_readers(list_libarchive(self.path),

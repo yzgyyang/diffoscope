@@ -305,9 +305,9 @@ class File(object, metaclass=abc.ABCMeta):
             if self.as_container.auto_diff_metadata:
                 details.extend([
                     Difference.from_text(self.magic_file_type, other.magic_file_type, self, other,
-                        source='filetype from file(1)'),
+                                         source='filetype from file(1)'),
                     Difference.from_text(self.__class__.__name__, other.__class__.__name__, self, other,
-                        source='filetype from diffoscope'),
+                                         source='filetype from diffoscope'),
                 ])
             # Don't recursve forever on archive quines, etc.
             depth = self._as_container.depth

@@ -45,7 +45,7 @@ setup(
     cmdclass={'test': PyTest},
     entry_points={
         'console_scripts': [
-                'diffoscope=diffoscope.main:main'
+            'diffoscope=diffoscope.main:main'
         ],
     },
     install_requires=[

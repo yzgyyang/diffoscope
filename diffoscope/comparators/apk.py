@@ -160,7 +160,7 @@ class ApkFile(File):
 
     def compare_details(self, other, source=None):
         zipinfo_difference = Difference.from_command(Zipinfo, self.path, other.path) or \
-                             Difference.from_command(ZipinfoVerbose, self.path, other.path)
+            Difference.from_command(ZipinfoVerbose, self.path, other.path)
         return [zipinfo_difference]
 
 

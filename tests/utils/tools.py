@@ -92,7 +92,7 @@ def skip_if_binutils_does_not_support_x86():
         return skip_unless_tools_exist('objdump')
 
     return pytest.mark.skipif(
-       'elf64-x86-64' not in get_supported_elf_formats(),
+        'elf64-x86-64' not in get_supported_elf_formats(),
         reason="requires a binutils capable of reading x86-64 binaries"
     )
 

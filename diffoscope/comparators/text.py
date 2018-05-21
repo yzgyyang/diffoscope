@@ -50,7 +50,7 @@ class TextFile(File):
         other_encoding = other.encoding or 'utf-8'
         try:
             with codecs.open(self.path, 'r', encoding=my_encoding) as my_content, \
-                 codecs.open(other.path, 'r', encoding=other_encoding) as other_content:
+                codecs.open(other.path, 'r', encoding=other_encoding) as other_content:
                 difference = Difference.from_text_readers(my_content, other_content, self.name, other.name, source)
                 # Check if difference is only in line order.
                 if difference and order_only_difference(difference.unified_diff):
