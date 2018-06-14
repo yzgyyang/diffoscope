@@ -145,6 +145,10 @@ EXTERNAL_TOOLS = {
         'arch': 'e2fsprogs',
         'FreeBSD': 'e2fsprogs',
     },
+    'lz4': {
+        'debian': 'lz4',
+        'FreeBSD': 'lz4',
+    },
     'msgunfmt': {
         'debian': 'gettext',
         'arch': 'gettext',

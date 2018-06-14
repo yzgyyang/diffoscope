@@ -57,6 +57,7 @@ Build-Depends:
  python3-guestfs <!nocheck>,
  python3-jsondiff <!nocheck>,
  python3-libarchive-c,
+ python3-lz4 <!nocheck>,
  python3-magic,
  python3-progressbar <!nocheck>,
  python3-pytest <!nocheck>,
