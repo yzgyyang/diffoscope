@@ -80,6 +80,14 @@ if not hasattr(libarchive.ffi, 'entry_gname'):
         'entry_gname', [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p)
     libarchive.ArchiveEntry.gname = property(
         lambda self: libarchive.ffi.entry_gname(self._entry_p))
+# Monkeypatch libarchive-c (>= 2.8)
+# Wire mtime_nsec attribute as some libarchive versions (>=2.8) don't expose it
+# for ArchiveEntry. Doing this allows a unified API no matter which version is
+# available.
+if not hasattr(libarchive.ArchiveEntry, 'mtime_nsec') and hasattr(libarchive.ffi, 'entry_mtime_nsec'):
+    libarchive.ArchiveEntry.mtime_nsec = property(
+        lambda self: libarchive.ffi.entry_mtime_nsec(self._entry_p))
+
 
 # Monkeypatch libarchive-c so we always get pathname as (Unicode) str
 # Otherwise, we'll get sometimes str and sometimes bytes and always pain.
