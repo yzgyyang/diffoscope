@@ -17,13 +17,24 @@ as follows:
 
 
 There are `more detailed instructions available
-<https://www.debian.org/Bugs/Reporting>`__ about reporting a bug in the Debian bug tracker.
+<https://www.debian.org/Bugs/Reporting>`__ about reporting a bug in the Debian
+bug tracker.
 
 If you're on a Debian-based system, you can install and use the ``reportbug``
 package to help walk you through the process.
 
+You can also submit patches via *merge request* to Salsa, Debian's Gitlab. Start
+by forking the `diffoscope Git
+repository <https://salsa.debian.org/reproducible-builds/diffoscope>`__
+(see
+`documentation <https://salsa.debian.org/help/gitlab-basics/fork-project.md>__`),
+make your changes and commit them as you normally would. You can then push your
+changes and submit a *merge request* via Salsa.  See `Gitlab documentation
+<https://salsa.debian.org/help/gitlab-basics/add-merge-request.md>`__ about
+*merge requests*.
+
 You can also submit patches to the Debian bug tracker. Start by cloning the `Git
-repository <https://salsa.debian.org/reproducible-builds/diffoscope.git/>`__,
+repository <https://salsa.debian.org/reproducible-builds/diffoscope>`__,
 make your changes and commit them as you normally would. You can then use
 Git's ``format-patch`` command to save your changes as a series of patches that
 can be attached to the report you submit. For example:
