@@ -27,7 +27,7 @@ You can also submit patches via *merge request* to Salsa, Debian's Gitlab. Start
 by forking the `diffoscope Git
 repository <https://salsa.debian.org/reproducible-builds/diffoscope>`__
 (see
-`documentation <https://salsa.debian.org/help/gitlab-basics/fork-project.md>__`),
+`documentation <https://salsa.debian.org/help/gitlab-basics/fork-project.md>`__),
 make your changes and commit them as you normally would. You can then push your
 changes and submit a *merge request* via Salsa.  See `Gitlab documentation
 <https://salsa.debian.org/help/gitlab-basics/add-merge-request.md>`__ about
