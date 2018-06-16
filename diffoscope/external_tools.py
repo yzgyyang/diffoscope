@@ -177,10 +177,6 @@ EXTERNAL_TOOLS = {
         'debian': 'pgpdump',
         'arch': 'pgpdump',
     },
-    'pdftk': {
-        'debian': 'pdftk',
-        'FreeBSD': 'pdftk',
-    },
     'pdftotext': {
         'debian': 'poppler-utils',
         'arch': 'poppler',

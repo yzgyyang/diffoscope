@@ -45,7 +45,6 @@ Build-Depends:
  odt2txt <!nocheck>,
  oggvideotools <!nocheck>,
  openssh-client <!nocheck>,
- pdftk <!nocheck>,
  pgpdump <!nocheck>,
  poppler-utils <!nocheck>,
  python-argcomplete,

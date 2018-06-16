@@ -32,19 +32,9 @@ class Pdftotext(Command):
         return ['pdftotext', self.path, '-']
 
 
-class Pdftk(Command):
-    @tool_required('pdftk')
-    def cmdline(self):
-        return ['pdftk', self.path, 'output', '-', 'uncompress']
-
-    def filter(self, line):
-        return line.decode('latin-1').encode('utf-8')
-
-
 class PdfFile(File):
     DESCRIPTION = "PDF documents"
     FILE_TYPE_RE = re.compile(r'^PDF document\b')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(Pdftotext, self.path, other.path),
-                Difference.from_command(Pdftk, self.path, other.path)]
+        return [Difference.from_command(Pdftotext, self.path, other.path)]
