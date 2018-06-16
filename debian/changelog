@@ -1,8 +1,26 @@
-diffoscope (96) UNRELEASED; urgency=medium
+diffoscope (96) unstable; urgency=medium
 
-  * WIP.
+  [ Chris Lamb ]
+  * Drop dependency on pdftk as it relies on GCJ, relying on the pdftotext
+    fallback. (Closes: #893702)
+  * Change the "No file format specific differences found inside, yet data
+    differs" message to be clearer that diffoscope "knows" about this file
+    format yet could not be helpful in this case.
+  * Don't append a rather useless "(data)" suffix from file(1).
+  * Comply with a number of PEP8 recommendations:
+    - E226 - Add missing whitespaces around operators.
+    - E241 - Fix extraneous whitespaces around keywords.
+    - E251 - Remove whitespace around parameter '=' signs.
+    - E302 - Add missing 2 blank lines.
+    - E501 - Try to make lines fit to length.
+    - E502 - Remove extraneous escape of newline.
+    - E731 - Don't assign lambda expressions.
+    - E121, E122, E126, E128 - Fix badly indented lines.
 
- -- Mattia Rizzolo <mattia@debian.org>  Sun, 20 May 2018 17:55:35 +0200
+  [ Xavier Briand ]
+  * Add merge request details to contributing documentation.
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 16 Jun 2018 22:19:28 +0200
 
 diffoscope (95) unstable; urgency=medium
 
