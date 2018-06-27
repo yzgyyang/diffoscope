@@ -59,6 +59,6 @@ def pytest_report_header(config):
             'dpkg-query',
             '-W',
             '-f', '${db:Status-Abbrev}\t${binary:Package} (${Version})\n'
-        ))]
+        )).decode('utf-8')]
     except:
         pass
