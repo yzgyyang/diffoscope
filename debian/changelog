@@ -1,8 +1,10 @@
-diffoscope (97) UNRELEASED; urgency=medium
+diffoscope (97) unstable; urgency=medium
 
-  * WIP
+  * Create all temporary directories within a top-level dir. (Closes: #902627)
+  * tests/conftest.py: Fix compatibility with pytest 3.6.2-1, currently in
+    Debian experimental.
 
- -- Chris Lamb <lamby@debian.org>  Sat, 16 Jun 2018 22:25:15 +0200
+ -- Chris Lamb <lamby@debian.org>  Thu, 28 Jun 2018 21:38:50 +0100
 
 diffoscope (96) unstable; urgency=medium
 
