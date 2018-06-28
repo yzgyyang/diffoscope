@@ -109,5 +109,5 @@ class PresenterManager(object):
         """
 
         return any(
-            x['klass'].supports_visual_diffs for x in self.config.values(),
+            x['klass'].supports_visual_diffs for x in self.config.values()
         )
