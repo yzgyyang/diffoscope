@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_named_temporary_file(*args, **kwargs):
+    kwargs['dir'] = _get_base_temporary_directory()
     kwargs['suffix'] = kwargs.pop('suffix', '_diffoscope')
 
     f = tempfile.NamedTemporaryFile(*args, **kwargs)
@@ -36,6 +37,7 @@ def get_named_temporary_file(*args, **kwargs):
 
 
 def get_temporary_directory(*args, **kwargs):
+    kwargs['dir'] = _get_base_temporary_directory()
     kwargs['suffix'] = kwargs.pop('suffix', '_diffoscope')
 
     d = tempfile.TemporaryDirectory(*args, **kwargs)
@@ -57,7 +59,8 @@ def clean_all_temp_files():
 
     logger.debug("Cleaning %d temporary directories", len(_DIRS))
 
-    for x in _DIRS:
+    # Reverse so we delete the top-level directory last.
+    for x in reversed(_DIRS):
         try:
             x.cleanup()
         except PermissionError:
@@ -73,3 +76,17 @@ def clean_all_temp_files():
             pass
         except:
             logger.exception("Unable to delete %s", x)
+
+
+def _get_base_temporary_directory():
+    if not _DIRS:
+        d = tempfile.TemporaryDirectory(
+            dir=tempfile.gettempdir(),
+            prefix='diffoscope-',
+        )
+
+        logger.debug("Created top-level temporary directory: %s", d.name)
+
+        _DIRS.append(d)
+
+    return _DIRS[0].name
