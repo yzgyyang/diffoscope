@@ -1,3 +1,9 @@
+diffoscope (99) UNRELEASED; urgency=medium
+
+  * WIP
+
+ -- Chris Lamb <lamby@debian.org>  Fri, 29 Jun 2018 08:20:42 +0100
+
 diffoscope (98) unstable; urgency=medium
 
   * Fix compatibility with Python 3.7. (Closes: #902650)
