@@ -3,6 +3,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2016 Chris Lamb <lamby@debian.org>
+#           © 2018 Mattia Rizzolo <mattia@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_named_temporary_file(*args, **kwargs):
-    kwargs['dir'] = _get_base_temporary_directory()
+    kwargs['dir'] = kwargs.pop('dir', _get_base_temporary_directory())
     kwargs['suffix'] = kwargs.pop('suffix', '_diffoscope')
 
     f = tempfile.NamedTemporaryFile(*args, **kwargs)
@@ -37,7 +38,7 @@ def get_named_temporary_file(*args, **kwargs):
 
 
 def get_temporary_directory(*args, **kwargs):
-    kwargs['dir'] = _get_base_temporary_directory()
+    kwargs['dir'] = kwargs.pop('dir', _get_base_temporary_directory())
     kwargs['suffix'] = kwargs.pop('suffix', '_diffoscope')
 
     d = tempfile.TemporaryDirectory(*args, **kwargs)
