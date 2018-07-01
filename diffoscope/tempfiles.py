@@ -29,7 +29,6 @@ logger = logging.getLogger(__name__)
 
 def get_named_temporary_file(*args, **kwargs):
     kwargs['dir'] = kwargs.pop('dir', _get_base_temporary_directory())
-    kwargs['suffix'] = kwargs.pop('suffix', '_diffoscope')
 
     f = tempfile.NamedTemporaryFile(*args, **kwargs)
     _FILES.append(f.name)
@@ -39,7 +38,6 @@ def get_named_temporary_file(*args, **kwargs):
 
 def get_temporary_directory(*args, **kwargs):
     kwargs['dir'] = kwargs.pop('dir', _get_base_temporary_directory())
-    kwargs['suffix'] = kwargs.pop('suffix', '_diffoscope')
 
     d = tempfile.TemporaryDirectory(*args, **kwargs)
     _DIRS.append(d)
