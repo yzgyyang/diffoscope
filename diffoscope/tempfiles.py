@@ -55,6 +55,7 @@ def clean_all_temp_files():
             pass
         except:
             logger.exception("Unable to delete %s", x)
+    _FILES.clear()
 
     logger.debug("Cleaning %d temporary directories", len(_DIRS))
 
@@ -75,6 +76,7 @@ def clean_all_temp_files():
             pass
         except:
             logger.exception("Unable to delete %s", x)
+    _DIRS.clear()
 
 
 def _get_base_temporary_directory():
