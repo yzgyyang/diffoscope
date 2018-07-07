@@ -34,9 +34,6 @@ class ProgressLoggingHandler(logging.StreamHandler):
 
     def emit(self, record):
         try:
-            # Delete the current line (i.e. the progress bar)
-            self.stream.write("\r\033[K")
-            self.flush()
             super().emit(record)
             if not self.progressbar.bar.finished:
                 self.progressbar.bar.update()
