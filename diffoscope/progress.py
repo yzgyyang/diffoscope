@@ -20,7 +20,6 @@
 import os
 import sys
 import json
-import signal
 import logging
 
 logger = logging.getLogger(__name__)
@@ -219,15 +218,6 @@ class ProgressBar(object):
 
             def _need_update(self):
                 return True
-
-            def finish(self):
-                self.finished = True
-                self.update(self.maxval)
-                # Clear the progress bar after completion (#901758)
-                self.fd.write("\033[K")
-                self.fd.flush()
-                if self.signal_set:
-                    signal.signal(signal.SIGWINCH, signal.SIG_DFL)
 
         self.bar = OurProgressBar(widgets=(
             ' ',
