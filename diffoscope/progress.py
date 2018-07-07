@@ -3,6 +3,7 @@
 # diffoscope: in-depth comparison of files, archives, and directories
 #
 # Copyright © 2016 Chris Lamb <lamby@debian.org>
+# Copyright © 2018 Paul Wise <pabs@debian.org>
 #
 # diffoscope is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@
 import os
 import sys
 import json
+import signal
 import logging
 
 logger = logging.getLogger(__name__)
@@ -215,9 +217,37 @@ class ProgressBar(object):
                 # Remove after https://github.com/niltonvolpato/python-progressbar/pull/57 is fixed.
                 kwargs.setdefault('fd', sys.stderr)
                 super().__init__(*args, **kwargs)
+                # Terminal handling after parent init since that sets self.fd
+                if self.fd.isatty():
+                    from curses import tigetstr, setupterm
+                    setupterm()
+                    self.erase_to_eol = tigetstr('el')
+                else:
+                    self.erase_to_eol = None
 
             def _need_update(self):
                 return True
+
+            def erase_line(self):
+                if self.erase_to_eol:
+                    self.fd.buffer.write(self.erase_to_eol)
+                elif self.fd.isatty():
+                    from shutil import get_terminal_size
+                    width = get_terminal_size().columns
+                    print(end='\r', file=self.fd)
+                    print(' ' * width, end='', file=self.fd)
+                else:
+                    # Do not flush if nothing was written
+                    return
+                self.fd.flush()
+
+            def finish(self):
+                self.finished = True
+                self.update(self.maxval)
+                # Clear the progress bar after completion
+                self.erase_line()
+                if self.signal_set:
+                    signal.signal(signal.SIGWINCH, signal.SIG_DFL)
 
         self.bar = OurProgressBar(widgets=(
             ' ',
