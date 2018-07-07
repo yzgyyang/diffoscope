@@ -232,10 +232,8 @@ class ProgressBar(object):
                 if self.erase_to_eol:
                     self.fd.buffer.write(self.erase_to_eol)
                 elif self.fd.isatty():
-                    from shutil import get_terminal_size
-                    width = get_terminal_size().columns
                     print(end='\r', file=self.fd)
-                    print(' ' * width, end='', file=self.fd)
+                    print(' ' * self.term_width, end='', file=self.fd)
                 else:
                     # Do not flush if nothing was written
                     return
