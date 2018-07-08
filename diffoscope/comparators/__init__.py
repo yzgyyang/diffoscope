@@ -19,8 +19,13 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import sys
 import logging
 import importlib
+import traceback
+
+from ..logging import line_ereser
+
 
 logger = logging.getLogger(__name__)
 
@@ -108,6 +113,7 @@ class ComparatorManager(object):
         self.classes = []
 
         for xs in self.COMPARATORS:
+            errors = []
             for x in xs:
                 package, klass_name = x.rsplit('.', 1)
 
@@ -115,16 +121,22 @@ class ComparatorManager(object):
                     mod = importlib.import_module(
                         'diffoscope.comparators.{}'.format(package)
                     )
-                except ImportError:
+                except ImportError as e:
+                    errors.append((x, e))
                     continue
 
                 self.classes.append(getattr(mod, klass_name))
                 break
             else:  # noqa
-                raise ImportError("Could not import {}{}".format(
-                    "any of" if len(xs) > 1 else '',
+                logger.error("Could not import {}{}".format(
+                    "any of " if len(xs) > 1 else '',
                     ', '.join(xs)
                 ))
+                for x in errors:
+                    logger.error("Original error for %s:", x[0])
+                    sys.stderr.buffer.write(line_ereser())
+                    traceback.print_exception(None, x[1], x[1].__traceback__)
+                sys.exit(2)
 
         logger.debug("Loaded %d comparator classes", len(self.classes))
 
