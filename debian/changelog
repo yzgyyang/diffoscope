@@ -1,8 +1,37 @@
 diffoscope (99) UNRELEASED; urgency=medium
 
-  * WIP
+  [ Xavier Briand ]
+  * Add lz4 comparator.  Closes: #901548; !4
 
- -- Chris Lamb <lamby@debian.org>  Fri, 29 Jun 2018 08:20:42 +0100
+  [ Paul Wise ]
+  * Clear the progress bar after completion.  Closes: #901758
+    Handle terminals that do not support erasing the line by filling the
+    terminal with spaces.  Ignore output devices that are not terminals.
+  * Do not delete the current terminal line for every progress bar update.
+    The erasure was also causing the progress bar to flicker.
+
+  [ Mattia Rizzolo ]
+  * Add a gitlab CI script.  !8
+  * tempfiles:
+    + Set the base directory only if the caller didn't specify one already.
+    + Do not append '_diffoscope' to the temporary file names, as they are now
+      all in their namespaced directory already.
+    + Empty the list of known tempfiles after removing them.  Closes: #902709
+  * tests/test_tools: fix test if /sbin contains a directory.  MR: !2
+    Thanks to Chris Lamb <lamby@debian.org> for the patch.
+  * logging:
+    + Move the computation of the terminal line eraser into logging.py
+    + Always clean the line before printing a log message
+  * main:
+    + Clean the terminal line before printing a traceback.
+  * comparators:
+    + Do not shadow the original import errors.  MR: !7
+
+  [ anthraxx ]
+  * comparators.utils:libarchive:
+    + Add compatibility code for python-libarchive >= 2.8.  MR: !6
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 08 Jul 2018 18:07:55 +0200
 
 diffoscope (98) unstable; urgency=medium
 
