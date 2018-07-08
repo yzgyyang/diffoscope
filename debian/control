@@ -48,6 +48,7 @@ Build-Depends:
  openssh-client <!nocheck>,
  pgpdump <!nocheck>,
  poppler-utils <!nocheck>,
+ procyon-decompiler <!nocheck>,
  python-argcomplete,
  python3-all,
  python3-binwalk <!nocheck>,
