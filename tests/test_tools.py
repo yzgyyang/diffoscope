@@ -24,7 +24,9 @@ import pytest
 def test_sbin_added_to_path():
     from diffoscope.tools import tool_required
 
-    @tool_required(os.listdir('/sbin')[0])
+    _, _, filenames = list(os.walk('/sbin'))[0]
+
+    @tool_required(filenames[0])
     def fn():
         pass
 
