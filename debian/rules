@@ -76,3 +76,22 @@ diffoscope/presenters/icon.py: favicon.png
 
 favicon.png: logo.svg
 	inkscape -w 32 -h 32 -e $@ $<
+
+override_dh_clean:
+	dh_auto_clean
+	@echo "Generating the debian/tests/control file..."
+	@echo "# DON'T MANUALLY MODIFY!" > debian/tests/control.tmp
+	@echo "# EDIT debian/tests/control.in INSTEAD!" >> debian/tests/control.tmp
+	@echo "#" >> debian/tests/control.tmp
+	@cat debian/tests/control.in >> debian/tests/control.tmp
+	@sed -i "s#%RECOMMENDS%#$(shell bin/diffoscope --list-debian-substvars | cut -d= -f2)#" debian/tests/control.tmp
+	@set -e ; if ! diff -q debian/tests/control debian/tests/control.tmp ; then \
+		echo ;\
+		echo "The generated control file differs from the actual one." ;\
+		echo "A sourceful upload of this package is needed." ;\
+		echo ;\
+		echo "Differences:" ;\
+		diff -u debian/tests/control debian/tests/control.tmp ;\
+	else \
+		rm debian/tests/control.tmp ;\
+	fi
