@@ -24,6 +24,9 @@ import json
 import signal
 import logging
 
+from .logging import line_ereser
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -215,12 +218,7 @@ class ProgressBar(object):
                 kwargs.setdefault('fd', sys.stderr)
                 super().__init__(*args, **kwargs)
                 # Terminal handling after parent init since that sets self.fd
-                if self.fd.isatty():
-                    from curses import tigetstr, setupterm
-                    setupterm()
-                    self.erase_to_eol = tigetstr('el')
-                else:
-                    self.erase_to_eol = None
+                self.erase_to_eol = line_ereser(self.fd)
 
             def _need_update(self):
                 return True
@@ -228,13 +226,7 @@ class ProgressBar(object):
             def erase_line(self):
                 if self.erase_to_eol:
                     self.fd.buffer.write(self.erase_to_eol)
-                elif self.fd.isatty():
-                    print(end='\r', file=self.fd)
-                    print(' ' * self.term_width, end='', file=self.fd)
-                else:
-                    # Do not flush if nothing was written
-                    return
-                self.fd.flush()
+                    self.fd.flush()
 
             def finish(self):
                 self.finished = True

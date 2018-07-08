@@ -17,8 +17,25 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import sys
 import contextlib
 import logging
+
+
+def line_ereser(fd=sys.stderr) -> bytes:
+    ereser = b''  # avoid None to avoid 'NoneType + str/bytes' failures
+    if fd.isatty():
+        from curses import tigetstr, setupterm
+        setupterm(fd=fd.fileno())
+        ereser = tigetstr('el')
+
+    if not ereser and fd.isatty():
+        # is a tty, but doesn't support the proper scape code, so let's fake it
+        from shutil import get_terminal_size
+        width = get_terminal_size().columns
+        ereser = b'\r{}\r'.format(b' ' * width)
+
+    return ereser
 
 
 @contextlib.contextmanager
