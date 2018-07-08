@@ -459,7 +459,7 @@ def main(args=None):
             post_parse(parsed_args)
             sys.exit(run_diffoscope(parsed_args))
     except KeyboardInterrupt:
-        logger.info('Keyboard Interrupt')
+        logger.error('Keyboard Interrupt')
         sys.exit(2)
     except BrokenPipeError:
         sys.exit(2)
