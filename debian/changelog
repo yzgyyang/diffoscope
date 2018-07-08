@@ -1,4 +1,4 @@
-diffoscope (99) UNRELEASED; urgency=medium
+diffoscope (99) unstable; urgency=medium
 
   [ Xavier Briand ]
   * Add lz4 comparator.  Closes: #901548; !4
@@ -17,6 +17,8 @@ diffoscope (99) UNRELEASED; urgency=medium
     + Do not append '_diffoscope' to the temporary file names, as they are now
       all in their namespaced directory already.
     + Empty the list of known tempfiles after removing them.  Closes: #902709
+  * external_tools:
+    + Fix package name, s/xmlutils/xmlbeans/.
   * tests/test_tools: fix test if /sbin contains a directory.  MR: !2
     Thanks to Chris Lamb <lamby@debian.org> for the patch.
   * logging:
@@ -24,14 +26,22 @@ diffoscope (99) UNRELEASED; urgency=medium
     + Always clean the line before printing a log message
   * main:
     + Clean the terminal line before printing a traceback.
+    + Be sure to print 'Keyboard Interrupt' if that happens.
   * comparators:
     + Do not shadow the original import errors.  MR: !7
+  * d/control:
+    + Bump Standards-Version to 4.1.5, no changes needed.
+    + Add Build-Dependency on procyon-decompiler, to run the tests.
+  * d/tests:
+    + Autogenerate d/tests/control with all the recommends listed as
+      dependencies, so autopkgtest is appropriately triggered whenever one of
+      those packages changes.  Closes: #902920
 
   [ anthraxx ]
   * comparators.utils:libarchive:
     + Add compatibility code for python-libarchive >= 2.8.  MR: !6
 
- -- Mattia Rizzolo <mattia@debian.org>  Sun, 08 Jul 2018 18:07:55 +0200
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 08 Jul 2018 20:07:06 +0200
 
 diffoscope (98) unstable; urgency=medium
 
