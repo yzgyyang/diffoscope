@@ -41,6 +41,7 @@ Build-Depends:
  libjs-jquery-tablesorter <!nocheck>,
  libjs-jquery-throttle-debounce <!nocheck>,
  llvm <!nocheck>,
+ lz4 <!nocheck>,
  mono-utils <!nocheck>,
  odt2txt <!nocheck>,
  oggvideotools <!nocheck>,
