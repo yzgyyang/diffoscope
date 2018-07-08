@@ -268,7 +268,7 @@ EXTERNAL_TOOLS = {
         'debian': 'procyon-decompiler',
     },
     'dumpxsb': {
-        'debian': 'xmlutils',
+        'debian': 'xmlbeans',
     },
 }
 
