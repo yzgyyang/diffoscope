@@ -44,11 +44,6 @@ override_dh_auto_build: debian/diffoscope.bash-completion
 	dh_auto_build -O--buildsystem=pybuild
 	dh_auto_build -O--buildsystem=makefile -Ddoc
 
-override_dh_auto_clean:
-	dh_auto_clean -O--buildsystem=pybuild
-	dh_auto_clean -O--buildsystem=makefile -Ddoc
-	find -type d -name '__pycache__' -empty -delete
-
 override_dh_python3:
 	dh_python3 -p diffoscope \
 		--depends=distro \
@@ -77,8 +72,7 @@ diffoscope/presenters/icon.py: favicon.png
 favicon.png: logo.svg
 	inkscape -w 32 -h 32 -e $@ $<
 
-override_dh_clean:
-	dh_auto_clean
+override_dh_auto_clean:
 	@echo "Generating the debian/tests/control file..."
 	@echo "# DON'T MANUALLY MODIFY!" > debian/tests/control.tmp
 	@echo "# EDIT debian/tests/control.in INSTEAD!" >> debian/tests/control.tmp
@@ -95,3 +89,6 @@ override_dh_clean:
 	else \
 		rm debian/tests/control.tmp ;\
 	fi
+	dh_auto_clean -O--buildsystem=pybuild
+	dh_auto_clean -O--buildsystem=makefile -Ddoc
+	find -type d -name '__pycache__' -empty -delete
