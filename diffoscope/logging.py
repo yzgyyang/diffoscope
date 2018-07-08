@@ -49,6 +49,7 @@ def setup_logging(debug, log_handler):
     logger.addHandler(ch)
 
     formatter = logging.Formatter(
+        line_ereser().decode('ascii') +
         '%(asctime)s %(levelname).1s: %(name)s: %(message)s',
         '%Y-%m-%d %H:%M:%S',
     )
