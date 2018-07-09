@@ -1,3 +1,9 @@
+diffoscope (100) UNRELEASED; urgency=medium
+
+  * WIP.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Mon, 09 Jul 2018 14:28:26 +0200
+
 diffoscope (99) unstable; urgency=medium
 
   [ Xavier Briand ]
