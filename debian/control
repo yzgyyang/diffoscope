@@ -44,7 +44,7 @@ Build-Depends:
  lz4 <!nocheck>,
  mono-utils <!nocheck>,
  odt2txt <!nocheck>,
- oggvideotools <!nocheck>,
+ oggvideotools [!s390x] <!nocheck>,
  openssh-client <!nocheck>,
  pgpdump <!nocheck>,
  poppler-utils <!nocheck>,
