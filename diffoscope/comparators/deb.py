@@ -110,7 +110,7 @@ class DebFile(File):
             control_tar = self.as_container.control_tar
             md5sums_file = control_tar.as_container.lookup_file(
                 './md5sums') if control_tar else None
-            if md5sums_file:
+            if isinstance(md5sums_file, Md5sumsFile):
                 self._md5sums = md5sums_file.parse()
             else:
                 logger.debug("Unable to find a md5sums file")

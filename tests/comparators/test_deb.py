@@ -130,6 +130,8 @@ def test_compare_non_existing(monkeypatch, deb1):
 
 bug881937_deb1 = load_fixture('bug881937_1.deb')
 bug881937_deb2 = load_fixture('bug881937_2.deb')
+bug903391_deb1 = load_fixture('bug903391_1.deb')
+bug903391_deb2 = load_fixture('bug903391_2.deb')
 
 
 @skip_unless_tools_exist('xz')
@@ -139,3 +141,7 @@ def test_compare_different_compression(bug881937_deb1, bug881937_deb2):
     assert difference.details[1].source2 == 'control.tar.xz'
     expected_diff = get_data('bug881937_control_expected_diff')
     assert difference.details[1].details[2].details[1].unified_diff == expected_diff
+
+
+def test_uncompressed_control_tar(bug903391_deb1, bug903391_deb2):
+    bug903391_deb1.compare(bug903391_deb2)
