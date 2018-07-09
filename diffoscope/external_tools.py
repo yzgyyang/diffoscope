@@ -22,7 +22,7 @@ EXTERNAL_TOOLS = {
         'debian': 'abootimg',
     },
     'apktool': {
-        'debian': 'apktool [!ppc64el !s390x]',
+        'debian': 'apktool',
     },
     'db_dump': {
         'debian': 'db-util',
