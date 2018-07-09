@@ -201,6 +201,6 @@ class DebDataTarFile(File):
             isinstance(file.container.source.container.source, DebFile)
 
     def compare_details(self, other, source=None):
-        return [Difference.from_text_readers(list_libarchive(self.path),
-                                             list_libarchive(other.path),
+        return [Difference.from_text_readers(list_libarchive(self.path, ignore_errors=True),
+                                             list_libarchive(other.path, ignore_errors=True),
                                              self.path, other.path, source="file list")]

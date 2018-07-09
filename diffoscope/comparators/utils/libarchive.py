@@ -95,32 +95,36 @@ libarchive.ArchiveEntry.pathname = property(lambda self: libarchive.ffi.entry_pa
     self._entry_p).decode('utf-8', errors='surrogateescape'))
 
 
-def list_libarchive(path):
-    with libarchive.file_reader(path) as archive:
-        for entry in archive:
-            if entry.isblk or entry.ischr:
-                size_or_dev = '{major:>3},{minor:>3}'.format(
-                    major=entry.rdevmajor, minor=entry.rdevminor)
-            else:
-                size_or_dev = entry.size
-            mtime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(entry.mtime)
-                                  ) + '.{:06d}'.format(entry.mtime_nsec // 1000)
-            if entry.issym:
-                name_and_link = '{entry.name} -> {entry.linkname}'.format(
-                    entry=entry)
-            else:
-                name_and_link = entry.name
-            if entry.uname:
-                user = '{user:<8} {uid:>7}'.format(user=entry.uname.decode(
-                    'utf-8', errors='surrogateescape'), uid='({})'.format(entry.uid))
-            else:
-                user = entry.uid
-            if entry.gname:
-                group = '{group:<8} {gid:>7}'.format(group=entry.gname.decode(
-                    'utf-8', errors='surrogateescape'), gid='({})'.format(entry.gid))
-            else:
-                group = entry.gid
-            yield '{strmode} {entry.nlink:>3} {user:>8} {group:>8} {size_or_dev:>8} {mtime:>8} {name_and_link}\n'.format(strmode=entry.strmode.decode('us-ascii'), entry=entry, user=user, group=group, size_or_dev=size_or_dev, mtime=mtime, name_and_link=name_and_link)
+def list_libarchive(path, ignore_errors=False):
+    try:
+        with libarchive.file_reader(path) as archive:
+            for entry in archive:
+                if entry.isblk or entry.ischr:
+                    size_or_dev = '{major:>3},{minor:>3}'.format(
+                        major=entry.rdevmajor, minor=entry.rdevminor)
+                else:
+                    size_or_dev = entry.size
+                mtime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(entry.mtime)
+                                      ) + '.{:06d}'.format(entry.mtime_nsec // 1000)
+                if entry.issym:
+                    name_and_link = '{entry.name} -> {entry.linkname}'.format(
+                        entry=entry)
+                else:
+                    name_and_link = entry.name
+                if entry.uname:
+                    user = '{user:<8} {uid:>7}'.format(user=entry.uname.decode(
+                        'utf-8', errors='surrogateescape'), uid='({})'.format(entry.uid))
+                else:
+                    user = entry.uid
+                if entry.gname:
+                    group = '{group:<8} {gid:>7}'.format(group=entry.gname.decode(
+                        'utf-8', errors='surrogateescape'), gid='({})'.format(entry.gid))
+                else:
+                    group = entry.gid
+                yield '{strmode} {entry.nlink:>3} {user:>8} {group:>8} {size_or_dev:>8} {mtime:>8} {name_and_link}\n'.format(strmode=entry.strmode.decode('us-ascii'), entry=entry, user=user, group=group, size_or_dev=size_or_dev, mtime=mtime, name_and_link=name_and_link)
+    except libarchive.exception.ArchiveError:
+        if not ignore_errors:
+            raise
 
 
 class LibarchiveMember(ArchiveMember):
@@ -211,11 +215,14 @@ class LibarchiveContainer(Archive):
         raise KeyError('%s not found in archive', member_name)
 
     def get_filtered_members(self):
-        with libarchive.file_reader(self.source.path) as archive:
-            for entry in archive:
-                if any_excluded(entry.pathname):
-                    continue
-                yield entry.pathname, self.get_subclass(entry)
+        try:
+            with libarchive.file_reader(self.source.path) as archive:
+                for entry in archive:
+                    if any_excluded(entry.pathname):
+                        continue
+                    yield entry.pathname, self.get_subclass(entry)
+        except libarchive.exception.ArchiveError:
+            pass
 
     def extract(self, member_name, dest_dir):
         self.ensure_unpacked()
