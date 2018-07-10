@@ -2,7 +2,7 @@
 # EDIT debian/tests/control.in INSTEAD!
 #
 Tests: pytest-with-recommends
-Depends: diffoscope, python3-pytest, abootimg, acl, apktool [!ppc64el !s390x], binutils-multiarch, bzip2, caca-utils, colord, db-util, default-jdk-headless | default-jdk | java-sdk, device-tree-compiler, docx2txt, e2fsprogs, enjarify, fontforge-extras, fp-utils, genisoimage, gettext, ghc, ghostscript, giflib-tools, gnumeric, gnupg, imagemagick, jsbeautifier, libarchive-tools, llvm, lz4, mono-utils, odt2txt, oggvideotools [!s390x], openssh-client, pgpdump, poppler-utils, procyon-decompiler, r-base-core, rpm2cpio, sng, sqlite3, squashfs-tools, tcpdump, unzip, xmlbeans, xxd | vim-common, xz-utils
+Depends: diffoscope, python3-pytest, abootimg, acl, apktool [!ppc64el !s390x], binutils-multiarch, bzip2, caca-utils, colord, db-util, default-jdk-headless | default-jdk | java-sdk, device-tree-compiler, docx2txt, e2fsprogs, enjarify, fontforge-extras, fp-utils [!ppc64el !s390x], genisoimage, gettext, ghc, ghostscript, giflib-tools, gnumeric, gnupg, imagemagick, jsbeautifier, libarchive-tools, llvm, lz4, mono-utils, odt2txt, oggvideotools [!s390x], openssh-client, pgpdump, poppler-utils, procyon-decompiler, r-base-core, rpm2cpio, sng, sqlite3, squashfs-tools, tcpdump, unzip, xmlbeans, xxd | vim-common, xz-utils
 
 Tests: pytest
 Depends: diffoscope, python3-pytest

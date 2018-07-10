@@ -80,6 +80,7 @@ override_dh_auto_clean:
 	@cat debian/tests/control.in >> debian/tests/control.tmp
 	@sed -i "s#%RECOMMENDS%#$(shell bin/diffoscope --list-debian-substvars | cut -d= -f2)#" debian/tests/control.tmp
 	@sed -i "s,apktool,apktool [!ppc64el !s390x]," debian/tests/control.tmp
+	@sed -i "s,fp-utils,fp-utils [!ppc64el !s390x]," debian/tests/control.tmp
 	@sed -i "s,oggvideotools,oggvideotools [!s390x]," debian/tests/control.tmp
 	@set -e ; if ! diff -q debian/tests/control debian/tests/control.tmp ; then \
 		echo ;\

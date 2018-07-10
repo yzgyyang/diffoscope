@@ -26,7 +26,7 @@ Build-Depends:
  enjarify <!nocheck>,
  flake8 <!nocheck>,
  fontforge-extras <!nocheck>,
- fp-utils <!nocheck>,
+ fp-utils [!ppc64el !s390x] <!nocheck>,
  ghc <!nocheck>,
  ghostscript <!nocheck>,
  giflib-tools <!nocheck>,
