@@ -66,18 +66,7 @@ class JSONFile(File):
         )
 
         if difference:
-            if jsondiff is not None:
-                a = getattr(self, 'parsed', {})
-                b = getattr(other, 'parsed', {})
-
-                diff = {repr(x): y for x, y in jsondiff.diff(a, b).items()}
-
-                difference.add_comment("Similarity: {}%".format(
-                    jsondiff.similarity(a, b),
-                ))
-                difference.add_comment("Differences: {}".format(
-                    json.dumps(diff, indent=2, sort_keys=True),
-                ))
+            self.compare_with_jsondiff(difference, other)
 
             return [difference]
 
@@ -90,6 +79,26 @@ class JSONFile(File):
         )
 
         return [difference]
+
+    def compare_with_jsondiff(self, difference, other):
+        if jsondiff is None:
+            return
+
+        a = getattr(self, 'parsed', {})
+        b = getattr(other, 'parsed', {})
+
+        try:
+            diff = {repr(x): y for x, y in jsondiff.diff(a, b).items()}
+        except Exception:
+            return
+
+        difference.add_comment("Similarity: {}%".format(
+            jsondiff.similarity(a, b),
+        ))
+
+        difference.add_comment("Differences: {}".format(
+            json.dumps(diff, indent=2, sort_keys=True),
+        ))
 
     @staticmethod
     def dumps(file, sort_keys=True):
