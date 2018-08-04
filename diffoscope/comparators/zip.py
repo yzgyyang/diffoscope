@@ -25,6 +25,7 @@ import zipfile
 
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
+from diffoscope.exc import ContainerExtractionError
 
 from .utils.file import File
 from .directory import Directory
@@ -98,9 +99,18 @@ class ZipContainer(Archive):
         # any weird character so we can get to the bytes.
         targetpath = os.path.join(dest_dir, os.path.basename(member_name)).encode(
             sys.getfilesystemencoding(), errors='replace')
-        with self.archive.open(member_name) as source, open(targetpath, 'wb') as target:
-            shutil.copyfileobj(source, target)
-        return targetpath.decode(sys.getfilesystemencoding())
+
+        try:
+            with self.archive.open(member_name) as source, \
+                    open(targetpath, 'wb') as target:
+                shutil.copyfileobj(source, target)
+            return targetpath.decode(sys.getfilesystemencoding())
+        except RuntimeError as exc:
+            # Handle encrypted files see line 1292 of zipfile.py
+            is_encrypted = self.archive.getinfo(member_name).flag_bits & 0x1
+            if is_encrypted:
+                raise ContainerExtractionError(member_name, exc)
+            raise
 
     def get_member(self, member_name):
         zipinfo = self.archive.getinfo(member_name)

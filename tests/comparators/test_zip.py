@@ -29,6 +29,8 @@ from ..utils.nonexisting import assert_non_existing
 zip1 = load_fixture('test1.zip')
 zip2 = load_fixture('test2.zip')
 zip3 = load_fixture('test3.zip')
+encrypted_zip1 = load_fixture('encrypted1.zip')
+encrypted_zip2 = load_fixture('encrypted2.zip')
 mozzip1 = load_fixture('test1.mozzip')
 mozzip2 = load_fixture('test2.mozzip')
 
@@ -110,3 +112,8 @@ def test_mozzip_compressed_files(mozzip_differences):
 @skip_unless_tools_exist('zipinfo')
 def test_mozzip_compare_non_existing(monkeypatch, mozzip1):
     assert_non_existing(monkeypatch, mozzip1)
+
+
+def test_encrypted(encrypted_zip1, encrypted_zip2):
+    difference = encrypted_zip1.compare(encrypted_zip2)
+    assert difference is not None
