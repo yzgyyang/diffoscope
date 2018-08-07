@@ -1,8 +1,8 @@
 Tests: pytest-with-recommends
-Depends: diffoscope, python3-pytest, %RECOMMENDS%
+Depends: diffoscope, python3-pytest, file, %RECOMMENDS%
 
 Tests: pytest
-Depends: diffoscope, python3-pytest
+Depends: diffoscope, python3-pytest, file
 
 Tests: basic-command-line
 Depends: diffoscope
