@@ -32,6 +32,11 @@ class LlvmBcAnalyzer(Command):
     def cmdline(self):
         return ['llvm-bcanalyzer', '-dump', self.path]
 
+    def filter(self, line):
+        if line.decode('utf-8', 'ignore').startswith('Summary of '):
+            return 'Summary:'
+        return line
+
 
 class LlvmBcDisassembler(Command):
     @tool_required('llvm-dis')
