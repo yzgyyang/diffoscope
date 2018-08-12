@@ -34,7 +34,7 @@ def perform_fuzzy_matching(members1, members2):
     if tlsh is None or Config().fuzzy_threshold == 0:
         return
     already_compared = set()
-    # Perform local copies because they will be modified by consumer
+    # Create local copies because they will be modified by consumer
     members1 = dict(members1)
     members2 = dict(members2)
     for name1, (file1, _) in members1.items():

@@ -91,6 +91,11 @@ class DebContainer(LibarchiveContainer):
 
     def perform_fuzzy_matching(self, my_members, other_members):
         matched = set()
+
+        # Create local copies because they will be modified by consumer
+        my_members = dict(my_members)
+        other_members = dict(other_members)
+
         for name1 in my_members.keys():
             main, ext = os.path.splitext(name1)
             candidates = [name2 for name2 in other_members.keys() - matched

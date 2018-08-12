@@ -134,6 +134,9 @@ bug903391_deb1 = load_fixture('bug903391_1.deb')
 bug903391_deb2 = load_fixture('bug903391_2.deb')
 bug903401_deb1 = load_fixture('bug903401_1.deb')
 bug903401_deb2 = load_fixture('bug903401_2.deb')
+bug903565_deb1 = load_fixture('bug903565_1.deb')
+bug903565_deb2 = load_fixture('bug903565_2.deb')
+
 
 
 @skip_unless_tools_exist('xz')
@@ -151,3 +154,7 @@ def test_uncompressed_data_tar(bug903401_deb1, bug903401_deb2):
 
 def test_uncompressed_control_tar(bug903391_deb1, bug903391_deb2):
     bug903391_deb1.compare(bug903391_deb2)
+
+
+def test_compare_different_compression_multiple_files(bug903565_deb1, bug903565_deb2):
+    bug903565_deb1.compare(bug903565_deb2)
