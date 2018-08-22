@@ -30,10 +30,10 @@ def line_eraser(fd=sys.stderr) -> bytes:
         eraser = tigetstr('el')
 
     if not eraser and fd.isatty():
-        # is a tty, but doesn't support the proper scape code, so let's fake it
+        # is a tty, but doesn't support the proper escape code, so let's fake it
         from shutil import get_terminal_size
         width = get_terminal_size().columns
-        eraser = b'\r{}\r'.format(b' ' * width)
+        eraser = b'\r' + (b' ' * width) + b'\r'
 
     return eraser
 
