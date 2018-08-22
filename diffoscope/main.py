@@ -33,7 +33,7 @@ from .path import set_path
 from .tools import tool_prepend_prefix, tool_required, OS_NAMES, get_current_os
 from .config import Config
 from .locale import set_locale
-from .logging import line_ereser, setup_logging
+from .logging import line_eraser, setup_logging
 from .progress import ProgressManager, Progress
 from .profiling import ProfileManager, profile
 from .tempfiles import clean_all_temp_files
@@ -464,7 +464,7 @@ def main(args=None):
     except BrokenPipeError:
         sys.exit(2)
     except Exception:
-        sys.stderr.buffer.write(line_ereser())
+        sys.stderr.buffer.write(line_eraser())
         traceback.print_exc()
         if parsed_args and parsed_args.debugger:
             import pdb

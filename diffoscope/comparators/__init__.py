@@ -24,7 +24,7 @@ import logging
 import importlib
 import traceback
 
-from ..logging import line_ereser
+from ..logging import line_eraser
 
 
 logger = logging.getLogger(__name__)
@@ -134,7 +134,7 @@ class ComparatorManager(object):
                 ))
                 for x in errors:
                     logger.error("Original error for %s:", x[0])
-                    sys.stderr.buffer.write(line_ereser())
+                    sys.stderr.buffer.write(line_eraser())
                     traceback.print_exception(None, x[1], x[1].__traceback__)
                 sys.exit(2)
 

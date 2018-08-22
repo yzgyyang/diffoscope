@@ -24,7 +24,7 @@ import json
 import signal
 import logging
 
-from .logging import line_ereser
+from .logging import line_eraser
 
 
 logger = logging.getLogger(__name__)
@@ -218,7 +218,7 @@ class ProgressBar(object):
                 kwargs.setdefault('fd', sys.stderr)
                 super().__init__(*args, **kwargs)
                 # Terminal handling after parent init since that sets self.fd
-                self.erase_to_eol = line_ereser(self.fd)
+                self.erase_to_eol = line_eraser(self.fd)
 
             def _need_update(self):
                 return True

@@ -22,20 +22,20 @@ import contextlib
 import logging
 
 
-def line_ereser(fd=sys.stderr) -> bytes:
-    ereser = b''  # avoid None to avoid 'NoneType + str/bytes' failures
+def line_eraser(fd=sys.stderr) -> bytes:
+    eraser = b''  # avoid None to avoid 'NoneType + str/bytes' failures
     if fd.isatty():
         from curses import tigetstr, setupterm
         setupterm(fd=fd.fileno())
-        ereser = tigetstr('el')
+        eraser = tigetstr('el')
 
-    if not ereser and fd.isatty():
+    if not eraser and fd.isatty():
         # is a tty, but doesn't support the proper scape code, so let's fake it
         from shutil import get_terminal_size
         width = get_terminal_size().columns
-        ereser = b'\r{}\r'.format(b' ' * width)
+        eraser = b'\r{}\r'.format(b' ' * width)
 
-    return ereser
+    return eraser
 
 
 @contextlib.contextmanager
@@ -49,7 +49,7 @@ def setup_logging(debug, log_handler):
     logger.addHandler(ch)
 
     formatter = logging.Formatter(
-        line_ereser().decode('ascii') +
+        line_eraser().decode('ascii') +
         '%(asctime)s %(levelname).1s: %(name)s: %(message)s',
         '%Y-%m-%d %H:%M:%S',
     )
