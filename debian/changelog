@@ -1,8 +1,32 @@
-diffoscope (100) UNRELEASED; urgency=medium
+diffoscope (100) unstable; urgency=medium
 
-  * WIP.
+  [ Alexis Murzeau ]
+  * Correct matching of .deb archive members. (Closes: #903565)
 
- -- Mattia Rizzolo <mattia@debian.org>  Mon, 09 Jul 2018 14:28:26 +0200
+  [ Chris Lamb ]
+  * Support .deb archives that contain an uncompressed control.tar and data.tar
+    Thanks to Roderich Schupp <roderich.schupp@gmail.com>.
+    (Closes: #903391, #903401)
+  * Wrap jsondiff calls with try-except to prevent fatal errors.
+    (Closes: #903447, #903449)
+  * Don't include the filename in llvm-bcanalyzer results. (Closes: #905598)
+  * Update generated debian/tests/control.
+  * Bump Standards-Version to 4.2.1.
+
+  [ Daniel Kahn Gillmor ]
+  * Avoid line eraser error on dumb terminals. (Closes: #906967)
+  * Correct spelling of ereser to eraser.
+
+  [ Mattia Rizzolo ]
+  * On Debian, do not require apktool on ppc64el and s390x, ogvideotools on
+    s390x and fp-utils on ppc64el and s390x as they are not installable there.
+  * Explicitly add `file` to the dependencies of autopkgtest to have the tests
+    triggered whenever `file` changes
+
+  [ Ricardo Gaviria ]
+  * Handle errors with encrypted archive files. (Closes: #904685)
+
+ -- Chris Lamb <lamby@debian.org>  Sat, 01 Sep 2018 09:09:48 +0100
 
 diffoscope (99) unstable; urgency=medium
 
