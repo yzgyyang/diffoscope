@@ -34,7 +34,7 @@ class LlvmBcAnalyzer(Command):
 
     def filter(self, line):
         if line.decode('utf-8', 'ignore').startswith('Summary of '):
-            return 'Summary:'
+            return b'Summary:'
         return line
 
 
