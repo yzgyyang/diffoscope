@@ -36,6 +36,14 @@ try:
     import binwalk
 except ImportError:
     binwalk = None
+else:
+    # Disable binwalk's own user configuration for predictable results and to
+    # ensure it does not create (!) unnecessary directories, etc. (re. #903444)
+    def fn(self):
+        if not hasattr(fn, '_temp_dir'):
+            fn._temp_dir = get_temporary_directory('binwalk').name
+        return fn._temp_dir
+    binwalk.core.settings.Settings._get_user_config_dir = fn
 
 logger = logging.getLogger(__name__)
 
