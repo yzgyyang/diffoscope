@@ -257,7 +257,6 @@ class Changes(object):
              self.get_changes_file()],
             shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         gpg_output, gpg_output_stderr = pipe.communicate()
-        print(gpg_output)
 
         if pipe.returncode != 0:
             raise ChangesFileException(
@@ -265,7 +264,6 @@ class Changes(object):
 
         # contains verbose human readable GPG information
         gpg_output_stderr = str(gpg_output_stderr, encoding='utf8')
-        print(gpg_output_stderr)
 
         gpg_output = gpg_output.decode(encoding='UTF-8')
 
