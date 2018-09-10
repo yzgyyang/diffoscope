@@ -334,10 +334,11 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
         # populated.
         ComparatorManager().reload()
 
-        tools = set()
-        for x in tool_required.all:
+        tools = tool_required.all
+        packages = set()
+        for x in tools:
             try:
-                tools.add(EXTERNAL_TOOLS[x]['debian'])
+                packages.add(EXTERNAL_TOOLS[x]['debian'])
             except KeyError:
                 pass
 
@@ -349,9 +350,9 @@ class ListDebianSubstvarsAction(argparse._StoreTrueAction):
             'diffutils',
             'findutils',
         ):
-            tools.discard(x)
+            packages.discard(x)
 
-        print('diffoscope:Recommends={}'.format(', '.join(sorted(tools))))
+        print('diffoscope:Recommends={}'.format(', '.join(sorted(packages))))
         sys.exit(0)
 
 
