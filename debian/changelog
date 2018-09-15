@@ -1,8 +1,19 @@
-diffoscope (101) UNRELEASED; urgency=medium
+diffoscope (101) unstable; urgency=medium
 
-  * WIP
+  * Fix testsuite under LLVM >= 7.0. (Closes: #908074)
+  * Substvar generation:
+    - Ensure Debian substvar generation is deterministic regardless of
+      installed packages. (Closes: #908072)
+    - Clarify distinction between tools (eg. gpg) and packages (eg. gnupg) when
+      generating Debian substvars.
+    - Revert updating generated debian/tests/control made in diffoscope 100.
+  * Disable binwalk's own user configuration for predictable results and to
+    ensure it does not create unnecessary directories. (Closes: #903444)
+  * Ensure we return "bytes" objects from Command.filter to avoid a
+    "TypeError: Unicode-objects must be encoded before hashing" traceback.
+  * Don't print GPG output in diffoscope.changes.
 
- -- Chris Lamb <lamby@debian.org>  Sat, 01 Sep 2018 09:11:21 +0100
+ -- Chris Lamb <lamby@debian.org>  Sat, 15 Sep 2018 16:37:45 +0100
 
 diffoscope (100) unstable; urgency=medium
 
