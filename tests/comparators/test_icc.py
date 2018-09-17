@@ -18,17 +18,44 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
+import subprocess
 
 from diffoscope.config import Config
 from diffoscope.comparators.icc import IccFile
 from diffoscope.comparators.missing_file import MissingFile
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist
+from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 
 
 icc1 = load_fixture('test1.icc')
 icc2 = load_fixture('test2.icc')
+
+
+def cd_iccdump_version():
+    """
+    The `cd-iccdump` command has no --version command and, whilst the `colord`
+    binary does, it relies on the daemon running to return any output.
+    Therefore we hackily compare the output (via the line length) of colord
+    1.4.3:
+
+        "  Profile ID    = 0477fa4bb5ae5ae9a778f5cd72eb45a4"
+
+    ... versus, for example, colord 1.3.3:
+
+        " Profile ID    = 0x0477fa4b"
+
+    We don't massage the output (say, in an `Iccdump.filter` method) as it
+    would remove the accuracy and, unfortunately, colord 1.4.3 also removes a
+    somewhat-arbitrary newline too.
+    """
+
+    val = subprocess.check_output(('cd-iccdump', icc1().path)).decode('utf-8')
+
+    for x in val.splitlines():
+        if x.startswith('  Profile ID') and len(x) == 47:
+            return '1.4.3'
+    return '1.3.3'
 
 
 def test_identification(icc1):
@@ -45,7 +72,7 @@ def differences(icc1, icc2):
     return icc1.compare(icc2).details
 
 
-@skip_unless_tools_exist('cd-iccdump')
+@skip_unless_tool_is_at_least('cd-iccdump', cd_iccdump_version, '1.4.3')
 def test_diff(differences):
     if 'ne_SU' in differences[0].unified_diff:
         pytest.skip("Endian-specific differences detected; see "
