@@ -62,7 +62,6 @@ def differences(file1, file2):
 
 @skip_unless_tool_is_at_least('ppudump', ppudump_version, '3.0.0')
 def test_diff(differences):
-    print(differences[0].unified_diff)
     expected_diff = get_data('ppu_expected_diff')
     assert differences[0].unified_diff == expected_diff
 
