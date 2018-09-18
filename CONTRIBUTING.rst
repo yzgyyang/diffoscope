@@ -27,7 +27,7 @@ You can also submit patches via *merge request* to Salsa, Debian's Gitlab. Start
 by forking the `diffoscope Git
 repository <https://salsa.debian.org/reproducible-builds/diffoscope>`__
 (see
-`documentation <https://salsa.debian.org/help/gitlab-basics/fork-project.md>__`),
+`documentation <https://salsa.debian.org/help/gitlab-basics/fork-project.md>`__),
 make your changes and commit them as you normally would. You can then push your
 changes and submit a *merge request* via Salsa.  See `Gitlab documentation
 <https://salsa.debian.org/help/gitlab-basics/add-merge-request.md>`__ about
@@ -51,6 +51,21 @@ can be attached to the report you submit. For example:
 The ``format-patch`` command will create a series of ``.patch`` files in your
 checkout. Attach these files to your submission in your e-mail client or
 reportbug.
+
+Add a comparator
+================
+
+Diffoscope doesn't support a specific file type? Please contribute to the
+project. Each file type is handled by a comparator. Here are the steps to add a
+new comparator:
+
+- Add the new comparator in ``diffoscope/comparators/``
+- Declare the comparator File class in ``ComparatorManager`` in
+  ``diffoscope/comparators/__init__.py``
+- Add a test in ``tests/comparators/``
+- If required, update the ``Build-Depends`` list in ``debian/control``
+- If required, update ``EXTERNAL_TOOLS`` list in
+  ``diffoscope/external_tools.py``
 
 Uploading the package
 =====================
