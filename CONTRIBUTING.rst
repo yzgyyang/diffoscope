@@ -56,15 +56,17 @@ Add a comparator
 ================
 
 Diffoscope doesn't support a specific file type? Please contribute to the
-project. Each file type is handled by a comparator. Here are the steps to add a
-new comparator:
+project! Each file type is handled by a comparator, and writing a new one is
+usually very easy.
+Here are the steps to add a new comparator:
 
-- Add the new comparator in ``diffoscope/comparators/``
+- Add the new comparator in ``diffoscope/comparators/`` (have a look at the
+  other comparators in the same directory to have an idea of what to do)
 - Declare the comparator File class in ``ComparatorManager`` in
   ``diffoscope/comparators/__init__.py``
 - Add a test in ``tests/comparators/``
 - If required, update the ``Build-Depends`` list in ``debian/control``
-- If required, update ``EXTERNAL_TOOLS`` list in
+- If required, update the ``EXTERNAL_TOOLS`` list in
   ``diffoscope/external_tools.py``
 
 Uploading the package
