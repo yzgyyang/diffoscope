@@ -1,8 +1,20 @@
-diffoscope (102) UNRELEASED; urgency=medium
+diffoscope (102) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Fix tests under colord >= 1.4.3.  Closes: #908900
 
- -- Chris Lamb <lamby@debian.org>  Sat, 15 Sep 2018 16:40:40 +0100
+  [ Xavier Briand ]
+  * Add an "Add a comparator" section in CONTRIBUTING.  MR: !9
+
+  [ Mattia Rizzolo ]
+  * debian: Use the new debhelper-compat(=11) build dep and drop d/compat.
+
+  [ Marek Marczykowski-Górecki ]
+  * comparators/json: Try fuzzy matching for non-text files too.
+    This avoids loading very large file just to discover they aren't JSON.
+    Closes: #909122
+
+ -- Mattia Rizzolo <mattia@debian.org>  Sun, 23 Sep 2018 10:43:40 +0200
 
 diffoscope (101) unstable; urgency=medium
 
