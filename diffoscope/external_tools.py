@@ -146,7 +146,7 @@ EXTERNAL_TOOLS = {
         'FreeBSD': 'e2fsprogs',
     },
     'lz4': {
-        'debian': 'lz4',
+        'debian': 'lz4 | liblz4-tool',
         'FreeBSD': 'lz4',
     },
     'msgunfmt': {
