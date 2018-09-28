@@ -15,6 +15,9 @@ unstable:
 testing:
   <<: *test
   image: debian:testing
+  # in testing the build-dependencies are not installable.
+  # keep trying, but ignore the failures
+  allow_failure: true
 
 stable-bpo:
   <<: *test
