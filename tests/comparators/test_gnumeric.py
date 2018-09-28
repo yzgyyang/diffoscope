@@ -18,15 +18,25 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
+import subprocess
 
 from diffoscope.comparators.gnumeric import GnumericFile
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist
 from ..utils.nonexisting import assert_non_existing
+from ..utils.tools import (
+    skip_unless_tools_exist,
+    skip_unless_tool_is_at_least,
+    skip_unless_tool_is_at_most,
+)
 
 gnumeric1 = load_fixture('test1.gnumeric')
 gnumeric2 = load_fixture('test2.gnumeric')
+
+
+def ssconvert_version():
+    out = subprocess.check_output(('ssconvert', '--version'))
+    return out.decode('utf-8').split()[2].replace("'", '')
 
 
 def test_identification(gnumeric1):
@@ -43,10 +53,17 @@ def differences(gnumeric1, gnumeric2):
     return gnumeric1.compare(gnumeric2).details
 
 
-@skip_unless_tools_exist('ssconvert')
-def test_diff(differences):
-    expected_diff = get_data('gnumeric_expected_diff')
+@skip_unless_tool_is_at_most('ssconvert', ssconvert_version, '1.12.42')
+def test_diff_old(differences):
+    expected_diff = get_data('gnumeric_1.12.42_expected_diff')
     assert differences[0].unified_diff == expected_diff
+
+
+@skip_unless_tool_is_at_least('ssconvert', ssconvert_version, '1.12.43')
+def test_diff_new(differences):
+    expected_diff = get_data('gnumeric_1.12.43_expected_diff')
+    assert differences[0].unified_diff == expected_diff
+
 
 
 @skip_unless_tools_exist('ssconvert')
