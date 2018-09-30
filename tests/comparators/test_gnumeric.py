@@ -65,7 +65,6 @@ def test_diff_new(differences):
     assert differences[0].unified_diff == expected_diff
 
 
-
 @skip_unless_tools_exist('ssconvert')
 def test_compare_non_existing(monkeypatch, gnumeric1):
     assert_non_existing(monkeypatch, gnumeric1, has_null_source=False)
