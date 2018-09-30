@@ -61,4 +61,4 @@ class GnumericFile(File):
         ))
 
         with open(t.name) as f:
-            return f.read().strip()
+            return f.read()
