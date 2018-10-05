@@ -77,9 +77,22 @@ class FsImageContainer(Archive):
 
 
 class FsImageFile(File):
-    DESCRIPTION = "ext2/ext3/ext4/btrfs filesystems"
+    DESCRIPTION = "ext2/ext3/ext4/btrfs/fat filesystems"
     CONTAINER_CLASS = FsImageContainer
     FILE_TYPE_RE = re.compile(r'^(Linux.*filesystem data|BTRFS Filesystem).*')
+
+    @classmethod
+    def recognizes(cls, file):
+        # Avoid DOS / MBR file type as it generate a lot of false possitives,
+        # manually check "System identifier string" instead
+        with open(file.path, 'rb') as f:
+            f.seek(54)
+            if f.read(8) in (b'FAT12   ', b'FAT16   '):
+                return True
+            f.seek(82)
+            if f.read(8) == b'FAT32   ':
+                return True
+        return super().recognizes(file)
 
     def compare_details(self, other, source=None):
         differences = []
