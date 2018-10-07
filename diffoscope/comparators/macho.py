@@ -44,7 +44,7 @@ class Otool(Command):
     def filter(self, line):
         # Strip filename
         prefix = '{}:'.format(self._path)
-        if line.decode('utf-8', 'ignore').index(prefix) == 0:
+        if line.decode('utf-8', 'ignore').startswith(prefix):
             return line[len(prefix):].strip()
         return line
 
