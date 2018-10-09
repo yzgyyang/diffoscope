@@ -54,6 +54,17 @@ setup(
     ],
     extras_require={
         'distro_detection': ['distro'],
+        'cmdline': ['argcomplete', 'progressbar'],
+        'comparators': [
+            'binwalk',
+            'defusedxml',
+            'guestfs',
+            'jsondiff',
+            'python-debian',
+            'pyxattr',
+            'rpm-python',
+            'tlsh',
+        ],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

@@ -46,17 +46,9 @@ override_dh_auto_build: debian/diffoscope.bash-completion
 
 override_dh_python3:
 	dh_python3 -p diffoscope \
-		--depends=distro \
-		--recommends=argcomplete \
-		--recommends=binwalk \
-		--recommends=defusedxml \
-		--recommends=guestfs \
-		--recommends=jsondiff \
-		--recommends=progressbar \
-		--recommends=python-debian \
-		--recommends=pyxattr \
-		--recommends=rpm-python \
-		--recommends=tlsh \
+		--depends-section=distro_detection \
+		--recommends-section=cmdline \
+		--recommends-section=comparators \
 
 override_dh_gencontrol:
 	bin/diffoscope --list-debian-substvars >> debian/diffoscope.substvars
