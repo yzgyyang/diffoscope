@@ -37,9 +37,9 @@ class ProcyonDecompiler(Command):
         super().__init__(path, *args, **kwargs)
         self.real_path = os.path.realpath(path)
 
-    @tool_required('procyon-decompiler')
+    @tool_required('procyon')
     def cmdline(self):
-        return ['procyon-decompiler', '-ec', self.path]
+        return ['procyon', '-ec', self.path]
 
     def filter(self, line):
         if re.match(r'^(//)', line.decode('utf-8')):

@@ -264,7 +264,7 @@ EXTERNAL_TOOLS = {
         'arch': 'unzip',
         'FreeBSD': 'unzip',
     },
-    'procyon-decompiler': {
+    'procyon': {
         'debian': 'procyon-decompiler',
     },
     'dumpxsb': {

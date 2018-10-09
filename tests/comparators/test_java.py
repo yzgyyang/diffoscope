@@ -74,7 +74,7 @@ def compare_non_existing(monkeypatch, class1, decompiler):
     assert len(difference.details) > 0
 
 
-@skip_unless_tools_exist('procyon-decompiler')
+@skip_unless_tools_exist('procyon')
 def test_diff_procyon(differences_procyon):
     diff(differences_procyon, 'procyon_class_expected_diff')
 
@@ -84,7 +84,7 @@ def test_diff_javap(differences_javap):
     diff(differences_javap, 'javap_class_expected_diff')
 
 
-@skip_unless_tools_exist('procyon-decompiler')
+@skip_unless_tools_exist('procyon')
 def test_compare_non_existing_procyon(monkeypatch, class1):
     compare_non_existing(monkeypatch, class1, ProcyonDecompiler)
 
