@@ -76,6 +76,7 @@ Build-Depends:
  unzip <!nocheck>,
  xmlbeans <!nocheck>,
  xxd <!nocheck> | vim-common <!nocheck>,
+Build-Conflicts: graphicsmagick-imagemagick-compat
 Standards-Version: 4.2.1
 Rules-Requires-Root: no
 Homepage: https://diffoscope.org
