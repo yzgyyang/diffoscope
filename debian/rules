@@ -71,6 +71,12 @@ override_dh_auto_clean:
 	@echo "#" >> debian/tests/control.tmp
 	@cat debian/tests/control.in >> debian/tests/control.tmp
 	@sed -i "s#%RECOMMENDS%#$(shell bin/diffoscope --list-debian-substvars | cut -d= -f2)#" debian/tests/control.tmp
+	@sed -i "s#%PYRECOMMENDS%#$(shell python3 -c "import distutils.core; \
+		setup = distutils.core.run_setup('setup.py'); \
+		print(', '.join(['python3-'+x for y in setup.extras_require.values() for x in y]))" \
+	)#" debian/tests/control.tmp
+	@sed -i "s,python3-python-debian,python3-debian," debian/tests/control.tmp
+	@sed -i "s,python3-rpm-python,python3-rpm," debian/tests/control.tmp
 	@sed -i "s,apktool,apktool [!ppc64el !s390x]," debian/tests/control.tmp
 	@sed -i "s,fp-utils,fp-utils [!ppc64el !s390x]," debian/tests/control.tmp
 	@sed -i "s,oggvideotools,oggvideotools [!s390x]," debian/tests/control.tmp
