@@ -40,7 +40,7 @@ Build-Depends:
  libjs-jquery-isonscreen <!nocheck>,
  libjs-jquery-tablesorter <!nocheck>,
  libjs-jquery-throttle-debounce <!nocheck>,
- linux-image-amd64 [amd64] <!nocheck>,
+ linux-image-amd64 [amd64] <!nocheck> | linux-image-generic [amd64] <!nocheck>,
  llvm <!nocheck>,
  lz4 <!nocheck> | liblz4-tool <!nocheck>,
  mono-utils <!nocheck>,
