@@ -1,3 +1,11 @@
+diffoscope (104) UNRELEASED; urgency=medium
+
+  [ Chris Lamb ]
+  * comparators.macho: Prevent a traceback if the filename cannot be found
+    on the line.  Closes: #910540
+
+ -- Mattia Rizzolo <mattia@debian.org>  Tue, 09 Oct 2018 11:23:10 +0200
+
 diffoscope (103) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
