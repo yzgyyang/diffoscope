@@ -10,7 +10,7 @@ Uploaders:
  Ximin Luo <infinity0@debian.org>,
 Build-Depends:
  abootimg <!nocheck>,
- apktool [!ppc64el !s390x] <!nocheck>,
+# apktool [!ppc64el !s390x] <!nocheck>,
  bash-completion,
  binutils-multiarch <!nocheck>,
  caca-utils <!nocheck>,
@@ -45,7 +45,7 @@ Build-Depends:
  lz4 <!nocheck> | liblz4-tool <!nocheck>,
  mono-utils <!nocheck>,
  odt2txt <!nocheck>,
- oggvideotools [!s390x] <!nocheck>,
+# oggvideotools [!s390x] <!nocheck>,
  openssh-client <!nocheck>,
  pgpdump <!nocheck>,
  poppler-utils <!nocheck>,
