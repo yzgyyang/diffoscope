@@ -30,6 +30,10 @@ from ..utils.tools import skip_unless_tools_exist, skip_unless_module_exists
 
 img1 = load_fixture('test1.ext4')
 img2 = load_fixture('test2.ext4')
+img1_fat12 = load_fixture('test1.fat12')
+img2_fat12 = load_fixture('test2.fat12')
+img1_fat16 = load_fixture('test1.fat16')
+img1_fat32 = load_fixture('test1.fat32')
 
 
 @pytest.fixture(scope="session")
@@ -54,6 +58,15 @@ def guestfs_tempdir():
 
 def test_identification(img1):
     assert isinstance(img1, FsImageFile)
+
+def test_identification_fat12(img1_fat12):
+    assert isinstance(img1_fat12, FsImageFile)
+
+def test_identification_fat16(img1_fat16):
+    assert isinstance(img1_fat16, FsImageFile)
+
+def test_identification_fat32(img1_fat32):
+    assert isinstance(img1_fat32, FsImageFile)
 
 
 @skip_unless_tools_exist('qemu-img')
@@ -94,3 +107,27 @@ def test_compare_non_existing(monkeypatch, img1, guestfs_tempdir):
     difference = img1.compare(MissingFile('/nonexisting', img1))
     assert difference.source2 == '/nonexisting'
     assert difference.details[-1].source2 == '/dev/null'
+
+@pytest.fixture
+def differences_fat(img1_fat12, img2_fat12, guestfs_tempdir):
+    return img1_fat12.compare(img2_fat12).details
+
+
+@skip_unless_tools_exist('qemu-img')
+@skip_unless_module_exists('guestfs')
+def test_differences_fat(differences_fat, guestfs_tempdir):
+    assert differences_fat[0].source1 == 'filetype from file(1)'
+    assert differences_fat[1].source1 == 'test1.fat12.tar'
+    tarinfo = differences_fat[1].details[0]
+    tardiff = differences_fat[1].details[1]
+    assert tarinfo.source1 == 'file list'
+    assert tarinfo.source2 == 'file list'
+    assert tardiff.source1 == './test1.txt'
+    assert tardiff.source2 == './test1.txt'
+    expected_diff = get_data('fat12_expected_diffs')
+    found_diff = differences_fat[0].unified_diff + \
+        tarinfo.unified_diff + \
+        tardiff.unified_diff
+    # workaround for file(1) bug in stretch
+    found_diff = found_diff.replace('32 MB) ,', '32 MB),')
+    assert expected_diff == found_diff
