@@ -83,6 +83,7 @@ class ComparatorManager(object):
         ('xz.XzFile',),
         ('apk.ApkFile',),
         ('odt.OdtFile',),
+        ('ocaml.OcamlInterfaceFile',),
         ('docx.DocxFile',),
         ('zip.ZipFile',),
         ('zip.MozillaZipFile',),

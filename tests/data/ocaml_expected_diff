@@ -1,0 +1,15 @@
+@@ -1,5 +1,14 @@
+ Unit name: Uchar
+ Interfaces imported:
+ 	84838649f9351de166bfa8b9f2c84db4	Uchar
+ 	07ea9e20ae94d62c35cfecbe7d66d3ea	Pervasives
+ 	cbd5f2d6b649925222e1e9fb63b89db6	CamlinternalFormatBasics
++Cmt unit name: Uchar
++Cmt interfaces imported:
++	cbd5f2d6b649925222e1e9fb63b89db6	CamlinternalFormatBasics
++	07ea9e20ae94d62c35cfecbe7d66d3ea	Pervasives
++	84838649f9351de166bfa8b9f2c84db4	Uchar
++Source file: uchar.mli
++Compilation flags: ../ocamlc -strict-sequence -absname -w +a-4-9-41-42-44-45-48 -g -warn-error A -bin-annot -nostdlib -safe-string -strict-formats -c uchar.mli
++Load path: 
++cmt interface digest: 84838649f9351de166bfa8b9f2c84db4

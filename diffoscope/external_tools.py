@@ -170,6 +170,9 @@ EXTERNAL_TOOLS = {
         'debian': 'binutils-multiarch',
         'arch': 'binutils',
     },
+    'ocamlobjinfo': {
+        'debian': 'ocaml-nox',
+    },
     'odt2txt': {
         'debian': 'odt2txt',
         'arch': 'odt2txt',
