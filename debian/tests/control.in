@@ -1,3 +1,8 @@
+# To regenerate:
+#
+#   $ debian/rules clean
+#   $ mv debian/tests/control.tmp debian/tests/control
+
 Tests: pytest-with-recommends
 Depends: diffoscope, python3-pytest, file, linux-image-amd64 [amd64] | linux-image-generic [amd64], %RECOMMENDS%, %PYRECOMMENDS%
 
