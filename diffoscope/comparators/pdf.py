@@ -25,6 +25,11 @@ from diffoscope.difference import Difference
 from .utils.file import File
 from .utils.command import Command
 
+try:
+    import PyPDF2
+except ImportError:  # noqa
+    PyPDF2 = None
+
 
 class Pdftotext(Command):
     @tool_required('pdftotext')
@@ -37,4 +42,32 @@ class PdfFile(File):
     FILE_TYPE_RE = re.compile(r'^PDF document\b')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(Pdftotext, self.path, other.path)]
+        xs = []
+
+        if PyPDF2 is not None:
+            difference = Difference.from_text(
+                self.dump_pypdf2_metadata(self),
+                self.dump_pypdf2_metadata(other),
+                self.path,
+                other.path,
+            )
+            if difference:
+                difference.add_comment("Document info")
+            xs.append(difference)
+
+        xs.append(Difference.from_command(Pdftotext, self.path, other.path))
+
+        return xs
+
+    @staticmethod
+    def dump_pypdf2_metadata(file):
+        try:
+            pdf = PyPDF2.PdfFileReader(file.path)
+        except PyPDF2.utils.PdfReadError:
+            return "(Could not extract metadata)"
+
+        xs = []
+        for k, v in sorted(pdf.getDocumentInfo().items()):
+            xs.append("{}: {!r}".format(k.lstrip('/'), v))
+
+        return "\n".join(xs)

@@ -22,7 +22,7 @@ import pytest
 from diffoscope.comparators.pdf import PdfFile
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist
+from ..utils.tools import skip_unless_tools_exist, skip_unless_module_exists
 from ..utils.nonexisting import assert_non_existing
 
 
@@ -61,3 +61,14 @@ def test_text_diff(differences):
 @skip_unless_tools_exist('pdftotext')
 def test_compare_non_existing(monkeypatch, pdf1):
     assert_non_existing(monkeypatch, pdf1, has_null_source=False)
+
+
+@pytest.fixture
+def differences_metadata(pdf1, pdf1a):
+    return pdf1.compare(pdf1a).details
+
+
+@skip_unless_module_exists('PyPDF2')
+def test_metadata(differences_metadata):
+    expected_diff = get_data('pdf_metadata_expected_diff')
+    assert differences_metadata[0].unified_diff == expected_diff

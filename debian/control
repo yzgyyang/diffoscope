@@ -62,6 +62,7 @@ Build-Depends:
  python3-libarchive-c,
  python3-magic,
  python3-progressbar <!nocheck>,
+ python3-pypdf2 <!nocheck>,
  python3-pytest <!nocheck>,
  python3-pytest-cov <!nocheck>,
  python3-pyxattr <!nocheck>,
