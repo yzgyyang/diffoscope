@@ -1,10 +1,35 @@
-diffoscope (104) UNRELEASED; urgency=medium
+diffoscope (104) unstable; urgency=medium
 
   [ Chris Lamb ]
-  * comparators.macho: Prevent a traceback if the filename cannot be found
-    on the line.  Closes: #910540
+  * comparators:
+    + macho: Prevent a traceback if the filename cannot be found on the line.
+      Closes: #910540
+    + ocaml New comparator OCaml files using ocamlobjinfo.  Closes: #910542
+    + pdf: Add support for comparing metadata using PyPDF2.  Closes: #911446
+  * debian/tests/control.in: Add note on how to regenerate this file.
 
- -- Mattia Rizzolo <mattia@debian.org>  Tue, 09 Oct 2018 11:23:10 +0200
+  [ Mattia Rizzolo ]
+  * d/control:
+    + Build-Depend on linux-image-amd64 [amd64] to allow squashfs tests to run.
+    + Add a Build-Conflicts against graphicsmagick-imagemagick-compat.
+      See: #910652
+  * Move the list of optional python packages from d/rules into setup.py, and
+    have dh_python3 check the generated requires.txt.
+  * Also add the optional python modules to the autopkgtest dependencies.
+  * Temporarily drop Build-Depends and Test-Depends on apktool and
+    oggvideotools, as they are not available in buster at the moment.
+  * comparators:
+    + java:
+      - Rename the tool procyon-decompiler to procyon.
+      - Properly fall back from procyon to javap also when procyon exists
+        but doesn't return any output.
+  * Declare in setup.py that diffoscope is good to go with Python 3.7.
+
+  [ Marek Marczykowski-Górecki ]
+  * comparators:
+    + fsimage: Handle FAT filesystems.  MR: !13
+
+ -- Mattia Rizzolo <mattia@debian.org>  Thu, 25 Oct 2018 14:55:41 +0200
 
 diffoscope (103) unstable; urgency=medium
 
