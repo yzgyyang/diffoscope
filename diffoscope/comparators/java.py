@@ -80,14 +80,17 @@ class ClassFile(File):
     decompilers = [ProcyonDecompiler, Javap]
 
     def compare_details(self, other, source=None):
-        diff = None
+        diff = []
 
         for decompiler in self.decompilers:
             try:
-                diff = [
-                    Difference.from_command(decompiler, self.path, other.path)
-                ]
-                if diff:
+                single_diff = Difference.from_command(
+                    decompiler,
+                    self.path,
+                    other.path
+                )
+                if single_diff:
+                    diff.append(single_diff)
                     break
             except RequiredToolNotFound:
                 logger.debug("Unable to find %s. Falling back...",
