@@ -6,7 +6,7 @@ before_script:
 
 .test_template: &test
   script:
-    - py.test-3 -vv -l -r a
+    - py.test-3 -vv -l -r a --cov=diffoscope --cov-report=term-missing
 
 unstable:
   <<: *test
