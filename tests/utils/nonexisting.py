@@ -24,7 +24,7 @@ from diffoscope.comparators.missing_file import MissingFile
 
 def assert_non_existing(monkeypatch, fixture, has_null_source=True, has_details=True):
     monkeypatch.setattr(Config(), 'new_file', True)
-    assert Config().new_file, "didnt get patched"
+    assert Config().new_file, "Did not get patched"
 
     difference = fixture.compare(MissingFile('/nonexisting', fixture))
 
