@@ -3,6 +3,7 @@
 /.pybuild
 /*.eggs
 /.cache
+/.pytest_cache
 /diffoscope.egg-info/
 /dist/
 /doc/diffoscope.1
