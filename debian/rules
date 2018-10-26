@@ -77,8 +77,7 @@ override_dh_auto_clean:
 	)#" debian/tests/control.tmp
 	@sed -i "s,python3-python-debian,python3-debian," debian/tests/control.tmp
 	@sed -i "s,python3-rpm-python,python3-rpm," debian/tests/control.tmp
-	#@sed -i "s,apktool,apktool [!ppc64el !s390x]," debian/tests/control.tmp
-	@sed -i "s/apktool, //" debian/tests/control.tmp
+	@sed -i "s,apktool,apktool [!ppc64el !s390x]," debian/tests/control.tmp
 	@sed -i "s,fp-utils,fp-utils [!ppc64el !s390x]," debian/tests/control.tmp
 	#@sed -i "s,oggvideotools,oggvideotools [!s390x]," debian/tests/control.tmp
 	@sed -i "s/oggvideotools, //" debian/tests/control.tmp
