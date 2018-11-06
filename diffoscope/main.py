@@ -30,7 +30,7 @@ import traceback
 
 from . import VERSION
 from .path import set_path
-from .tools import tool_prepend_prefix, tool_required, OS_NAMES, get_current_os
+from .tools import tool_check_installed, tool_prepend_prefix, tool_required, OS_NAMES, get_current_os
 from .config import Config
 from .locale import set_locale
 from .logging import line_eraser, setup_logging
@@ -246,6 +246,12 @@ def create_parser():
                         'distribution that satisfy these dependencies.')
     group4.add_argument('--list-debian-substvars', action=ListDebianSubstvarsAction,
                         help="List packages needed for Debian in 'substvar' format.")
+    group4.add_argument('--list-missing-tools', nargs='?', type=str, action=ListMissingToolsAction,
+                        metavar='DISTRO', choices=OS_NAMES,
+                        help='Show missing external tools and exit. '
+                        'DISTRO can be one of {%(choices)s}. '
+                        'If specified, the output will list packages in that '
+                        'distribution that satisfy these dependencies.')
 
     if not tlsh:
         parser.epilog = 'File renaming detection based on fuzzy-matching is currently disabled. It can be enabled by installing the "tlsh" module available at https://github.com/trendmicro/tlsh'
@@ -302,13 +308,24 @@ class RangeCompleter(object):
 
 
 class ListToolsAction(argparse.Action):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.only_missing = False
+
     def __call__(self, parser, namespace, os_override, option_string=None):
         # Ensure all comparators are imported so tool_required.all is
         # populated.
         ComparatorManager().reload()
 
+        external_tools = sorted(tool_required.all)
+        if self.only_missing:
+            external_tools = [
+                tool for tool in external_tools
+                if not tool_check_installed(tool)
+            ]
+
         print("External-Tools-Required: ", end='')
-        print(', '.join(sorted(tool_required.all)))
+        print(', '.join(external_tools))
 
         current_os = get_current_os()
         os_list = [current_os] if (current_os in OS_NAMES) else iter(OS_NAMES)
@@ -318,7 +335,7 @@ class ListToolsAction(argparse.Action):
         for os_ in os_list:
             tools = set()
             print("Available-in-{}-packages: ".format(OS_NAMES[os_]), end='')
-            for x in tool_required.all:
+            for x in external_tools:
                 try:
                     tools.add(EXTERNAL_TOOLS[x][os_])
                 except KeyError:
@@ -326,6 +343,12 @@ class ListToolsAction(argparse.Action):
             print(', '.join(sorted(tools)))
 
         sys.exit(0)
+
+
+class ListMissingToolsAction(ListToolsAction):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.only_missing = True
 
 
 class ListDebianSubstvarsAction(argparse._StoreTrueAction):

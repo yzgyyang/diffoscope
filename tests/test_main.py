@@ -138,6 +138,16 @@ def test_list_tools(capsys):
     assert 'xxd,' in out
 
 
+def test_list_missing_tools(capsys):
+    ret, out, err = run(capsys, '--list-missing-tools')
+
+    assert ret == 0
+    assert err == ''
+    assert 'External-Tools-Required: ' in out
+    # No assertions about the contents of the output since we don't control
+    # what's installed in the test environment
+
+
 def test_profiling(capsys):
     ret, out, err = run(capsys, TEST_TAR1_PATH, TEST_TAR1_PATH, '--profile=-')
 
