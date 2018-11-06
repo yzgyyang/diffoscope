@@ -7,7 +7,18 @@ diffoscope (105) UNRELEASED; urgency=medium
     + Prevent test failures when running under stretch-backports by checking
       the ocaml version number.  Closes: #911846
 
- -- Mattia Rizzolo <mattia@debian.org>  Fri, 26 Oct 2018 13:26:53 +0200
+  [ Mattia Rizzolo ]
+  * debian: Reinstate apktool Build-Depends and Test-Depends.
+
+  [ Daniel Shahaf ]
+  * comparators/pcap:
+    + Fix recognition with the upcoming file(1) 5.35.  Closes: #912756
+      Thanks to Christoph Biedl for the heads-up in advance.
+
+  [ Will Thompson ]
+  * Add a new command line flag --list-missing-tools.  MR: !14
+
+ -- Mattia Rizzolo <mattia@debian.org>  Tue, 06 Nov 2018 12:38:52 +0100
 
 diffoscope (104) unstable; urgency=medium
 
