@@ -55,6 +55,15 @@ def tool_prepend_prefix(prefix, *tools):
         REMAPPED_TOOL_NAMES[tool] = prefix + tool
 
 
+def tool_check_installed(command):
+    if command == get_tool_name(command) and not os_is_gnu() and tool_is_gnu(command):
+        # try "g" + command for each tool, if we're on a non-GNU system
+        if find_executable("g" + command):
+            tool_prepend_prefix("g", command)
+
+    return find_executable(get_tool_name(command))
+
+
 def tool_required(command):
     """
     Decorator that checks if the specified tool is installed
@@ -77,12 +86,7 @@ def tool_required(command):
             This ensures that any os.environ['PATH'] modifications are
             performed prior to the `find_executable` tests.
             """
-            if command == get_tool_name(command) and not os_is_gnu() and tool_is_gnu(command):
-                # try "g" + command for each tool, if we're on a non-GNU system
-                if find_executable("g" + command):
-                    tool_prepend_prefix("g", command)
-
-            if not find_executable(get_tool_name(command)):
+            if not tool_check_installed(command):
                 raise RequiredToolNotFound(command)
 
             with profile('command', command):
