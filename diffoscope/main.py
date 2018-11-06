@@ -30,7 +30,8 @@ import traceback
 
 from . import VERSION
 from .path import set_path
-from .tools import tool_check_installed, tool_prepend_prefix, tool_required, OS_NAMES, get_current_os
+from .tools import tool_check_installed, tool_prepend_prefix, tool_required, \
+        OS_NAMES, get_current_os
 from .config import Config
 from .locale import set_locale
 from .logging import line_eraser, setup_logging
@@ -166,8 +167,9 @@ def create_parser():
                         'spilling it into child pages (--html-dir) or skipping the '
                         'rest of the diff block. Child pages are limited instead by '
                         '--max-page-size-child. (default: %(default)s, remains in '
-                        'effect even with --no-default-limits)', default=Config().max_page_diff_block_lines).completer = RangeCompleter(
-        Config().max_page_diff_block_lines)
+                        'effect even with --no-default-limits)',
+                        default=Config().max_page_diff_block_lines).completer = RangeCompleter(
+                                Config().max_page_diff_block_lines)
     # TODO: old flag kept for backwards-compat, drop 6 months after v84
     group2.add_argument("--max-diff-block-lines-parent", metavar='LINES', type=int,
                         help=argparse.SUPPRESS, default=None)
@@ -182,8 +184,8 @@ def create_parser():
     group3.add_argument('--exclude-command', dest='exclude_commands',
                         metavar='REGEX_PATTERN', action='append', default=[],
                         help='Exclude commands that match %(metavar)s. For '
-                        "example '^readelf.*\s--debug-dump=info' can take a long "
-                        'time and differences here are likely secondary '
+                        "example '^readelf.*\\s--debug-dump=info' can take a "
+                        'long time and differences here are likely secondary '
                         'differences caused by something represented '
                         'elsewhere. Use this option to disable commands that '
                         'use a lot of resources.')
@@ -254,12 +256,19 @@ def create_parser():
                         'distribution that satisfy these dependencies.')
 
     if not tlsh:
-        parser.epilog = 'File renaming detection based on fuzzy-matching is currently disabled. It can be enabled by installing the "tlsh" module available at https://github.com/trendmicro/tlsh'
+        parser.epilog = (
+            'File renaming detection based on fuzzy-matching is currently '
+            'disabled. It can be enabled by installing the "tlsh" module '
+            'available at https://github.com/trendmicro/tlsh'
+        )
     if argcomplete:
         argcomplete.autocomplete(parser)
     elif '_ARGCOMPLETE' in os.environ:
         logger.error(
-            'Argument completion requested but the "argcomplete" module is not installed. It can be obtained at https://pypi.python.org/pypi/argcomplete')
+            'Argument completion requested but the "argcomplete" module is '
+            'not installed. It can be obtained at '
+            'https://pypi.python.org/pypi/argcomplete'
+        )
         sys.exit(1)
 
     def post_parse(parsed_args):
@@ -271,7 +280,9 @@ def create_parser():
                                  for f in x.option_strings]
             if ineffective_flags:
                 logger.warning(
-                    "Loading diff instead of calculating it, but diff-calculation flags were given; they will be ignored:")
+                    'Loading diff instead of calculating it, but '
+                    'diff-calculation flags were given; they will be ignored:'
+                )
                 logger.warning(ineffective_flags)
     return parser, post_parse
 
