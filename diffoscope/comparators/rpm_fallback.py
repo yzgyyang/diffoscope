@@ -23,7 +23,7 @@ from .utils.file import File
 
 
 class AbstractRpmFile(File):
-    FILE_TYPE_RE = re.compile('^RPM\s')
+    FILE_TYPE_RE = re.compile(r'^RPM\s')
 
 
 class RpmFile(AbstractRpmFile):

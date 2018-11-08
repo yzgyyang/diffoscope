@@ -230,13 +230,13 @@ def test_partial_string_numl():
 
 def test_partial_string_escape():
     tmpl = PartialString.numl("find {0} -name {1} " +
-                              PartialString.escape("-exec ls -la {} \;"), 2)
+                              PartialString.escape(r"-exec ls -la {} \;"), 2)
     assert tmpl == PartialString(
         'find {0} -name {1} -exec ls -la {{}} \\;', *tmpl.holes)
     assert tmpl.size() == 33
     assert tmpl.size(4) == 39
     assert tmpl == PartialString.numl(
-        "find {0} -name {1} -exec ls -la {2} \;", 3).pformat({2: "{}"})
+        r"find {0} -name {1} -exec ls -la {2} \;", 3).pformat({2: "{}"})
 
     assert (tmpl.pformatl("my{}path", "my{}file") ==
             PartialString('find my{{}}path -name my{{}}file -exec ls -la {{}} \\;'))

@@ -133,7 +133,7 @@ def convert(s, ponct=0, tag=''):
         elif c == " " and ponct == 1:
             t.write('<span class="diffponct">\xb7</span>')
         elif c == "\n" and ponct == 1:
-            t.write('<br/><span class="diffponct">\</span>')
+            t.write('<br/><span class="diffponct">\\</span>')
         elif ord(c) < 32:
             conv = u"\\x%x" % ord(c)
             t.write('<em>%s</em>' % conv)
@@ -243,7 +243,7 @@ def output_node(ctx, difference, path, indentstr, indentnum):
     # Add holes for child nodes
     for d in difference.details:
         child = output_node_frame(
-            d, path + [d], indentstr, indentnum +1, PartialString.of(d))
+            d, path + [d], indentstr, indentnum + 1, PartialString.of(d))
         child = PartialString.numl(u"""{0[1]}<div class="difference">
 {1}{0[1]}</div>
 {-1}""", 2, cont).pformatl(indent, child)
@@ -515,7 +515,7 @@ class HTMLSideBySidePresenter(object):
             it.close()
             self.spl_print_exit(None, None, None)
             return
-        except:
+        except Exception:
             import traceback
             traceback.print_exc()
             if self.spl_print_exit(*sys.exc_info()) is False:
