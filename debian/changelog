@@ -1,6 +1,4 @@
-diffoscope (105) UNRELEASED; urgency=medium
-
-  * WIP.
+diffoscope (105) unstable; urgency=medium
 
   [ Chris Lamb ]
   * tests:
@@ -9,6 +7,7 @@ diffoscope (105) UNRELEASED; urgency=medium
 
   [ Mattia Rizzolo ]
   * debian: Reinstate apktool Build-Depends and Test-Depends.
+  * Fix some flake8 and deprecation warnings.
 
   [ Daniel Shahaf ]
   * comparators/pcap:
@@ -18,7 +17,7 @@ diffoscope (105) UNRELEASED; urgency=medium
   [ Will Thompson ]
   * Add a new command line flag --list-missing-tools.  MR: !14
 
- -- Mattia Rizzolo <mattia@debian.org>  Tue, 06 Nov 2018 12:38:52 +0100
+ -- Mattia Rizzolo <mattia@debian.org>  Thu, 08 Nov 2018 22:27:23 +0100
 
 diffoscope (104) unstable; urgency=medium
 
