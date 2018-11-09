@@ -579,7 +579,6 @@ class StaticLibFile(File):
     DESCRIPTION = "statically-linked binaries"
     CONTAINER_CLASS = ElfContainer
     FILE_TYPE_RE = re.compile(r'\bar archive\b')
-    FILE_EXTENSION_SUFFIX = '.a'
 
     def compare_details(self, other, source=None):
         differences = [Difference.from_text_readers(
