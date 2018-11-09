@@ -581,6 +581,8 @@ class StaticLibFile(File):
     FILE_TYPE_RE = re.compile(r'\bar archive\b')
     FILE_EXTENSION_SUFFIX = '.a'
 
+    ENABLE_FALLBACK_RECOGONIZES = False
+
     def compare_details(self, other, source=None):
         differences = [Difference.from_text_readers(
             list_libarchive(self.path),

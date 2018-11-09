@@ -154,6 +154,7 @@ class File(object, metaclass=abc.ABCMeta):
 
         return _run_tests(all, all_tests) if all_tests else False
 
+    ENABLE_FALLBACK_RECOGONIZES = True
     FALLBACK_FILE_EXTENSION_SUFFIX = None
     FALLBACK_FILE_TYPE_HEADER_PREFIX = None
 
@@ -174,6 +175,9 @@ class File(object, metaclass=abc.ABCMeta):
             # If the class has overridden the default recognizes() then the
             # logic below about AND-comparing with the non-fallback versions is
             # not valid, they have to re-implement it
+            return False
+
+        if not cls.ENABLE_FALLBACK_RECOGONIZES:
             return False
 
         all_tests = [test for test in (

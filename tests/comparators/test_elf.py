@@ -37,6 +37,7 @@ from ..utils.tools import skip_unless_tools_exist, \
 
 obj1 = load_fixture('test1.o')
 obj2 = load_fixture('test2.o')
+bug_903446 = load_fixture('bug_903446.a')
 
 
 def readelf_version():
@@ -184,3 +185,11 @@ def test_original_gnu_debuglink(dbgsym_differences):
     assert '.gnu_debuglink' in bin_details.details[2].source1
     expected_gnu_debuglink = get_data('gnu_debuglink_expected_diff')
     assert bin_details.details[2].unified_diff == expected_gnu_debuglink
+
+
+def test_bug_903446(bug_903446):
+    # Ensure we don't error
+    bug_903446.compare(bug_903446)
+
+    # Not a real StaticLibFile
+    assert isinstance(bug_903446, FilesystemFile)
