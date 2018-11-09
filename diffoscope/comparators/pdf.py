@@ -63,8 +63,8 @@ class PdfFile(File):
     def dump_pypdf2_metadata(file):
         try:
             pdf = PyPDF2.PdfFileReader(file.path)
-        except PyPDF2.utils.PdfReadError:
-            return "(Could not extract metadata)"
+        except PyPDF2.utils.PdfReadError as exc:
+            return "(Could not extract metadata: {})".format(exc)
 
         xs = []
         for k, v in sorted(pdf.getDocumentInfo().items()):
