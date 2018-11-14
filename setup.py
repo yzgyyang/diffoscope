@@ -67,6 +67,7 @@ setup(
             'tlsh',
         ],
     },
+    python_requires='>=3.5',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
