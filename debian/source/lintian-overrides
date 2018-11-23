@@ -1,3 +1,6 @@
 # This will mainly be used to double check that what we upload to Debian
 # is also in our "archive".
 debian-watch-file-in-native-package
+
+# We like to share our own keys for others to check the released signature.
+public-upstream-key-in-native-package
