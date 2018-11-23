@@ -1,3 +1,23 @@
+diffoscope (106) unstable; urgency=medium
+
+  [ Chris Lamb ]
+  * comparators:
+    + elf: Don't assume all files called ".a" are ELF binaries.  Closes: #903446
+    + pdf:
+      - Display the reason when cannot extract metadata from PDF files.
+      - Prevent tracebacks when obtaining PDF metadata from files with multiple
+        PDF dictionary definition entries.  Closes: #913315
+
+  [ Marius Gedminas ]
+  * Add a python_requires to setup.py.
+
+  [ Mattia Rizzolo ]
+  * debian:
+    + Disable depends on gnumeric and procyon as they are RC buggy.
+    + Override the new lintian's public-upstream-key-in-native-package.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Fri, 23 Nov 2018 11:09:28 +0100
+
 diffoscope (105) unstable; urgency=medium
 
   [ Chris Lamb ]
