@@ -158,7 +158,7 @@ def compare_meta(path1, path2):
     try:
         differences.append(Difference.from_command(Getfacl, path1, path2))
     except RequiredToolNotFound:
-        logger.warning(
+        logger.info(
             "Unable to find 'getfacl', some directory metadata differences might not be noticed.")
     try:
         lsattr1 = lsattr(path1)
