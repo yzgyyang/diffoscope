@@ -1,3 +1,12 @@
+diffoscope (107) unstable; urgency=medium
+
+  * Compare .zip file comments with zipnote. (Closes: #901757)
+  * Don't emit a large number of warnings if getfacl(1) is not available. This
+    makes the behaviour consistent with if lsattr(1) is unavailable.
+    (Closes: #902369)
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 06 Dec 2018 22:42:54 +0100
+
 diffoscope (106) unstable; urgency=medium
 
   [ Chris Lamb ]
