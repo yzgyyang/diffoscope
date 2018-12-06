@@ -33,6 +33,8 @@ encrypted_zip1 = load_fixture('encrypted1.zip')
 encrypted_zip2 = load_fixture('encrypted2.zip')
 mozzip1 = load_fixture('test1.mozzip')
 mozzip2 = load_fixture('test2.mozzip')
+test_comment1 = load_fixture('test_comment1.zip')
+test_comment2 = load_fixture('test_comment2.zip')
 
 
 def test_identification(zip1):
@@ -117,3 +119,14 @@ def test_mozzip_compare_non_existing(monkeypatch, mozzip1):
 def test_encrypted(encrypted_zip1, encrypted_zip2):
     difference = encrypted_zip1.compare(encrypted_zip2)
     assert difference is not None
+
+
+@pytest.fixture
+def comment_differences(test_comment1, test_comment2):
+    return test_comment1.compare(test_comment2).details
+
+
+@skip_unless_tools_exist('zipnote')
+def test_commented(comment_differences):
+    expected_diff = get_data('comment_zipinfo_expected_diff')
+    assert comment_differences[1].unified_diff == expected_diff

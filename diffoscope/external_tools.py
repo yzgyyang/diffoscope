@@ -267,6 +267,9 @@ EXTERNAL_TOOLS = {
         'arch': 'unzip',
         'FreeBSD': 'unzip',
     },
+    'zipnote': {
+        'debian': 'zip',
+    },
     'procyon': {
         'debian': 'procyon-decompiler',
     },

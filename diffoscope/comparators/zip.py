@@ -57,6 +57,43 @@ class ZipinfoVerbose(Zipinfo):
         return ['zipinfo', '-v', self.path]
 
 
+class Zipnote(Command):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.flag = False
+
+    @tool_required('zipnote')
+    def cmdline(self):
+        return ['zipnote', self.path]
+
+    def filter(self, line):
+        """
+        Example output from zipnote(1):
+
+            @ foo
+            hello
+            @ (comment above this line)
+            @ (zip file comment below this line)
+            goodbye
+        """
+
+        if line == b'@ (zip file comment below this line)\n':
+            self.flag = True
+            return b'Zip file comment: '
+
+        if line == b'@ (comment above this line)\n':
+            self.flag = False
+            return b'\n\n'  # spacer
+
+        if line.startswith(b'@ '):
+            filename = line[2:-1].decode()
+            self.flag = True
+            return "Filename: {}\nComment: ".format(filename).encode()
+
+        return line[:-1] if self.flag else b''
+
+
 class BsdtarVerbose(Command):
     @tool_required('bsdtar')
     def cmdline(self):
@@ -125,10 +162,15 @@ class ZipFile(File):
         r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template))\b')
 
     def compare_details(self, other, source=None):
+        differences = []
         zipinfo_difference = Difference.from_command(Zipinfo, self.path, other.path) or \
             Difference.from_command(ZipinfoVerbose, self.path, other.path) or \
             Difference.from_command(BsdtarVerbose, self.path, other.path)
-        return [zipinfo_difference]
+        zipnote_difference = Difference.from_command(Zipnote, self.path, other.path)
+        for x in (zipinfo_difference, zipnote_difference):
+            if x is not None:
+                differences.append(x)
+        return differences
 
 
 class MozillaZipCommandMixin(object):
