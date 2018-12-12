@@ -24,7 +24,7 @@ from diffoscope.config import Config
 from diffoscope.comparators.icc import IccFile
 from diffoscope.comparators.missing_file import MissingFile
 
-from ..utils.data import load_fixture, get_data
+from ..utils.data import load_fixture, get_data, data
 from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 
 
@@ -50,7 +50,7 @@ def cd_iccdump_version():
     somewhat-arbitrary newline too.
     """
 
-    val = subprocess.check_output(('cd-iccdump', icc1().path)).decode('utf-8')
+    val = subprocess.check_output(('cd-iccdump', data('test1.icc'))).decode('utf-8')
 
     for x in val.splitlines():
         if x.startswith('  Profile ID') and len(x) == 47:
