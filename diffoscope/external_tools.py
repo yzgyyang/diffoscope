@@ -240,6 +240,9 @@ EXTERNAL_TOOLS = {
         'arch': 'sqlite',
         'FreeBSD': 'sqlite3',
     },
+    'wasm2wat': {
+        'arch': 'wabt',
+    },
     'tar': {
         'debian': 'tar',
         'arch': 'tar',

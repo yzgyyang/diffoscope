@@ -58,6 +58,7 @@ class ComparatorManager(object):
         ('elf.StaticLibFile',),
         ('llvm.LlvmBitCodeFile',),
         ('sqlite.Sqlite3Database',),
+        ('wasm.WasmFile',),
         ('fonts.TtfFile',),
         ('fontconfig.FontconfigCacheFile',),
         ('gettext.MoFile',),
