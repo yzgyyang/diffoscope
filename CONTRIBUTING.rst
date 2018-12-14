@@ -2,26 +2,8 @@ Contributing
 ============
 
 The preferred way to report bugs about diffoscope, as well as suggest fixes and
-requests for improvements, is to submit reports to the Debian bug tracker for
-the ``diffoscope`` package. You can do this over e-mail, simply write an email
-as follows:
-
-::
-
-    To: submit@bugs.debian.org
-    Subject: <subject>
-
-    Source: diffoscope
-    Version: <version>
-    Severity: <grave|serious|important|normal|minor|wishlist>
-
-
-There are `more detailed instructions available
-<https://www.debian.org/Bugs/Reporting>`__ about reporting a bug in the Debian
-bug tracker.
-
-If you're on a Debian-based system, you can install and use the ``reportbug``
-package to help walk you through the process.
+requests for improvements, is to submit reports to the issue tracker at
+https://salsa.debian.org/reproducible-builds/diffoscope/issues
 
 You can also submit patches via *merge request* to Salsa, Debian's Gitlab. Start
 by forking the `diffoscope Git
@@ -33,24 +15,8 @@ changes and submit a *merge request* via Salsa.  See `Gitlab documentation
 <https://salsa.debian.org/help/gitlab-basics/add-merge-request.md>`__ about
 *merge requests*.
 
-You can also submit patches to the Debian bug tracker. Start by cloning the `Git
-repository <https://salsa.debian.org/reproducible-builds/diffoscope>`__,
-make your changes and commit them as you normally would. You can then use
-Git's ``format-patch`` command to save your changes as a series of patches that
-can be attached to the report you submit. For example:
+You can also submit bugs about Debian specific issues to the Debian bug tracker. 
 
-::
-
-    git clone https://salsa.debian.org/reproducible-builds/diffoscope.git
-    cd diffoscope
-    git checkout origin/master -b <topicname>
-    # <edits>
-    git commit -a
-    git format-patch -M origin/master
-
-The ``format-patch`` command will create a series of ``.patch`` files in your
-checkout. Attach these files to your submission in your e-mail client or
-reportbug.
 
 Add a comparator
 ================
