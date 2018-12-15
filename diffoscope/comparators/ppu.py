@@ -65,11 +65,12 @@ class PpuFile(File):
     def recognizes(cls, file):
         if not super().recognizes(file):
             return False
-        with open(file.path, 'rb') as f:
-            magic = f.read(3)
-            if magic != b"PPU":
-                return False
-            ppu_version = f.read(3).decode('ascii', errors='ignore')
+
+        if file.file_header.startswith(b'PPU'):
+            return False
+
+        ppu_version = f.file_header[3:6].decode('ascii', errors='ignore')
+
         if not hasattr(PpuFile, 'ppu_version'):
             try:
                 with profile('command', 'ppudump'):
