@@ -83,7 +83,7 @@ class FsImageFile(File):
 
     @classmethod
     def recognizes(cls, file):
-        # Avoid DOS / MBR file type as it generate a lot of false possitives,
+        # Avoid DOS / MBR file type as it generate a lot of false positives,
         # manually check "System identifier string" instead
         with open(file.path, 'rb') as f:
             f.seek(54)
