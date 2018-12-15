@@ -42,9 +42,8 @@ class WasmFile(File):
     def recognizes(cls, file):
         if not super().recognizes(file):
             return False
-        with open(file.path, 'rb') as f:
-            magic = f.read(4)
-            return magic == WASM_MAGIC
+
+        return file.file_header.startswith(WASM_MAGIC)
 
     def compare_details(self, other, source=None):
         return [Difference.from_command(Wasm2Wat, self.path, other.path)]
