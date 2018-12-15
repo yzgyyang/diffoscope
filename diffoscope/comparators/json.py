@@ -35,14 +35,12 @@ class JSONFile(File):
 
     @classmethod
     def recognizes(cls, file):
-        with open(file.path, 'rb') as f:
-            # Try fuzzy matching for JSON files
-            if not file.name.endswith('.json'):
-                buf = f.read(10)
-                if not any(x in buf for x in b'{['):
-                    return False
-                f.seek(0)
+        # Try fuzzy matching for files not called .json
+        if not file.name.endswith('.json'):
+            if b'{' not in file.file_header or b'[' not in file.file_header:
+                return False
 
+        with open(file.path, 'rb') as f:
             try:
                 file.parsed = json.loads(
                     f.read().decode('utf-8', errors='ignore'),
