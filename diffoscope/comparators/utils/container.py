@@ -157,7 +157,7 @@ class Container(object, metaclass=abc.ABCMeta):
 
             for my_name, other_name, score in self.perform_fuzzy_matching(my_members, other_members):
                 comment = "Files similar despite different names" \
-                    " (difference score: {})".format(score)
+                    " (score: {}, lower is more similar)".format(score)
                 if score == 0:
                     comment = "Files identical despite different names"
                 yield prep_yield(my_name, other_name, comment)
