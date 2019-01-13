@@ -1,3 +1,37 @@
+diffoscope (108) unstable; urgency=medium
+
+  [ Chris Lamb ]
+  * test_icc: Calculate the path to a test .icc file using data() rather than
+    using the pytest fixture itself to avoid a "Fixtures are not meant to be
+    called directly" warning/error. (Closes: #916226)
+  * Fix a test_mozzip_compressed_files test failure under Alpine Linux.
+    (Closes: #916353, MR: !8)
+  * Output improvements:
+    * Prefer to comment that files are identical rather than having a
+      "fuzziness score" of zero.
+    * Expand the padding/spacing for "N calls" in the profiling output; having
+      99,999+ calls to cmp(1) is not uncommon for ISOs.
+    * Add a note to the "Files similar despite different names" comment to
+      clarify that a lower score is more similar.
+  * Use File.file_header to tidy JSON matching in the json, ppu and wasm
+    comparators.
+  * Drop debbindiff Breaks/Replaces; was removed in 2015, never part of a
+    stable release, etc.
+  * Correct a "positives" typo.
+
+  [ Joachim Breitner ]
+  * Add support for comparing WebAssembly modules. (MR: !17)
+
+  [ Holger Levsen ]
+  * Bump Standards-Version to 4.3.0
+  * Clarify that (upstream) issues should be reported via the
+    issue tracker on salsa.debian.org.
+
+  [ Mattia Rizzolo ]
+  * Try matching for MozillaZipFile before ZipFile.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 13 Jan 2019 19:21:05 +0000
+
 diffoscope (107) unstable; urgency=medium
 
   * Compare .zip file comments with zipnote. (Closes: #901757)
