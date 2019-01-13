@@ -17,8 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
-import re
-
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
 
