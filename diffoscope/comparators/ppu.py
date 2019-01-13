@@ -66,10 +66,10 @@ class PpuFile(File):
         if not super().recognizes(file):
             return False
 
-        if file.file_header.startswith(b'PPU'):
+        if not file.file_header.startswith(b'PPU'):
             return False
 
-        ppu_version = f.file_header[3:6].decode('ascii', errors='ignore')
+        ppu_version = file.file_header[3:6].decode('ascii', errors='ignore')
 
         if not hasattr(PpuFile, 'ppu_version'):
             try:
