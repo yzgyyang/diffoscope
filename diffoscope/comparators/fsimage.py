@@ -22,6 +22,7 @@ import logging
 import os.path
 
 from diffoscope.difference import Difference
+from diffoscope.exc import ContainerExtractionError
 
 from .utils.file import File
 from .utils.archive import Archive
@@ -71,8 +72,10 @@ class FsImageContainer(Archive):
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
         logger.debug('filesystem image extracting to %s', dest_path)
-        self.g.tar_out('/', dest_path)
-
+        try:
+            self.g.tar_out('/', dest_path)
+        except AttributeError as exc:
+            raise ContainerExtractionError(member_name, exc)
         return dest_path
 
 
