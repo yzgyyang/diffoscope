@@ -19,7 +19,6 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
-import subprocess
 
 from diffoscope.path import set_path
 from diffoscope.locale import set_locale
@@ -48,17 +47,3 @@ def reload_comparators():
 @pytest.fixture(autouse=True)
 def reset_progress():
     ProgressManager().reset()
-
-
-def pytest_report_header(config):
-    if config.option.verbose == 0:
-        return
-
-    try:
-        return ["", "Installed Debian packages:", "", subprocess.check_output((
-            'dpkg-query',
-            '-W',
-            '-f', '${db:Status-Abbrev}\t${binary:Package} (${Version})\n'
-        )).decode('utf-8')]
-    except:
-        pass
