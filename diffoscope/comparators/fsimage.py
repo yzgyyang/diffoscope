@@ -67,15 +67,14 @@ class FsImageContainer(Archive):
         self.g.close()
 
     def get_member_names(self):
+        if not guestfs:
+            return []
         return [os.path.basename(self.source.path) + '.tar']
 
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
         logger.debug('filesystem image extracting to %s', dest_path)
-        try:
-            self.g.tar_out('/', dest_path)
-        except AttributeError as exc:
-            raise ContainerExtractionError(member_name, exc)
+        self.g.tar_out('/', dest_path)
         return dest_path
 
 
