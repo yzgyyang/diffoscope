@@ -417,8 +417,12 @@ class ElfContainer(Container):
         super().__init__(*args, **kwargs)
         logger.debug("Creating ElfContainer for %s", self.source.path)
 
-        cmd = [get_tool_name('readelf'), '--wide',
-                             '--section-headers', self.source.path]
+        cmd = [
+            get_tool_name('readelf'),
+            '--wide',
+            '--section-headers',
+            self.source.path,
+        ]
         output = subprocess.check_output(
             cmd, shell=False, stderr=subprocess.DEVNULL)
         has_debug_symbols = False
