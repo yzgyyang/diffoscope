@@ -1,8 +1,25 @@
-diffoscope (109) UNRELEASED; urgency=medium
+diffoscope (110) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Don't look for adjacent -dbgsym package files automatically anymore to
+    align better with default user expectations. The existing behaviour can be
+    re-enabled by specifying the new `--use-dbgsym` flag. (Closes: #920701)
+  * Don't crash with if we were unable to successfully extract a
+    "guestfs"-based file. (Closes: #901982)
+  * Avoid clumsy profiling title length calculations by moving to Markdown
+    syntax, from reStructuredText.
+  * Drop printing out dpkg-query output when running tests: it's rather noisy
+    and has not helped yet in reproducing an error.
+  * Re-enable gnumeric as a Build-Depends.
+  * debian/rules: Use str.format over "+" for string concatenation.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 13 Jan 2019 19:36:43 +0000
+  [ Jelle van der Waa ]
+  * comparators.wasm: Remove an unused "re" import. (MR: !18)
+
+  [ Mattia Rizzolo ]
+  * comparators/elf: Apply flake8.
+
+ -- Chris Lamb <lamby@debian.org>  Wed, 06 Feb 2019 17:33:09 +0100
 
 diffoscope (108) unstable; urgency=medium
 
