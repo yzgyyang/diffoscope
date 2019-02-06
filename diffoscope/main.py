@@ -229,6 +229,10 @@ def create_parser():
                         'it in a report, and affects all types of output, '
                         'including --text and --json. (0 to disable, default: '
                         '%(default)s)', default=0)
+    group3.add_argument('--use-dbgsym', action='store_true',
+                        help='Automatically use corresponding -dbgsym packages'
+                        'when comparing .deb files. (default: %(default)s)',
+                        default=Config().use_dbgsym)
     group3.add_argument('--force-details', default=False, action='store_true',
                         help='Force recursing into the depths of file formats '
                         'even if files have the same content, only really '
@@ -437,6 +441,7 @@ def run_diffoscope(parsed_args):
     maybe_set_limit(Config(), parsed_args, "max_diff_block_lines_saved")
     maybe_set_limit(Config(), parsed_args, "max_diff_input_lines")
     Config().max_container_depth = parsed_args.max_container_depth
+    Config().use_dbgsym = parsed_args.use_dbgsym
     Config().force_details = parsed_args.force_details
     Config().fuzzy_threshold = parsed_args.fuzzy_threshold
     Config().new_file = parsed_args.new_file

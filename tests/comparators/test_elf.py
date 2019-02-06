@@ -162,7 +162,8 @@ def dbgsym_dir2():
 
 
 @pytest.fixture
-def dbgsym_differences(dbgsym_dir1, dbgsym_dir2):
+def dbgsym_differences(monkeypatch, dbgsym_dir1, dbgsym_dir2):
+    monkeypatch.setattr(Config(), 'use_dbgsym', True)
     return dbgsym_dir1.compare(dbgsym_dir2)
 
 

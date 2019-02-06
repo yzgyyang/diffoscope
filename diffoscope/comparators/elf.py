@@ -25,6 +25,7 @@ import collections
 
 from diffoscope.exc import OutputParsingError
 from diffoscope.tools import get_tool_name, tool_required
+from diffoscope.config import Config
 from diffoscope.tempfiles import get_named_temporary_file
 from diffoscope.difference import Difference
 
@@ -468,7 +469,7 @@ class ElfContainer(Container):
             )
             raise OutputParsingError(command, self)
 
-        if not has_debug_symbols:
+        if not has_debug_symbols and Config().use_dbgsym:
             self._install_debug_symbols()
 
     @tool_required('objcopy')
