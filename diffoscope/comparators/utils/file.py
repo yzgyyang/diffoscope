@@ -377,7 +377,8 @@ class File(object, metaclass=abc.ABCMeta):
                         if self.magic_file_type != 'data' else ''
                     difference.add_comment(
                         "Format-specific differences are supported for this "
-                        "file format but none were detected{}".format(suffix))
+                        "file format, but no file-specific differences were "
+                        "detected. Falling back to a binary diff.{}".format(suffix))
             except subprocess.CalledProcessError as e:
                 difference = self.compare_bytes(other, source=source)
                 if e.output:
