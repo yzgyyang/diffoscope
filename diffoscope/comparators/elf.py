@@ -469,7 +469,7 @@ class ElfContainer(Container):
             )
             raise OutputParsingError(command, self)
 
-        if not has_debug_symbols and Config().use_dbgsym:
+        if not has_debug_symbols:
             self._install_debug_symbols()
 
     @tool_required('objcopy')
@@ -483,6 +483,15 @@ class ElfContainer(Container):
         # It needs to be a .deb and we need access a to a -dbgsym package in
         # the same .changes, directory or archive
         if not isinstance(deb, DebFile) or not deb.container:
+            return
+
+        # If the .deb in question is the top-level of the source we have passed
+        # a .deb directly to diffoscope (versus finding one specified in a
+        # .changes or .buildinfo file). In this case, don't automatically
+        # search for a -dbgsym file unless the user specified
+        # `Config().use_dbgsym`.
+        if not hasattr(deb.container.source, 'container') and \
+                not Config().use_dbgsym:
             return
 
         # Retrieve the Build ID for the ELF file we are examining
