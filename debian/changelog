@@ -1,8 +1,10 @@
-diffoscope (111) UNRELEASED; urgency=medium
+diffoscope (111) unstable; urgency=medium
 
-  * WIP
+  * Fix a regression introduced via #920701 where we stopped using the -dbgsym
+    packages when comparing .buildinfo or .changes files. (Closes:
+    reproducible-builds/diffoscope#46)
 
- -- Chris Lamb <lamby@debian.org>  Wed, 06 Feb 2019 17:47:16 +0100
+ -- Chris Lamb <lamby@debian.org>  Sun, 10 Feb 2019 13:09:26 +0100
 
 diffoscope (110) unstable; urgency=medium
 
