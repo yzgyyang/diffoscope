@@ -64,6 +64,7 @@ class ComparatorManager(object):
         ('gettext.MoFile',),
         ('ipk.IpkFile',),
         ('rust.RustObjectFile',),
+        ('ffprobe.FfprobeFile',),
         ('gnumeric.GnumericFile',),
         ('gzip.GzipFile',),
         ('haskell.HiFile',),

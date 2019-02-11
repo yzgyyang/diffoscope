@@ -72,6 +72,9 @@ EXTERNAL_TOOLS = {
         'debian': 'device-tree-compiler',
         'arch': 'dtc',
     },
+    'ffprobe': {
+        'debian': 'ffmpeg',
+    },
     'file': {
         'debian': 'file',
         'arch': 'file',

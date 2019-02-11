@@ -1,0 +1,17 @@
+@@ -1,9 +1,9 @@
+-    title           : Example track title 1
+-    genre           : Example genre 1
+-    artist          : Example artist name 1
+-    album           : Example track title 1
+-    comment         : Example comment 1
+-    track           : 1
+-    date            : 1111
++    genre           : Example genre 2
++    artist          : Example artist name 2
++    title           : Example track title 2
++    comment         : Example comment 2
++    track           : 2
++    album           : Example track title 2
++    date            : 2222
+   Duration: 00:00:00.22, start: 0.000000, bitrate: 17 kb/s
+     Stream #0:0: Audio: mp3, 8000 Hz, mono, fltp, 8 kb/s

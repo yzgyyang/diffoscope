@@ -44,6 +44,7 @@ Build-Depends:
  llvm <!nocheck>,
  lz4 <!nocheck> | liblz4-tool <!nocheck>,
  mono-utils <!nocheck>,
+ mplayer <!nocheck>,
  ocaml-nox <!nocheck>,
  odt2txt <!nocheck>,
 # oggvideotools [!s390x] <!nocheck>,
