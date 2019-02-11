@@ -1,11 +1,8 @@
-@@ -1,6 +1,8 @@
+@@ -1,6 +1,6 @@
  (module
    (type (;0;) (func))
 -  (import "" "hello" (func (;0;) (type 0)))
-+  (import "" "world" (func (;0;) (type 0)))
++  (import "" "iello" (func (;0;) (type 0)))
    (func (;1;) (type 0)
-+    nop)
-+  (func (;2;) (type 0)
      call 0)
--  (export "run" (func 1)))
-+  (export "run" (func 2)))
+   (export "run" (func 1)))
