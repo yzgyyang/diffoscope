@@ -128,7 +128,7 @@ def test_with_compare_details_and_fallback():
             return []
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
     expected_diff = get_data('binary_expected_diff')
-    assert 'but none were detected' in difference.comment
+    assert 'but no file-specific differences were detected' in difference.comment
     assert normalize_zeros(difference.unified_diff) == expected_diff
 
 
