@@ -24,7 +24,7 @@ from diffoscope.comparators.ps import PsFile
 
 from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_tools_exist, \
-    skip_unless_tool_is_at_most, skip_unless_tool_is_at_least
+    skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
 
@@ -57,11 +57,11 @@ def test_internal_diff(differences):
     assert differences.unified_diff == expected_diff
 
 
-@skip_unless_tool_is_at_most('ps2ascii', ps2ascii_version, '9.21')
-@skip_unless_tool_is_at_least('ps2ascii', ps2ascii_version, '9.21')
+@skip_unless_tool_is_at_least('ps2ascii', ps2ascii_version, '9.26')
 def test_text_diff(differences):
+    computed_diff = differences.details[0].unified_diff.replace('\r\n', '\n')
     expected_diff = get_data('ps_text_expected_diff')
-    assert differences.details[0].unified_diff == expected_diff
+    assert computed_diff == expected_diff
 
 
 @skip_unless_tools_exist('ps2ascii')
