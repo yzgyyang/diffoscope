@@ -235,7 +235,7 @@ class ObjdumpDisassembleSection(ObjdumpSection):
         # disassembled instructions.
         # objdump can get the debugging information from the elf or from the
         # stripped symbols file specified in the .gnu_debuglink section
-        return ['--line-numbers', '--disassemble', '--demangle']
+        return ['--line-numbers', '--disassemble', '--demangle', '--reloc']
 
     def filter(self, line):
         line = super().filter(line)
