@@ -58,6 +58,7 @@ def test_internal_diff(differences):
 
 
 @skip_unless_tool_is_at_most('ps2ascii', ps2ascii_version, '9.21')
+@skip_unless_tool_is_at_least('ps2ascii', ps2ascii_version, '9.21')
 def test_text_diff(differences):
     expected_diff = get_data('ps_text_expected_diff')
     assert differences.details[0].unified_diff == expected_diff
