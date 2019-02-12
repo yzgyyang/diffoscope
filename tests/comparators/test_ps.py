@@ -23,7 +23,8 @@ import subprocess
 from diffoscope.comparators.ps import PsFile
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_most
+from ..utils.tools import skip_unless_tools_exist, \
+    skip_unless_tool_is_at_most, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
 
@@ -49,7 +50,7 @@ def differences(ps1, ps2):
     return ps1.compare(ps2)
 
 
-@skip_unless_tools_exist('ps2ascii')
+@skip_unless_tool_is_at_least('ps2ascii', ps2ascii_version, '9.21')
 def test_internal_diff(differences):
     expected_diff = get_data('ps_internal_expected_diff')
     assert differences.unified_diff == expected_diff
