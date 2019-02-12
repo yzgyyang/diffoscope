@@ -40,6 +40,7 @@ def test_identification(ps1):
     assert isinstance(ps1, PsFile)
 
 
+@skip_unless_tool_is_at_least('ps2ascii', ps2ascii_version, '9.21')
 def test_no_differences(ps1):
     difference = ps1.compare(ps1)
     assert difference is None
@@ -63,5 +64,6 @@ def test_text_diff(differences):
 
 
 @skip_unless_tools_exist('ps2ascii')
+@skip_unless_tool_is_at_least('ps2ascii', ps2ascii_version, '9.21')
 def test_compare_non_existing(monkeypatch, ps1):
     assert_non_existing(monkeypatch, ps1, has_null_source=False)
