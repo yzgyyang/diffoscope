@@ -56,7 +56,11 @@ class FsImageContainer(Archive):
                          "with LIBGUESTFS_MEMSIZE=256 or lower.")
             return None
         devices = self.g.list_devices()
-        self.g.mount(devices[0], '/')
+        try:
+            self.g.mount(devices[0], '/')
+        except RuntimeError:
+            logger.exception("guestfs count not mount image; invalid file?")
+            return None
         self.fs = self.g.list_filesystems()[devices[0]]
         return self
 
