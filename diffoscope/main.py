@@ -470,10 +470,11 @@ def run_diffoscope(parsed_args):
                 return 1
     else:
         if Config().exclude_directory_metadata is None:
+            # Default to ignoring metadata directory...
+            Config().exclude_directory_metadata = True
             if os.path.isdir(path1) and os.path.isdir(path2):
+                # ... except if we passed two directories.
                 Config().exclude_directory_metadata = False
-            else:
-                Config().exclude_directory_metadata = True
 
         logger.debug('Starting comparison')
         with Progress():
