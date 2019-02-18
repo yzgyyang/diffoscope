@@ -23,6 +23,7 @@ import shutil
 import os.path
 import zipfile
 
+from diffoscope.config import Config
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
 from diffoscope.exc import ContainerExtractionError
@@ -163,9 +164,11 @@ class ZipFile(File):
 
     def compare_details(self, other, source=None):
         differences = []
-        zipinfo_difference = Difference.from_command(Zipinfo, self.path, other.path) or \
-            Difference.from_command(ZipinfoVerbose, self.path, other.path) or \
-            Difference.from_command(BsdtarVerbose, self.path, other.path)
+        zipinfo_difference = None
+        if Config().exclude_directory_metadata != 'recursive':
+            zipinfo_difference = Difference.from_command(Zipinfo, self.path, other.path) or \
+                Difference.from_command(ZipinfoVerbose, self.path, other.path) or \
+                Difference.from_command(BsdtarVerbose, self.path, other.path)
         zipnote_difference = Difference.from_command(Zipnote, self.path, other.path)
         for x in (zipinfo_difference, zipnote_difference):
             if x is not None:
@@ -218,6 +221,8 @@ class MozillaZipFile(File):
         return file.file_header[4:8] == b'PK\x01\x02'
 
     def compare_details(self, other, source=None):
+        if Config().exclude_directory_metadata == 'recursive':
+            return []
         zipinfo_difference = Difference.from_command(MozillaZipinfo, self.path, other.path) or \
             Difference.from_command(MozillaZipinfoVerbose, self.path, other.path) or \
             Difference.from_command(BsdtarVerbose, self.path, other.path)

@@ -26,6 +26,7 @@ import libarchive
 import collections
 
 from diffoscope.exc import ContainerExtractionError
+from diffoscope.config import Config
 from diffoscope.excludes import any_excluded
 from diffoscope.tempfiles import get_temporary_directory
 
@@ -99,6 +100,13 @@ def list_libarchive(path, ignore_errors=False):
     try:
         with libarchive.file_reader(path) as archive:
             for entry in archive:
+                name_and_link = entry.name
+                if entry.issym:
+                    name_and_link = '{entry.name} -> {entry.linkname}'.format(
+                        entry=entry)
+                if Config().exclude_directory_metadata == 'recursive':
+                    yield '{name_and_link}\n'.format(name_and_link=name_and_link)
+                    continue
                 if entry.isblk or entry.ischr:
                     size_or_dev = '{major:>3},{minor:>3}'.format(
                         major=entry.rdevmajor, minor=entry.rdevminor)
@@ -106,11 +114,6 @@ def list_libarchive(path, ignore_errors=False):
                     size_or_dev = entry.size
                 mtime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(entry.mtime)
                                       ) + '.{:06d}'.format(entry.mtime_nsec // 1000)
-                if entry.issym:
-                    name_and_link = '{entry.name} -> {entry.linkname}'.format(
-                        entry=entry)
-                else:
-                    name_and_link = entry.name
                 if entry.uname:
                     user = '{user:<8} {uid:>7}'.format(user=entry.uname.decode(
                         'utf-8', errors='surrogateescape'), uid='({})'.format(entry.uid))

@@ -67,7 +67,7 @@ def compare_root_paths(path1, path2):
     file2 = specialize(FilesystemFile(path2, container=container2))
     difference = compare_files(file1, file2)
 
-    if not Config().exclude_directory_metadata:
+    if Config().exclude_directory_metadata in ('no', 'recursive'):
         meta = compare_meta(path1, path2)
         if meta:
             # Create an "empty" difference so we have something to attach file

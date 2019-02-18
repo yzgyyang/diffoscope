@@ -60,7 +60,7 @@ class Config(object):
         self.enforce_constraints = True
         self.excludes = ()
         self.exclude_commands = ()
-        self.exclude_directory_metadata = False
+        self.exclude_directory_metadata = 'no'
         self.compute_visual_diffs = False
         self.max_container_depth = 50
         self.use_dbgsym = False

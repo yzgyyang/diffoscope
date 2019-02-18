@@ -189,14 +189,15 @@ def create_parser():
                         'differences caused by something represented '
                         'elsewhere. Use this option to disable commands that '
                         'use a lot of resources.')
-    group3.add_argument('--exclude-directory-metadata', '--no-exclude-directory-metadata',
-                        action=BooleanAction, default=None,
+    group3.add_argument('--exclude-directory-metadata',
+                        choices=('auto', 'yes', 'no', 'recursive'),
                         help='Exclude directory metadata. Useful if comparing '
                         'files whose filesystem-level metadata is not intended '
                         'to be distributed to other systems. This is true for '
                         'most distributions package builders, but not true '
                         'for the output of commands such as `make install`. '
-                        'Metadata of archive members remain un-excluded. '
+                        'Metadata of archive members remain un-excluded '
+                        'except if "recursive" choice is set. '
                         'Use this option to ignore permissions, timestamps, '
                         'xattrs etc. Default: False if comparing two '
                         'directories, else True. Note that "file" metadata '
@@ -469,12 +470,12 @@ def run_diffoscope(parsed_args):
                       file=sys.stderr)
                 return 1
     else:
-        if Config().exclude_directory_metadata is None:
+        if Config().exclude_directory_metadata in ('auto', None):
             # Default to ignoring metadata directory...
-            Config().exclude_directory_metadata = True
+            Config().exclude_directory_metadata = 'yes'
             if os.path.isdir(path1) and os.path.isdir(path2):
                 # ... except if we passed two directories.
-                Config().exclude_directory_metadata = False
+                Config().exclude_directory_metadata = 'no'
 
         logger.debug('Starting comparison')
         with Progress():
@@ -499,6 +500,14 @@ def main(args=None):
     if args is None:
         args = sys.argv[1:]
     signal.signal(signal.SIGTERM, sigterm_handler)
+
+    # Rewrite/support some legacy argument styles
+    for val, repl in (
+        ('--exclude-directory-metadata', '--exclude-directory-metadata=yes'),
+        ('--no-exclude-directory-metadata', '--exclude-directory-metadata=no'),
+    ):
+        args = [repl if x == val else x for x in args]
+
     parsed_args = None
     try:
         with profile('main', 'parse_args'):

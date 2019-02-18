@@ -137,7 +137,7 @@ def xattr(path1, path2):
 
 
 def compare_meta(path1, path2):
-    if Config().exclude_directory_metadata:
+    if Config().exclude_directory_metadata in ('yes', 'recursive'):
         logger.debug(
             "Excluding directory metadata for paths (%s, %s)", path1, path2)
         return []
