@@ -25,6 +25,7 @@ import sys
 import json
 import signal
 import logging
+import textwrap
 import argparse
 import traceback
 
@@ -469,10 +470,21 @@ class HelpFormatter(argparse.HelpFormatter):
         if not set(sys.argv) & {'--help', '-h'}:
             return val
 
+        def append(title, content, indent=24, max_width=78):
+            nonlocal val
+            wrapped = textwrap.fill(content, max_width - indent)
+            val += '\n{}:\n{}\n'.format(
+                title, textwrap.indent(wrapped, ' ' * indent)
+            )
+
         descriptions = list(sorted(ComparatorManager().get_descriptions()))
-        val = '{}\n\nfile formats supported:\n{}{} and {}.\n'.format(
-            val, ' ' * 24, ', '.join(descriptions[:-1]), descriptions[-1]
+        append(
+            'file formats supported',
+            '{} and {}.\n'.format(
+                ', '.join(descriptions[:-1]), descriptions[-1]
+            ),
         )
+
         return val
 
 
