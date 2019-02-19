@@ -1,8 +1,39 @@
-diffoscope (112) UNRELEASED; urgency=medium
+diffoscope (112) unstable; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * New features:
+    - Add a --exclude-directory-metadata=recursive option to support ignoring
+      timestamp differences (etc.) in nested archives/containers.
+      (Closes: #907600, reproducible-builds/diffoscope#36)
+    - Add support for comparing metadata in MP3 files.
+      (Closes: reproducible-builds/diffoscope#43)
+    - Add support for comparing .crx Chrome browser extensions.
+      (Closes: reproducible-builds/diffoscope#41)
 
- -- Chris Lamb <lamby@debian.org>  Sun, 10 Feb 2019 13:11:22 +0100
+  * Bug fixes:
+    - Catch tracebacks when mounting invalid filesystem images under guestfs.
+    - Ensure both WASM test data files are actually unique.
+      (Closes: reproducible-builds/diffoscope#42)
+    - Replace literal xxd(1) output in tests/data/hello.wasm with its binary
+      equivalent. (Closes: reproducible-builds/diffoscope#47)
+
+  * Misc improvements:
+    - Rework and comment logic determining a default for
+      exclude_directory_metadata.
+    - Fix a number of Ghostscript-related test issues regarding the update of
+      this package from 9.20 to 9.26 in Debian "stable".
+
+  [ Mattia Rizzolo ]
+  * Make test_ps.test_text_diff pass with ghostscript 9.26.
+
+  [ Ed Maste ]
+  * Include relocation information in objdump disassembly.
+    (Closes: reproducible-builds/diffoscope#48)
+
+  [ Graham Christensen ]
+  * Clarify notice if no file-specific diff caused fallback. (MR: !19)
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 19 Feb 2019 09:56:29 +0100
 
 diffoscope (111) unstable; urgency=medium
 
