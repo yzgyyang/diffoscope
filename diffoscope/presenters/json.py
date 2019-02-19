@@ -48,7 +48,7 @@ class JSONPresenter(Presenter):
 
         elements = [
             ('source1', difference.source1),
-            ('source2', difference.source2)
+            ('source2', difference.source2),
         ]
         if difference.comments:
             elements += [('comments', [x for x in difference.comments])]

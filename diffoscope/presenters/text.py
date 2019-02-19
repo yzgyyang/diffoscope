@@ -24,8 +24,12 @@ import logging
 from diffoscope.diff import color_unified_diff
 from diffoscope.config import Config
 
-from .utils import Presenter, create_limited_print_func, PrintLimitReached, \
-    make_printer
+from .utils import (
+    Presenter,
+    create_limited_print_func,
+    PrintLimitReached,
+    make_printer,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +40,7 @@ class TextPresenter(Presenter):
 
     def __init__(self, print_func, color):
         self.print_func = create_limited_print_func(
-            print_func,
-            Config().max_text_report_size,
+            print_func, Config().max_text_report_size
         )
         self.color = color
 
@@ -89,5 +92,5 @@ class TextPresenter(Presenter):
 
     def output(self, val, raw=False):
         self.print_func(
-            self.indent(val, self.PREFIX * (self.depth + (0 if raw else -1))),
+            self.indent(val, self.PREFIX * (self.depth + (0 if raw else -1)))
         )

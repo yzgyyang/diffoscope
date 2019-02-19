@@ -58,9 +58,8 @@ class FfprobeFile(File):
     FILE_TYPE_RE = re.compile(r'^Audio file')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(
-            Ffprobe,
-            self.path,
-            other.path,
-            source='ffprobe',
-        )]
+        return [
+            Difference.from_command(
+                Ffprobe, self.path, other.path, source='ffprobe'
+            )
+        ]

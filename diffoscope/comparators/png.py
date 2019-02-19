@@ -47,11 +47,15 @@ class PngFile(File):
 
     def compare_details(self, other, source=None):
         sng_diff = Difference.from_command(
-            Sng, self.path, other.path, source='sng')
+            Sng, self.path, other.path, source='sng'
+        )
         differences = [sng_diff]
 
-        if sng_diff is not None and Config().compute_visual_diffs and \
-                same_size(self, other):
+        if (
+            sng_diff is not None
+            and Config().compute_visual_diffs
+            and same_size(self, other)
+        ):
             try:
                 logger.debug(
                     "Generating visual difference for %s and %s",
@@ -59,15 +63,14 @@ class PngFile(File):
                     other.path,
                 )
                 content_diff = Difference(
-                    None,
-                    self.path,
-                    other.path,
-                    source="Image content",
+                    None, self.path, other.path, source="Image content"
                 )
-                content_diff.add_visuals([
-                    pixel_difference(self.path, other.path),
-                    flicker_difference(self.path, other.path),
-                ])
+                content_diff.add_visuals(
+                    [
+                        pixel_difference(self.path, other.path),
+                        flicker_difference(self.path, other.path),
+                    ]
+                )
                 differences.append(content_diff)
             except subprocess.CalledProcessError:  # noqa
                 pass

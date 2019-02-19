@@ -46,9 +46,8 @@ class BerkeleyDBFile(File):
     FILE_TYPE_RE = re.compile(r'^Berkeley DB ')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(
-            DbDump,
-            self.path,
-            other.path,
-            source="Berkeley DB file",
-        )]
+        return [
+            Difference.from_command(
+                DbDump, self.path, other.path, source="Berkeley DB file"
+            )
+        ]

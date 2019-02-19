@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 # ArFile gives slightly more reasonable output, e.g. a readable plain diff of
 # the __.PKGDEF member which is just a text file containing the Go interface.
 
+
 class ArContainer(LibarchiveContainer):
     def get_adjusted_members(self):
         members = list(super().get_adjusted_members())
@@ -46,8 +47,9 @@ class ArContainer(LibarchiveContainer):
         filtered_out = [p for p in members if p[0] in known_ignores]
         if filtered_out:
             for k, v in filtered_out:
-                logger.debug("ignored ar member '%s' because %s",
-                             k, known_ignores[k])
+                logger.debug(
+                    "ignored ar member '%s' because %s", k, known_ignores[k]
+                )
         return [p for p in members if p[0] not in known_ignores]
 
 
@@ -63,7 +65,15 @@ class ArFile(File):
     FILE_TYPE_RE = re.compile(r'\bar archive\b')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(ArSymbolTableDumper, self.path, other.path),
-                Difference.from_text_readers(list_libarchive(self.path),
-                                             list_libarchive(other.path),
-                                             self.path, other.path, source="file list")]
+        return [
+            Difference.from_command(
+                ArSymbolTableDumper, self.path, other.path
+            ),
+            Difference.from_text_readers(
+                list_libarchive(self.path),
+                list_libarchive(other.path),
+                self.path,
+                other.path,
+                source="file list",
+            ),
+        ]

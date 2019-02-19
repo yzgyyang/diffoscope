@@ -38,10 +38,13 @@ def enjarify_version():
     # Module enjarify.typeinference appeared in enjarify 1.0.3.  We use a call
     # directly to the python3 binary over importing with this module to escape
     # virtualenvs and to match the behaviour of enjarify(1).
-    if subprocess.call(
-        ('python3', '-c', 'import enjarify.typeinference'),
-        stderr=subprocess.PIPE,
-    ) == 0:
+    if (
+        subprocess.call(
+            ('python3', '-c', 'import enjarify.typeinference'),
+            stderr=subprocess.PIPE,
+        )
+        == 0
+    ):
         return '1.0.3'
     return '1.0.2'
 

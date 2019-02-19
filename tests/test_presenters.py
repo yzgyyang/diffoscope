@@ -23,15 +23,23 @@ import pytest
 
 from diffoscope.main import main
 from diffoscope.readers import load_diff_from_path
-from diffoscope.presenters.utils import create_limited_print_func, PrintLimitReached, PartialString
+from diffoscope.presenters.utils import (
+    create_limited_print_func,
+    PrintLimitReached,
+    PartialString,
+)
 from diffoscope.presenters.json import JSONPresenter
 
 from .utils import diff_expand
 from .utils.data import cwd_data, data, get_data
-from .utils.tools import skip_unless_tools_exist, skip_unless_file_version_is_at_least
+from .utils.tools import (
+    skip_unless_tools_exist,
+    skip_unless_file_version_is_at_least,
+)
 
 re_html = re.compile(
-    r'.*<body(?P<body>.*)<div class="footer">', re.MULTILINE | re.DOTALL)
+    r'.*<body(?P<body>.*)<div class="footer">', re.MULTILINE | re.DOTALL
+)
 
 
 def run(capsys, *args, pair=('test1.tar', 'test2.tar')):
@@ -66,7 +74,9 @@ def expand_collapsed_json(tmpdir, name):
     diff = load_diff_from_path(data(name + ".collapsed-diff.json"))
     diff_path = str(tmpdir.join(name + '.diff.json'))
     with open(diff_path, 'w') as fp:
-        JSONPresenter(lambda x: print(x, file=fp)).start(diff.fmap(diff_expand))
+        JSONPresenter(lambda x: print(x, file=fp)).start(
+            diff.fmap(diff_expand)
+        )
     return diff_path
 
 
@@ -160,7 +170,9 @@ def test_htmldir_option(tmpdir, capsys):
 
     assert out == ''
     assert os.path.isdir(html_dir)
-    with open(os.path.join(html_dir, 'index.html'), 'r', encoding='utf-8') as f:
+    with open(
+        os.path.join(html_dir, 'index.html'), 'r', encoding='utf-8'
+    ) as f:
         body = extract_body(f.read())
         assert body.count('div class="difference"') == 4
 
@@ -180,7 +192,9 @@ def test_html_regression_875281(tmpdir, capsys):
 
 
 def test_limited_print():
-    def fake(x): return None
+    def fake(x):
+        return None
+
     with pytest.raises(PrintLimitReached):
         p = create_limited_print_func(fake, 5)
         p("123456")
@@ -202,8 +216,9 @@ def test_partial_string():
     assert tmpl.pformat({b: "World!"}) == PartialString('{0} World!', a)
     assert tmpl.base_len, tmpl.num_holes == (1, 2)
     assert tmpl.size(hole_size=33) == 67
-    assert tmpl.pformat({a: PartialString('{0}', b)}
-                        ) == PartialString('{0} {0}', b)
+    assert tmpl.pformat({a: PartialString('{0}', b)}) == PartialString(
+        '{0} {0}', b
+    )
     assert tmpl.pformat({a: tmpl}) == PartialString('{0} {1} {1}', a, b)
     assert tmpl.pformat({b: tmpl}) == PartialString('{0} {0} {1}', a, b)
     PartialString("{1}", a, b)
@@ -217,8 +232,10 @@ def test_partial_string_cont():
     t = cont(t, "z: {0}\n{-1}", object())
     t = cont(t, "")
     key = t.holes
-    assert (t.format({key[0]: "line1", key[1]: "line2", key[2]: "line3"})
-            == 'x: line1\ny: line2\nz: line3\n')
+    assert (
+        t.format({key[0]: "line1", key[1]: "line2", key[2]: "line3"})
+        == 'x: line1\ny: line2\nz: line3\n'
+    )
     assert t.size(hole_size=5) == 27
 
 
@@ -229,19 +246,25 @@ def test_partial_string_numl():
 
 
 def test_partial_string_escape():
-    tmpl = PartialString.numl("find {0} -name {1} " +
-                              PartialString.escape(r"-exec ls -la {} \;"), 2)
+    tmpl = PartialString.numl(
+        "find {0} -name {1} " + PartialString.escape(r"-exec ls -la {} \;"), 2
+    )
     assert tmpl == PartialString(
-        'find {0} -name {1} -exec ls -la {{}} \\;', *tmpl.holes)
+        'find {0} -name {1} -exec ls -la {{}} \\;', *tmpl.holes
+    )
     assert tmpl.size() == 33
     assert tmpl.size(4) == 39
     assert tmpl == PartialString.numl(
-        r"find {0} -name {1} -exec ls -la {2} \;", 3).pformat({2: "{}"})
+        r"find {0} -name {1} -exec ls -la {2} \;", 3
+    ).pformat({2: "{}"})
 
-    assert (tmpl.pformatl("my{}path", "my{}file") ==
-            PartialString('find my{{}}path -name my{{}}file -exec ls -la {{}} \\;'))
-    assert (tmpl.formatl("my{}path", "my{}file") ==
-            'find my{}path -name my{}file -exec ls -la {} \\;')
+    assert tmpl.pformatl("my{}path", "my{}file") == PartialString(
+        'find my{{}}path -name my{{}}file -exec ls -la {{}} \\;'
+    )
+    assert (
+        tmpl.formatl("my{}path", "my{}file")
+        == 'find my{}path -name my{}file -exec ls -la {} \\;'
+    )
 
     esc = PartialString("{{}} {0}", None)
     assert esc.pformat({None: PartialString.of(None)}) == esc

@@ -34,7 +34,8 @@ class Tcpdump(Command):
             '-X',  # Print data and link level header in hex and ASCII
             '-nn',  # Don't resolve host addresses, etc.
             '-ttttt',  # Print delta from previous line
-            '-r', self.path,
+            '-r',
+            self.path,
         )
 
 
@@ -43,9 +44,8 @@ class PcapFile(File):
     FILE_TYPE_RE = re.compile(r'^(tcpdump|pcap) capture file\b')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(
-            Tcpdump,
-            self.path,
-            other.path,
-            source='tcpdump',
-        )]
+        return [
+            Difference.from_command(
+                Tcpdump, self.path, other.path, source='tcpdump'
+            )
+        ]

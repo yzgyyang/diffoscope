@@ -75,6 +75,7 @@ def test_identification_of_md5sums_in_deb(deb1, deb2, monkeypatch):
         if ret:
             test_identification_of_md5sums_in_deb.found = True
         return ret
+
     test_identification_of_md5sums_in_deb.found = False
     monkeypatch.setattr(Md5sumsFile, 'recognizes', probe)
     deb1.compare(deb2)
@@ -89,7 +90,10 @@ def test_md5sums(differences):
 
 
 def test_identical_files_in_md5sums(deb1, deb2):
-    for name in ['./usr/share/doc/test/README.Debian', './usr/share/doc/test/copyright']:
+    for name in [
+        './usr/share/doc/test/README.Debian',
+        './usr/share/doc/test/copyright',
+    ]:
         assert deb1.md5sums[name] == deb2.md5sums[name]
 
 
@@ -102,6 +106,7 @@ def test_identification_of_data_tar(deb1, deb2, monkeypatch):
         if ret:
             test_identification_of_data_tar.found = True
         return ret
+
     test_identification_of_data_tar.found = False
     monkeypatch.setattr(DebDataTarFile, 'recognizes', probe)
     deb1.compare(deb2)
@@ -115,8 +120,10 @@ def test_skip_comparison_of_known_identical_files(deb1, deb2, monkeypatch):
     def probe(file1, file2, **kwargs):
         compared.add(file1.name)
         return orig_func(file1, file2, **kwargs)
-    monkeypatch.setattr(diffoscope.comparators.utils.compare,
-                        'compare_files', probe)
+
+    monkeypatch.setattr(
+        diffoscope.comparators.utils.compare, 'compare_files', probe
+    )
     deb1.compare(deb2)
     assert './usr/share/doc/test/README.Debian' not in compared
 
@@ -138,14 +145,16 @@ bug903565_deb1 = load_fixture('bug903565_1.deb')
 bug903565_deb2 = load_fixture('bug903565_2.deb')
 
 
-
 @skip_unless_tools_exist('xz')
 def test_compare_different_compression(bug881937_deb1, bug881937_deb2):
     difference = bug881937_deb1.compare(bug881937_deb2)
     assert difference.details[1].source1 == 'control.tar.gz'
     assert difference.details[1].source2 == 'control.tar.xz'
     expected_diff = get_data('bug881937_control_expected_diff')
-    assert difference.details[1].details[2].details[1].unified_diff == expected_diff
+    assert (
+        difference.details[1].details[2].details[1].unified_diff
+        == expected_diff
+    )
 
 
 def test_uncompressed_data_tar(bug903401_deb1, bug903401_deb2):
@@ -156,5 +165,7 @@ def test_uncompressed_control_tar(bug903391_deb1, bug903391_deb2):
     bug903391_deb1.compare(bug903391_deb2)
 
 
-def test_compare_different_compression_multiple_files(bug903565_deb1, bug903565_deb2):
+def test_compare_different_compression_multiple_files(
+    bug903565_deb1, bug903565_deb2
+):
     bug903565_deb1.compare(bug903565_deb2)

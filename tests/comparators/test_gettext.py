@@ -60,7 +60,8 @@ mo_iso8859_1 = load_fixture('test_iso8859-1.mo')
 def test_charsets(mo_no_charset, mo_iso8859_1):
     difference = mo_no_charset.compare(mo_iso8859_1)
     expected_diff = codecs.open(
-        data('mo_charsets_expected_diff'), encoding='utf-8').read()
+        data('mo_charsets_expected_diff'), encoding='utf-8'
+    ).read()
     assert difference.details[0].unified_diff == expected_diff
 
 

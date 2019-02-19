@@ -51,8 +51,7 @@ class DebControlMember(File):
     @property
     def path(self):
         return os.path.join(
-            os.path.dirname(self.container.source.path),
-            self.name,
+            os.path.dirname(self.container.source.path), self.name
         )
 
     def is_directory(self):
@@ -79,10 +78,9 @@ class DebControlContainer(Container):
         if '-' in version:
             upstream, revision = version.rsplit('-', 1)
 
-            return re.compile(r'_%s(?:-%s)?' % (
-                re.escape(upstream),
-                re.escape(revision),
-            ))
+            return re.compile(
+                r'_%s(?:-%s)?' % (re.escape(upstream), re.escape(revision))
+            )
 
         return re.compile(re.escape(version))
 
@@ -91,8 +89,9 @@ class DebControlContainer(Container):
             yield self._trim_version_number(name), self.get_member(name)
 
     def get_member_names(self):
-        field = self.source.deb822.get('Files') or \
-            self.source.deb822.get('Checksums-Sha256')
+        field = self.source.deb822.get('Files') or self.source.deb822.get(
+            'Checksums-Sha256'
+        )
 
         # Show results from debugging packages last; they are rather verbose,
         # masking other more interesting differences due to truncating the
@@ -119,7 +118,9 @@ class DebControlFile(File):
     def compare_details(self, other, source=None):
         differences = []
 
-        for field in sorted(set(self.deb822.keys()).union(set(other.deb822.keys()))):
+        for field in sorted(
+            set(self.deb822.keys()).union(set(other.deb822.keys()))
+        ):
             if field.startswith('Checksums-') or field == 'Files':
                 continue
 
@@ -131,31 +132,33 @@ class DebControlFile(File):
             if field in other.deb822:
                 other_value = other.deb822.get_as_string(field).lstrip()
 
-            differences.append(Difference.from_text(
-                my_value,
-                other_value,
-                self.path,
-                other.path,
-                source=field,
-            ))
+            differences.append(
+                Difference.from_text(
+                    my_value, other_value, self.path, other.path, source=field
+                )
+            )
 
         # Compare Files as string
         if self.deb822.get('Files'):
-            differences.append(Difference.from_text(
-                self.deb822.get_as_string('Files'),
-                other.deb822.get_as_string('Files'),
-                self.path,
-                other.path,
-                source='Files',
-            ))
+            differences.append(
+                Difference.from_text(
+                    self.deb822.get_as_string('Files'),
+                    other.deb822.get_as_string('Files'),
+                    self.path,
+                    other.path,
+                    source='Files',
+                )
+            )
         else:
-            differences.append(Difference.from_text(
-                self.deb822.get_as_string('Checksums-Sha256'),
-                other.deb822.get_as_string('Checksums-Sha256'),
-                self.path,
-                other.path,
-                source='Checksums-Sha256',
-            ))
+            differences.append(
+                Difference.from_text(
+                    self.deb822.get_as_string('Checksums-Sha256'),
+                    other.deb822.get_as_string('Checksums-Sha256'),
+                    self.path,
+                    other.path,
+                    source='Checksums-Sha256',
+                )
+            )
 
         return differences
 
@@ -189,13 +192,14 @@ class DotChangesFile(DebControlFile):
         files = zip(self.deb822.get('Files'), other.deb822.get('Files'))
 
         files_identical = all(
-            x == y for x, y in files
-            if not x['name'].endswith('.buildinfo')
+            x == y for x, y in files if not x['name'].endswith('.buildinfo')
         )
 
-        if files_identical and \
-                len(differences.details) == 1 and \
-                differences.details[0].source1 == 'Files':
+        if (
+            files_identical
+            and len(differences.details) == 1
+            and differences.details[0].source1 == 'Files'
+        ):
             logger.warning("Ignoring buildinfo file differences")
             return None
 
@@ -219,8 +223,7 @@ class DotDscFile(DebControlFile):
 
                 # XXX: this will not work for containers
                 in_dsc_path = os.path.join(
-                    os.path.dirname(file.path),
-                    d['Name'],
+                    os.path.dirname(file.path), d['Name']
                 )
                 if not os.path.exists(in_dsc_path):
                     return False
@@ -277,8 +280,7 @@ class DotBuildinfoFile(DebControlFile):
 
             # XXX: this will not work for containers
             in_buildinfo_path = os.path.join(
-                os.path.dirname(file.path),
-                d['Name'],
+                os.path.dirname(file.path), d['Name']
             )
             if not os.path.exists(in_buildinfo_path):
                 return False

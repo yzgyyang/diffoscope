@@ -51,19 +51,20 @@ class Gifbuild(Command):
 @tool_required('identify')
 def is_image_static(image):
     try:
-        return subprocess.check_output((
-            'identify',
-            '-format', '%n',
-            image.path,
-        )) == b'1'
+        return (
+            subprocess.check_output(('identify', '-format', '%n', image.path))
+            == b'1'
+        )
     except subprocess.CalledProcessError:
         return False
 
 
 def can_compose_gif_images(image1, image2):
-    return same_size(image1, image2) and \
-        is_image_static(image1) and \
-        is_image_static(image2)
+    return (
+        same_size(image1, image2)
+        and is_image_static(image1)
+        and is_image_static(image2)
+    )
 
 
 class GifFile(File):
@@ -72,16 +73,16 @@ class GifFile(File):
 
     def compare_details(self, other, source=None):
         gifbuild_diff = Difference.from_command(
-            Gifbuild,
-            self.path,
-            other.path,
-            source="gifbuild",
+            Gifbuild, self.path, other.path, source="gifbuild"
         )
 
         differences = [gifbuild_diff]
 
-        if gifbuild_diff is not None and Config().compute_visual_diffs and \
-                can_compose_gif_images(self, other):
+        if (
+            gifbuild_diff is not None
+            and Config().compute_visual_diffs
+            and can_compose_gif_images(self, other)
+        ):
             try:
                 logger.debug(
                     "Generating visual difference for %s and %s",
@@ -89,15 +90,14 @@ class GifFile(File):
                     other.path,
                 )
                 content_diff = Difference(
-                    None,
-                    self.path,
-                    other.path,
-                    source="Image content",
+                    None, self.path, other.path, source="Image content"
                 )
-                content_diff.add_visuals([
-                    pixel_difference(self.path, other.path),
-                    flicker_difference(self.path, other.path),
-                ])
+                content_diff.add_visuals(
+                    [
+                        pixel_difference(self.path, other.path),
+                        flicker_difference(self.path, other.path),
+                    ]
+                )
                 differences.append(content_diff)
             except subprocess.CalledProcessError:  # noqa
                 pass

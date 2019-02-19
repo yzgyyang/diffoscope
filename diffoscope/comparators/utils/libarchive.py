@@ -41,59 +41,81 @@ logger = logging.getLogger(__name__)
 
 # Monkeypatch libarchive-c (<< 2.2)
 if not hasattr(libarchive.ffi, 'entry_rdevmajor'):
-    libarchive.ffi.ffi('entry_rdevmajor', [
-                       libarchive.ffi.c_archive_entry_p], ctypes.c_uint)
+    libarchive.ffi.ffi(
+        'entry_rdevmajor', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
+    )
     libarchive.ArchiveEntry.rdevmajor = property(
-        lambda self: libarchive.ffi.entry_rdevmajor(self._entry_p))
+        lambda self: libarchive.ffi.entry_rdevmajor(self._entry_p)
+    )
 if not hasattr(libarchive.ffi, 'entry_rdevminor'):
-    libarchive.ffi.ffi('entry_rdevminor', [
-                       libarchive.ffi.c_archive_entry_p], ctypes.c_uint)
+    libarchive.ffi.ffi(
+        'entry_rdevminor', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
+    )
     libarchive.ArchiveEntry.rdevminor = property(
-        lambda self: libarchive.ffi.entry_rdevminor(self._entry_p))
+        lambda self: libarchive.ffi.entry_rdevminor(self._entry_p)
+    )
 # Monkeypatch libarchive-c (<< 2.3)
 if not hasattr(libarchive.ffi, 'entry_nlink'):
     libarchive.ffi.ffi(
-        'entry_nlink', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint)
+        'entry_nlink', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint
+    )
     libarchive.ArchiveEntry.nlink = property(
-        lambda self: libarchive.ffi.entry_nlink(self._entry_p))
+        lambda self: libarchive.ffi.entry_nlink(self._entry_p)
+    )
 if not hasattr(libarchive.ffi, 'entry_uid'):
     libarchive.ffi.ffi(
-        'entry_uid', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint32)
+        'entry_uid', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint32
+    )
     libarchive.ArchiveEntry.uid = property(
-        lambda self: libarchive.ffi.entry_uid(self._entry_p))
+        lambda self: libarchive.ffi.entry_uid(self._entry_p)
+    )
 if not hasattr(libarchive.ffi, 'entry_gid'):
     libarchive.ffi.ffi(
-        'entry_gid', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint32)
+        'entry_gid', [libarchive.ffi.c_archive_entry_p], ctypes.c_uint32
+    )
     libarchive.ArchiveEntry.gid = property(
-        lambda self: libarchive.ffi.entry_uid(self._entry_p))
+        lambda self: libarchive.ffi.entry_uid(self._entry_p)
+    )
 if not hasattr(libarchive.ffi, 'entry_mtime_nsec'):
-    libarchive.ffi.ffi('entry_mtime_nsec', [
-                       libarchive.ffi.c_archive_entry_p], ctypes.c_long)
+    libarchive.ffi.ffi(
+        'entry_mtime_nsec', [libarchive.ffi.c_archive_entry_p], ctypes.c_long
+    )
     libarchive.ArchiveEntry.mtime_nsec = property(
-        lambda self: libarchive.ffi.entry_mtime_nsec(self._entry_p))
+        lambda self: libarchive.ffi.entry_mtime_nsec(self._entry_p)
+    )
 if not hasattr(libarchive.ffi, 'entry_uname'):
     libarchive.ffi.ffi(
-        'entry_uname', [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p)
+        'entry_uname', [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p
+    )
     libarchive.ArchiveEntry.uname = property(
-        lambda self: libarchive.ffi.entry_uname(self._entry_p))
+        lambda self: libarchive.ffi.entry_uname(self._entry_p)
+    )
 if not hasattr(libarchive.ffi, 'entry_gname'):
     libarchive.ffi.ffi(
-        'entry_gname', [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p)
+        'entry_gname', [libarchive.ffi.c_archive_entry_p], ctypes.c_char_p
+    )
     libarchive.ArchiveEntry.gname = property(
-        lambda self: libarchive.ffi.entry_gname(self._entry_p))
+        lambda self: libarchive.ffi.entry_gname(self._entry_p)
+    )
 # Monkeypatch libarchive-c (>= 2.8)
 # Wire mtime_nsec attribute as some libarchive versions (>=2.8) don't expose it
 # for ArchiveEntry. Doing this allows a unified API no matter which version is
 # available.
-if not hasattr(libarchive.ArchiveEntry, 'mtime_nsec') and hasattr(libarchive.ffi, 'entry_mtime_nsec'):
+if not hasattr(libarchive.ArchiveEntry, 'mtime_nsec') and hasattr(
+    libarchive.ffi, 'entry_mtime_nsec'
+):
     libarchive.ArchiveEntry.mtime_nsec = property(
-        lambda self: libarchive.ffi.entry_mtime_nsec(self._entry_p))
+        lambda self: libarchive.ffi.entry_mtime_nsec(self._entry_p)
+    )
 
 
 # Monkeypatch libarchive-c so we always get pathname as (Unicode) str
 # Otherwise, we'll get sometimes str and sometimes bytes and always pain.
-libarchive.ArchiveEntry.pathname = property(lambda self: libarchive.ffi.entry_pathname(
-    self._entry_p).decode('utf-8', errors='surrogateescape'))
+libarchive.ArchiveEntry.pathname = property(
+    lambda self: libarchive.ffi.entry_pathname(self._entry_p).decode(
+        'utf-8', errors='surrogateescape'
+    )
+)
 
 
 def list_libarchive(path, ignore_errors=False):
@@ -103,28 +125,49 @@ def list_libarchive(path, ignore_errors=False):
                 name_and_link = entry.name
                 if entry.issym:
                     name_and_link = '{entry.name} -> {entry.linkname}'.format(
-                        entry=entry)
+                        entry=entry
+                    )
                 if Config().exclude_directory_metadata == 'recursive':
-                    yield '{name_and_link}\n'.format(name_and_link=name_and_link)
+                    yield '{name_and_link}\n'.format(
+                        name_and_link=name_and_link
+                    )
                     continue
                 if entry.isblk or entry.ischr:
                     size_or_dev = '{major:>3},{minor:>3}'.format(
-                        major=entry.rdevmajor, minor=entry.rdevminor)
+                        major=entry.rdevmajor, minor=entry.rdevminor
+                    )
                 else:
                     size_or_dev = entry.size
-                mtime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(entry.mtime)
-                                      ) + '.{:06d}'.format(entry.mtime_nsec // 1000)
+                mtime = time.strftime(
+                    '%Y-%m-%d %H:%M:%S', time.gmtime(entry.mtime)
+                ) + '.{:06d}'.format(entry.mtime_nsec // 1000)
                 if entry.uname:
-                    user = '{user:<8} {uid:>7}'.format(user=entry.uname.decode(
-                        'utf-8', errors='surrogateescape'), uid='({})'.format(entry.uid))
+                    user = '{user:<8} {uid:>7}'.format(
+                        user=entry.uname.decode(
+                            'utf-8', errors='surrogateescape'
+                        ),
+                        uid='({})'.format(entry.uid),
+                    )
                 else:
                     user = entry.uid
                 if entry.gname:
-                    group = '{group:<8} {gid:>7}'.format(group=entry.gname.decode(
-                        'utf-8', errors='surrogateescape'), gid='({})'.format(entry.gid))
+                    group = '{group:<8} {gid:>7}'.format(
+                        group=entry.gname.decode(
+                            'utf-8', errors='surrogateescape'
+                        ),
+                        gid='({})'.format(entry.gid),
+                    )
                 else:
                     group = entry.gid
-                yield '{strmode} {entry.nlink:>3} {user:>8} {group:>8} {size_or_dev:>8} {mtime:>8} {name_and_link}\n'.format(strmode=entry.strmode.decode('us-ascii'), entry=entry, user=user, group=group, size_or_dev=size_or_dev, mtime=mtime, name_and_link=name_and_link)
+                yield '{strmode} {entry.nlink:>3} {user:>8} {group:>8} {size_or_dev:>8} {mtime:>8} {name_and_link}\n'.format(
+                    strmode=entry.strmode.decode('us-ascii'),
+                    entry=entry,
+                    user=user,
+                    group=group,
+                    size_or_dev=size_or_dev,
+                    mtime=mtime,
+                    name_and_link=name_and_link,
+                )
     except libarchive.exception.ArchiveError:
         if not ignore_errors:
             raise
@@ -157,7 +200,8 @@ class LibarchiveDirectory(Directory, LibarchiveMember):
     @property
     def path(self):
         raise NotImplementedError(
-            'LibarchiveDirectory is not meant to be extracted.')
+            'LibarchiveDirectory is not meant to be extracted.'
+        )
 
     def is_directory(self):
         return True
@@ -281,11 +325,18 @@ class LibarchiveContainer(Archive):
 
         logger.debug(
             "Extracted %d entries from %s to %s",
-            len(self._members), self.source.path, tmpdir,
+            len(self._members),
+            self.source.path,
+            tmpdir,
         )
 
     def comparisons(self, other):
         def hide_trivial_dirs(item):
             file1, file2, comment = item
-            return not (isinstance(file1, Directory) and isinstance(file2, Directory) and comment is None)
+            return not (
+                isinstance(file1, Directory)
+                and isinstance(file2, Directory)
+                and comment is None
+            )
+
         return filter(hide_trivial_dirs, super().comparisons(other))

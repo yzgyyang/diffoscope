@@ -35,13 +35,15 @@ TEST_FILE2_PATH = data('text_ascii2')
 
 def test_no_differences():
     difference = compare_directories(
-        os.path.dirname(__file__), os.path.dirname(__file__))
+        os.path.dirname(__file__), os.path.dirname(__file__)
+    )
     assert difference is None
 
 
 def test_no_differences_with_extra_slash():
-    difference = compare_directories(os.path.dirname(
-        __file__) + '/', os.path.dirname(__file__))
+    difference = compare_directories(
+        os.path.dirname(__file__) + '/', os.path.dirname(__file__)
+    )
     assert difference is None
 
 
@@ -59,7 +61,9 @@ def differences(tmpdir):
     os.utime(str(tmpdir.join('b/dir')), (0, 0))
     os.utime(str(tmpdir.join('a')), (0, 0))
     os.utime(str(tmpdir.join('b')), (0, 0))
-    return compare_directories(str(tmpdir.join('a')), str(tmpdir.join('b'))).details
+    return compare_directories(
+        str(tmpdir.join('a')), str(tmpdir.join('b'))
+    ).details
 
 
 def test_content(differences):

@@ -45,9 +45,8 @@ class PgpFile(File):
     FILE_TYPE_RE = re.compile(r'^PGP message\b')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(
-            Pgpdump,
-            self.path,
-            other.path,
-            source='pgpdump',
-        )]
+        return [
+            Difference.from_command(
+                Pgpdump, self.path, other.path, source='pgpdump'
+            )
+        ]

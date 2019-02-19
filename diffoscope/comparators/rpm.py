@@ -80,7 +80,9 @@ def compare_rpm_headers(path1, path2):
         ts.setVSFlags(-1)
         header1 = get_rpm_header(path1, ts)
         header2 = get_rpm_header(path2, ts)
-    return Difference.from_text(header1, header2, path1, path2, source="header")
+    return Difference.from_text(
+        header1, header2, path1, path2, source="header"
+    )
 
 
 class RpmContainer(Archive):
@@ -100,7 +102,8 @@ class RpmContainer(Archive):
         cmd = ['rpm2cpio', self.source.path]
         with open(dest_path, 'wb') as dest:
             subprocess.check_call(
-                cmd, shell=False, stdout=dest, stderr=subprocess.PIPE)
+                cmd, shell=False, stdout=dest, stderr=subprocess.PIPE
+            )
         return dest_path
 
 

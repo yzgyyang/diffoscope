@@ -37,9 +37,8 @@ class OggFile(File):
     FILE_TYPE_RE = re.compile(r'^Ogg data')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(
-            OggDump,
-            self.path,
-            other.path,
-            source='oggDump',
-        )]
+        return [
+            Difference.from_command(
+                OggDump, self.path, other.path, source='oggDump'
+            )
+        ]

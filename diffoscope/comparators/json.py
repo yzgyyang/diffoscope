@@ -53,10 +53,7 @@ class JSONFile(File):
 
     def compare_details(self, other, source=None):
         difference = Difference.from_text(
-            self.dumps(self),
-            self.dumps(other),
-            self.path,
-            other.path,
+            self.dumps(self), self.dumps(other), self.path, other.path
         )
 
         if difference:
@@ -86,13 +83,15 @@ class JSONFile(File):
         except Exception:
             return
 
-        difference.add_comment("Similarity: {}%".format(
-            jsondiff.similarity(a, b),
-        ))
+        difference.add_comment(
+            "Similarity: {}%".format(jsondiff.similarity(a, b))
+        )
 
-        difference.add_comment("Differences: {}".format(
-            json.dumps(diff, indent=2, sort_keys=True),
-        ))
+        difference.add_comment(
+            "Differences: {}".format(
+                json.dumps(diff, indent=2, sort_keys=True)
+            )
+        )
 
     @staticmethod
     def dumps(file, sort_keys=True):

@@ -32,21 +32,20 @@ class GitIndexFile(File):
     FILE_TYPE_RE = re.compile(r'^Git index')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_text(
-            describe_index(self.path),
-            describe_index(other.path),
-            self.path,
-            other.path,
-        )]
+        return [
+            Difference.from_text(
+                describe_index(self.path),
+                describe_index(other.path),
+                self.path,
+                other.path,
+            )
+        ]
 
 
 def parse_index(f):
     _, version = struct.unpack('>LL', f.read(4 * 2))
 
-    return {
-        'version': version,
-        'entries': list(parse_entries(f)),
-    }
+    return {'version': version, 'entries': list(parse_entries(f))}
 
 
 def parse_entries(f):
@@ -57,12 +56,15 @@ def parse_entries(f):
 
         pos = f.tell()
 
-        x['ctime'], x['ctime_nano'], x['mtime'], x['mtime_nano'], \
-            x['dev'], x['inode'], x['mode'], x['uid'], x['gid'], \
-            x['size'], x['sha'], x['flags'] = \
-            struct.unpack('>LLLLLLLLLL20sH', f.read((4 * 10) + 20 + 2))
+        x['ctime'], x['ctime_nano'], x['mtime'], x['mtime_nano'], x['dev'], x[
+            'inode'
+        ], x['mode'], x['uid'], x['gid'], x['size'], x['sha'], x[
+            'flags'
+        ] = struct.unpack(
+            '>LLLLLLLLLL20sH', f.read((4 * 10) + 20 + 2)
+        )
 
-        x['path'] = f.read(x['flags'] & 0x0fff)
+        x['path'] = f.read(x['flags'] & 0x0FFF)
 
         f.read((pos + ((f.tell() - pos + 8) & ~7)) - f.tell())
 
@@ -80,7 +82,7 @@ Entries:
 {entries_fmt}
 """.format(
         entries_fmt=''.join(describe_entry(x) for x in index['entries']),
-        **index
+        **index,
     )
 
 

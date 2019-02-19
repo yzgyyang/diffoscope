@@ -52,8 +52,10 @@ class FsImageContainer(Archive):
             self.g.launch()
         except RuntimeError:
             logger.exception("guestfs failed to launch")
-            logger.error("If memory is too tight for 512 MiB, try running "
-                         "with LIBGUESTFS_MEMSIZE=256 or lower.")
+            logger.error(
+                "If memory is too tight for 512 MiB, try running "
+                "with LIBGUESTFS_MEMSIZE=256 or lower."
+            )
             return None
         devices = self.g.list_devices()
         try:
@@ -109,8 +111,10 @@ class FsImageFile(File):
         if hasattr(other.as_container, 'fs'):
             other_fs = other.as_container.fs
         if my_fs != other_fs:
-            differences.append(Difference.from_text(
-                my_fs, other_fs, None, None, source="filesystem",
-            ))
+            differences.append(
+                Difference.from_text(
+                    my_fs, other_fs, None, None, source="filesystem"
+                )
+            )
 
         return differences

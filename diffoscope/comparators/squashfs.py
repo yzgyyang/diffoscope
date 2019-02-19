@@ -48,9 +48,7 @@ class SquashfsSuperblock(Command):
     def filter(self, line):
         # strip filename
         return re.sub(
-            r'^(Found a valid .*) on .*',
-            '\\1',
-            line.decode('utf-8'),
+            r'^(Found a valid .*) on .*', '\\1', line.decode('utf-8')
         ).encode('utf-8')
 
 
@@ -90,7 +88,8 @@ class SquashfsRegularFile(SquashfsMember):
     # Example line:
     # -rw-r--r-- user/group   446 2015-06-24 14:49 squashfs-root/text
     LINE_RE = re.compile(
-        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$')
+        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$'
+    )
 
     @staticmethod
     def parse(line):
@@ -107,7 +106,8 @@ class SquashfsDirectory(Directory, SquashfsMember):
     # Example line:
     # drwxr-xr-x user/group    51 2015-06-24 14:47 squashfs-root
     LINE_RE = re.compile(
-        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$')
+        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)$'
+    )
 
     @staticmethod
     def parse(line):
@@ -128,7 +128,8 @@ class SquashfsDirectory(Directory, SquashfsMember):
     @property
     def path(self):
         raise NotImplementedError(
-            "SquashfsDirectory is not meant to be extracted.")
+            "SquashfsDirectory is not meant to be extracted."
+        )
 
     def is_directory(self):
         return True
@@ -144,7 +145,7 @@ class SquashfsSymlink(Symlink, SquashfsMember):
     # Example line:
     # lrwxrwxrwx user/group   6 2015-06-24 14:47 squashfs-root/link -> broken
     LINE_RE = re.compile(
-        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)\s+->\s+(?P<destination>.*)$',
+        r'^\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(?P<member_name>.*)\s+->\s+(?P<destination>.*)$'
     )
 
     @staticmethod
@@ -170,13 +171,10 @@ class SquashfsDevice(Device, SquashfsMember):
     # Example line:
     # crw-r--r-- root/root  1,  3 2015-06-24 14:47 squashfs-root/null
     LINE_RE = re.compile(
-        r'^(?P<kind>c|b)\S+\s+\S+\s+(?P<major>\d+),\s*(?P<minor>\d+)\s+\S+\s+\S+\s+(?P<member_name>.*)$',
+        r'^(?P<kind>c|b)\S+\s+\S+\s+(?P<major>\d+),\s*(?P<minor>\d+)\s+\S+\s+\S+\s+(?P<member_name>.*)$'
     )
 
-    KIND_MAP = {
-        'c': stat.S_IFCHR,
-        'b': stat.S_IFBLK,
-    }
+    KIND_MAP = {'c': stat.S_IFCHR, 'b': stat.S_IFBLK}
 
     @staticmethod
     def parse(line):
@@ -190,20 +188,21 @@ class SquashfsDevice(Device, SquashfsMember):
             del d['kind']
         except KeyError:
             raise SquashfsInvalidLineFormat(
-                "unknown device kind %s" % d['kind'])
+                "unknown device kind %s" % d['kind']
+            )
 
         try:
             d['major'] = int(d['major'])
         except ValueError:
             raise SquashfsInvalidLineFormat(
-                "unable to parse major number %s" % d['major'],
+                "unable to parse major number %s" % d['major']
             )
 
         try:
             d['minor'] = int(d['minor'])
         except ValueError:
             raise SquashfsInvalidLineFormat(
-                "unable to parse minor number %s" % d['minor'],
+                "unable to parse minor number %s" % d['minor']
             )
         return d
 
@@ -228,7 +227,7 @@ class SquashfsContainer(Archive):
         'l': SquashfsSymlink,
         'c': SquashfsDevice,
         'b': SquashfsDevice,
-        '-': SquashfsRegularFile
+        '-': SquashfsRegularFile,
     }
 
     def open_archive(self):
@@ -260,15 +259,20 @@ class SquashfsContainer(Archive):
 
         logger.debug("Extracting %s to %s", self.source.path, self._temp_dir)
 
-        output = subprocess.check_output((
-            'unsquashfs',
-            '-n',
-            '-f',
-            '-no',
-            '-li',
-            '-d', '.',
-            self.source.path,
-        ), stderr=subprocess.PIPE, cwd=self._temp_dir)
+        output = subprocess.check_output(
+            (
+                'unsquashfs',
+                '-n',
+                '-f',
+                '-no',
+                '-li',
+                '-d',
+                '.',
+                self.source.path,
+            ),
+            stderr=subprocess.PIPE,
+            cwd=self._temp_dir,
+        )
 
         output = iter(output.decode('utf-8').rstrip('\n').split('\n'))
 
@@ -298,7 +302,9 @@ class SquashfsContainer(Archive):
 
         logger.debug(
             "Extracted %d entries from %s to %s",
-            len(self._members), self.source.path, self._temp_dir,
+            len(self._members),
+            self.source.path,
+            self._temp_dir,
         )
 
 

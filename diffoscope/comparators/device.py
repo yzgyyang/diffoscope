@@ -70,9 +70,15 @@ class Device(File):
         super().cleanup()
 
     def compare(self, other, source=None):
-        with open(self.path) as my_content, \
-            open(other.path) as other_content:
-            return Difference.from_text_readers(my_content, other_content, self.name, other.name, source=source, comment="device")
+        with open(self.path) as my_content, open(other.path) as other_content:
+            return Difference.from_text_readers(
+                my_content,
+                other_content,
+                self.name,
+                other.name,
+                source=source,
+                comment="device",
+            )
 
 
 def format_device(mode, major, minor):

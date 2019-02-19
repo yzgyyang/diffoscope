@@ -47,7 +47,10 @@ class Lz4Container(Archive):
         with open(dest_path, 'wb') as fp:
             subprocess.check_call(
                 ["lz4", "-d", "-c", self.source.path],
-                shell=False, stdout=fp, stderr=None)
+                shell=False,
+                stdout=fp,
+                stderr=None,
+            )
         return dest_path
 
 

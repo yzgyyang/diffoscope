@@ -158,10 +158,9 @@ class DiffParser(object):
         if self._remaining_hunk_lines == 0 or line[:1] != self._direction:
             removed = self._block_len - Config().max_diff_block_lines_saved
             if removed:
-                self._diff.write(b'%s[ %d lines removed ]\n' % (
-                    self._direction,
-                    removed,
-                ))
+                self._diff.write(
+                    b'%s[ %d lines removed ]\n' % (self._direction, removed)
+                )
             return self.read_hunk(line)
 
         self._block_len += 1
@@ -177,10 +176,7 @@ def run_diff(fifo1, fifo2, end_nl_q1, end_nl_q2):
     logger.debug("Running %s", ' '.join(cmd))
 
     p = subprocess.run(
-        cmd,
-        bufsize=1,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        cmd, bufsize=1, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
 
     parser = DiffParser(p.stdout, end_nl_q1, end_nl_q2)
@@ -266,6 +262,7 @@ class _Feeder:
     empty_file_feeder().  The returned objects are closures, and are not
     (currently?) instances of any particular class.
     """
+
     pass
 
 
@@ -275,8 +272,10 @@ def empty_file_feeder():
 
     See _Feeder for feeders.
     """
+
     def feeder(f):
         return False
+
     return feeder
 
 
@@ -289,6 +288,7 @@ def make_feeder_from_raw_reader(in_file, filter=None):
 
     See _Feeder for feeders.
     """
+
     def feeder(out_file):
         h = None
         end_nl = False
@@ -308,12 +308,15 @@ def make_feeder_from_raw_reader(in_file, filter=None):
             end_nl = buf[-1] == '\n'
 
         if h and line_count >= max_lines:
-            out_file.write("[ Too much input for diff (SHA1: {}) ]\n".format(
-                h.hexdigest(),
-            ).encode('utf-8'))
+            out_file.write(
+                "[ Too much input for diff (SHA1: {}) ]\n".format(
+                    h.hexdigest()
+                ).encode('utf-8')
+            )
             end_nl = True
 
         return end_nl
+
     return feeder
 
 
@@ -322,8 +325,9 @@ def diff(feeder1, feeder2):
 
     fifo1_path = os.path.join(tmpdir, 'fifo1')
     fifo2_path = os.path.join(tmpdir, 'fifo2')
-    with FIFOFeeder(feeder1, fifo1_path) as fifo1, \
-            FIFOFeeder(feeder2, fifo2_path) as fifo2:
+    with FIFOFeeder(feeder1, fifo1_path) as fifo1, FIFOFeeder(
+        feeder2, fifo2_path
+    ) as fifo2:
         return run_diff(fifo1_path, fifo2_path, fifo1.end_nl_q, fifo2.end_nl_q)
 
 
@@ -331,7 +335,9 @@ def diff_split_lines(diff, keepends=True):
     lines = diff.split("\n")
     if not keepends:
         return lines
-    return [line + "\n" for line in lines[:-1]] + ([lines[-1]] if lines[-1] else [])
+    return [line + "\n" for line in lines[:-1]] + (
+        [lines[-1]] if lines[-1] else []
+    )
 
 
 def reverse_unified_diff(diff):
@@ -370,11 +376,9 @@ def color_unified_diff(diff):
     RED, GREEN, CYAN = '\033[31m', '\033[32m', '\033[0;36m'
 
     def repl(m):
-        return '{}{}{}'.format({
-            '-': RED,
-            '@': CYAN,
-            '+': GREEN,
-        }[m.group(1)], m.group(0), RESET)
+        return '{}{}{}'.format(
+            {'-': RED, '@': CYAN, '+': GREEN}[m.group(1)], m.group(0), RESET
+        )
 
     return re_diff_change.sub(repl, diff)
 
@@ -392,8 +396,11 @@ def _linediff_sane(x):
 def diffinput_truncate(s, sz):
     # Truncate, preserving uniqueness
     if len(s) > sz:
-        s = s[:sz] + "[ ... truncated by diffoscope; len: {}, SHA1: {} ... ]".format(
-            len(s[sz:]), hashlib.sha1(s[sz:].encode('utf-8')).hexdigest())
+        s = s[
+            :sz
+        ] + "[ ... truncated by diffoscope; len: {}, SHA1: {} ... ]".format(
+            len(s[sz:]), hashlib.sha1(s[sz:].encode('utf-8')).hexdigest()
+        )
     return s
 
 
@@ -401,12 +408,12 @@ def linediff(s, t, diffon, diffoff):
     # calculate common prefix/suffix, easy optimisation to WF
     prefix = os.path.commonprefix((s, t))
     if prefix:
-        s = s[len(prefix):]
-        t = t[len(prefix):]
+        s = s[len(prefix) :]
+        t = t[len(prefix) :]
     suffix = os.path.commonprefix((s[::-1], t[::-1]))[::-1]
     if suffix:
-        s = s[:-len(suffix)]
-        t = t[:-len(suffix)]
+        s = s[: -len(suffix)]
+        t = t[: -len(suffix)]
 
     # truncate so WF doesn't blow up RAM
     s = diffinput_truncate(s, MAX_WF_SIZE)
@@ -416,6 +423,7 @@ def linediff(s, t, diffon, diffoff):
     def to_string(k, v):
         sanev = "".join(_linediff_sane(c) for c in v)
         return (diffon + sanev + diffoff) if k else sanev
+
     s1 = ''.join(to_string(*p) for p in l1)
     t1 = ''.join(to_string(*p) for p in l2)
     return prefix + s1 + suffix, prefix + t1 + suffix
@@ -435,7 +443,7 @@ def linediff_wagnerfischer(s, t):
 
     d[0][0] = (0, (0, 0))
     for i in range(1, m + 1):
-        d[i][0] = (i, (i -1, 0))
+        d[i][0] = (i, (i - 1, 0))
     for j in range(1, n + 1):
         d[0][j] = (j, (0, j - 1))
 
@@ -445,9 +453,11 @@ def linediff_wagnerfischer(s, t):
                 cost = 0
             else:
                 cost = 1
-            d[i][j] = min((d[i - 1][j][0] + 1, (i -1, j)),
-                          (d[i][j - 1][0] + 1, (i, j - 1)),
-                          (d[i - 1][j - 1][0] + cost, (i - 1, j - 1)))
+            d[i][j] = min(
+                (d[i - 1][j][0] + 1, (i - 1, j)),
+                (d[i][j - 1][0] + 1, (i, j - 1)),
+                (d[i - 1][j - 1][0] + cost, (i - 1, j - 1)),
+            )
 
     coords = []
     coord = (m, n)
@@ -484,8 +494,10 @@ def linediff_simplify(g):
         if not current:
             current = l, r
         elif current[0][0] == l[0] and current[1][0] == r[0]:
-            current = (l[0], current[0][1] + l[1]
-                       ), (r[0], current[1][1] + r[1])
+            current = (
+                (l[0], current[0][1] + l[1]),
+                (r[0], current[1][1] + r[1]),
+            )
         else:
             yield current
             current = l, r
@@ -551,7 +563,11 @@ class SideBySideDiff(object):
             type_name = "added"
         elif s2 is None or s2 == "":
             type_name = "deleted"
-        elif orig1 == orig2 and not s1.endswith('lines removed ]') and not s2.endswith('lines removed ]'):
+        elif (
+            orig1 == orig2
+            and not s1.endswith('lines removed ]')
+            and not s2.endswith('lines removed ]')
+        ):
             type_name = "unmodified"
         else:
             type_name = "changed"
@@ -610,9 +626,16 @@ class SideBySideDiff(object):
             if m:
                 yield from self.empty_buffer()
                 hunk_data = map(lambda x: x == "" and 1 or int(x), m.groups())
-                self.hunk_off1, self.hunk_size1, self.hunk_off2, self.hunk_size2 = hunk_data
+                self.hunk_off1, self.hunk_size1, self.hunk_off2, self.hunk_size2 = (
+                    hunk_data
+                )
                 self.line1, self.line2 = self.hunk_off1, self.hunk_off2
-                yield "H", (self.hunk_off1, self.hunk_size1, self.hunk_off2, self.hunk_size2)
+                yield "H", (
+                    self.hunk_off1,
+                    self.hunk_size1,
+                    self.hunk_off2,
+                    self.hunk_size2,
+                )
                 continue
 
             if re.match(r'^\[', l):
@@ -621,11 +644,15 @@ class SideBySideDiff(object):
 
             if re.match(r"^\\ No newline", l):
                 if self.hunk_size2 == 0:
-                    self.buf[-1] = (self.buf[-1][0],
-                                    self.buf[-1][1] + '\n' + l[2:])
+                    self.buf[-1] = (
+                        self.buf[-1][0],
+                        self.buf[-1][1] + '\n' + l[2:],
+                    )
                 else:
-                    self.buf[-1] = (self.buf[-1][0] + '\n' +
-                                    l[2:], self.buf[-1][1])
+                    self.buf[-1] = (
+                        self.buf[-1][0] + '\n' + l[2:],
+                        self.buf[-1][1],
+                    )
                 continue
 
             if self.hunk_size1 <= 0 and self.hunk_size2 <= 0:

@@ -99,8 +99,11 @@ def mozzip_differences(mozzip1, mozzip2):
 def test_mozzip_metadata(mozzip_differences, mozzip1, mozzip2):
     expected_diff = get_data('mozzip_zipinfo_expected_diff')
     diff = mozzip_differences[0].unified_diff
-    assert (diff.replace(mozzip1.path, 'test1.mozzip')
-                .replace(mozzip2.path, 'test2.mozzip')) == expected_diff
+    assert (
+        diff.replace(mozzip1.path, 'test1.mozzip').replace(
+            mozzip2.path, 'test2.mozzip'
+        )
+    ) == expected_diff
 
 
 @skip_unless_tools_exist('zipinfo')

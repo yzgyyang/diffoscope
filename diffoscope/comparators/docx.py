@@ -29,11 +29,7 @@ from .utils.command import Command
 class Docx2txt(Command):
     @tool_required('docx2txt')
     def cmdline(self):
-        return (
-            'docx2txt',
-            self.path,
-            '-',
-        )
+        return ('docx2txt', self.path, '-')
 
 
 class DocxFile(File):
@@ -41,9 +37,8 @@ class DocxFile(File):
     FILE_TYPE_RE = re.compile(r'^Microsoft Word 2007+\b')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(
-            Docx2txt,
-            self.path,
-            other.path,
-            source='docx2txt',
-        )]
+        return [
+            Difference.from_command(
+                Docx2txt, self.path, other.path, source='docx2txt'
+            )
+        ]

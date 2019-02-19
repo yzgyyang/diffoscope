@@ -32,7 +32,10 @@ def order_only_difference(unified_diff):
     # Faster check: does number of lines match?
     if len(added_lines) != len(removed_lines):
         return False
-    return sorted(added_lines) == sorted(removed_lines) and added_lines != removed_lines
+    return (
+        sorted(added_lines) == sorted(removed_lines)
+        and added_lines != removed_lines
+    )
 
 
 class TextFile(File):
@@ -49,19 +52,35 @@ class TextFile(File):
         my_encoding = self.encoding or 'utf-8'
         other_encoding = other.encoding or 'utf-8'
         try:
-            with codecs.open(self.path, 'r', encoding=my_encoding) as my_content, \
-                codecs.open(other.path, 'r', encoding=other_encoding) as other_content:
+            with codecs.open(
+                self.path, 'r', encoding=my_encoding
+            ) as my_content, codecs.open(
+                other.path, 'r', encoding=other_encoding
+            ) as other_content:
                 difference = Difference.from_text_readers(
-                    my_content, other_content, self.name, other.name, source)
+                    my_content, other_content, self.name, other.name, source
+                )
                 # Check if difference is only in line order.
-                if difference and order_only_difference(difference.unified_diff):
+                if difference and order_only_difference(
+                    difference.unified_diff
+                ):
                     difference.add_comment("ordering differences only")
                 if my_encoding != other_encoding:
                     if difference is None:
                         difference = Difference(
-                            None, self.path, other.path, source)
-                    difference.add_details([Difference.from_text(
-                        my_encoding, other_encoding, None, None, source='encoding')])
+                            None, self.path, other.path, source
+                        )
+                    difference.add_details(
+                        [
+                            Difference.from_text(
+                                my_encoding,
+                                other_encoding,
+                                None,
+                                None,
+                                source='encoding',
+                            )
+                        ]
+                    )
                 return difference
         except (LookupError, UnicodeDecodeError):
             # unknown or misdetected encoding

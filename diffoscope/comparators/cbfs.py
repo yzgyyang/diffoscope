@@ -38,7 +38,8 @@ class CbfsListing(Command):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._header_re = re.compile(
-            r'^.*: ([^,]+, bootblocksize [0-9]+, romsize [0-9]+, offset 0x[0-9A-Fa-f]+)$')
+            r'^.*: ([^,]+, bootblocksize [0-9]+, romsize [0-9]+, offset 0x[0-9A-Fa-f]+)$'
+        )
 
     @tool_required('cbfstool')
     def cmdline(self):
@@ -76,11 +77,19 @@ class CbfsContainer(Archive):
     @tool_required('cbfstool')
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, os.path.basename(member_name))
-        cmd = ['cbfstool', self.source.path, 'extract',
-            '-n', member_name, '-f', dest_path]
+        cmd = [
+            'cbfstool',
+            self.source.path,
+            'extract',
+            '-n',
+            member_name,
+            '-f',
+            dest_path,
+        ]
         logger.debug("cbfstool extract %s to %s", member_name, dest_path)
         subprocess.check_call(
-            cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
+        )
         return dest_path
 
 
@@ -95,11 +104,16 @@ CBFS_MAXIMUM_FILE_SIZE = 24 * 2 ** 20  # 24 MiB
 
 def is_header_valid(buf, size, offset=0):
     magic, version, romsize, bootblocksize, align, cbfs_offset, architecture, pad = struct.unpack_from(
-        '!IIIIIIII', buf, offset)
-    return magic == CBFS_HEADER_MAGIC and \
-        (version == CBFS_HEADER_VERSION1 or version == CBFS_HEADER_VERSION2) and \
-        (romsize <= size) and \
-        (cbfs_offset < romsize)
+        '!IIIIIIII', buf, offset
+    )
+    return (
+        magic == CBFS_HEADER_MAGIC
+        and (
+            version == CBFS_HEADER_VERSION1 or version == CBFS_HEADER_VERSION2
+        )
+        and (romsize <= size)
+        and (cbfs_offset < romsize)
+    )
 
 
 class CbfsFile(File):
@@ -118,7 +132,11 @@ class CbfsFile(File):
             #           that field is now bound to be little endian
             #   -- #coreboot, 2015-10-14
             rel_offset = struct.unpack('<i', f.read(4))[0]
-            if rel_offset < 0 and -rel_offset > CBFS_HEADER_SIZE and -rel_offset < size:
+            if (
+                rel_offset < 0
+                and -rel_offset > CBFS_HEADER_SIZE
+                and -rel_offset < size
+            ):
                 f.seek(rel_offset, io.SEEK_END)
                 logger.debug('looking for header at offset: %x', f.tell())
                 if is_header_valid(f.read(CBFS_HEADER_SIZE), size):
@@ -127,7 +145,8 @@ class CbfsFile(File):
                 return False
             else:
                 logger.debug(
-                    'CBFS relative offset seems wrong, scanning whole image')
+                    'CBFS relative offset seems wrong, scanning whole image'
+                )
             f.seek(0, io.SEEK_SET)
             offset = 0
             buf = f.read(CBFS_HEADER_SIZE)

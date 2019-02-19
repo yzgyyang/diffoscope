@@ -25,10 +25,13 @@ from diffoscope.main import main
 
 def run(capsys, *args):
     with pytest.raises(SystemExit) as exc:
-        main(args + tuple(
-            os.path.join(os.path.dirname(__file__), 'data', x)
-            for x in ('test1.tar', 'test2.tar')
-        ))
+        main(
+            args
+            + tuple(
+                os.path.join(os.path.dirname(__file__), 'data', x)
+                for x in ('test1.tar', 'test2.tar')
+            )
+        )
 
     out, err = capsys.readouterr()
 

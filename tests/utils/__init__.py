@@ -21,7 +21,8 @@ import html
 import re
 
 re_diff_line_numbers = re.compile(
-    r"(^|\n)@@ -(\d+),(\d+) \+(\d+),(\d+) @@(?=\n|$)")
+    r"(^|\n)@@ -(\d+),(\d+) \+(\d+),(\d+) @@(?=\n|$)"
+)
 
 
 def diff_ignore_line_numbers(diff):
@@ -34,15 +35,25 @@ def _collapse_line(line, escape=html.escape):
 
 
 def _diff_collapse_line(line):
-    return line[0] + _collapse_line(line[1:]) if line and line[0] in '+- ' else line
+    return (
+        line[0] + _collapse_line(line[1:])
+        if line and line[0] in '+- '
+        else line
+    )
 
 
 def _expand_line(line):
-    return (int(line[:-1]) * ".") + "\n" if line[-1] == "\n" else (int(line) * ".")
+    return (
+        (int(line[:-1]) * ".") + "\n"
+        if line[-1] == "\n"
+        else (int(line) * ".")
+    )
 
 
 def _diff_expand_line(line):
-    return line[0] + _expand_line(line[1:]) if line and line[0] in '+- ' else line
+    return (
+        line[0] + _expand_line(line[1:]) if line and line[0] in '+- ' else line
+    )
 
 
 def diff_collapse(diff):

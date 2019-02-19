@@ -50,8 +50,12 @@ class Xxd(Command):
 
 
 def compare_root_paths(path1, path2):
-    from ..directory import FilesystemDirectory, FilesystemFile, \
-        compare_directories, compare_meta
+    from ..directory import (
+        FilesystemDirectory,
+        FilesystemFile,
+        compare_directories,
+        compare_meta,
+    )
 
     if not Config().new_file:
         bail_if_non_existing(path1, path2)
@@ -97,7 +101,8 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
     if has_same_content:
         if not force_details:
             logger.debug(
-                "has_same_content_as returned True; skipping further comparisons")
+                "has_same_content_as returned True; skipping further comparisons"
+            )
             return None
         if diff_content_only:
             return None
@@ -111,8 +116,9 @@ def compare_files(file1, file2, source=None, diff_content_only=False):
         file1.other_file = file2
     elif isinstance(file2, MissingFile):
         file2.other_file = file1
-    elif ((file1.__class__.__name__ != file2.__class__.__name__) and
-          (file1.as_container is None or file2.as_container is None)):
+    elif (file1.__class__.__name__ != file2.__class__.__name__) and (
+        file1.as_container is None or file2.as_container is None
+    ):
         return file1.compare_bytes(file2, source)
     with profile('compare_files (cumulative)', file1):
         return file1.compare(file2, source)
@@ -123,7 +129,8 @@ def bail_if_non_existing(*paths):
         for path in paths:
             if not os.path.lexists(path):
                 sys.stderr.write(
-                    '%s: %s: No such file or directory\n' % (sys.argv[0], path))
+                    '%s: %s: No such file or directory\n' % (sys.argv[0], path)
+                )
         sys.exit(2)
 
 
@@ -132,13 +139,21 @@ def compare_binary_files(file1, file2, source=None):
         if source is None:
             source = [file1.name, file2.name]
         return Difference.from_command(
-            Xxd, file1.path, file2.path,
-            source=source, has_internal_linenos=True)
+            Xxd,
+            file1.path,
+            file2.path,
+            source=source,
+            has_internal_linenos=True,
+        )
     except RequiredToolNotFound:
         hexdump1 = hexdump_fallback(file1.path)
         hexdump2 = hexdump_fallback(file2.path)
-        comment = 'xxd not available in path. Falling back to Python hexlify.\n'
-        return Difference.from_text(hexdump1, hexdump2, file1.name, file2.name, source, comment)
+        comment = (
+            'xxd not available in path. Falling back to Python hexlify.\n'
+        )
+        return Difference.from_text(
+            hexdump1, hexdump2, file1.name, file2.name, source, comment
+        )
 
 
 def hexdump_fallback(path):

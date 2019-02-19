@@ -30,9 +30,12 @@ from diffoscope.comparators.missing_file import MissingFile
 from diffoscope.comparators.utils.specialize import specialize
 
 from ..utils.data import data, load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist, \
-    skip_if_binutils_does_not_support_x86, skip_unless_module_exists, \
-    skip_if_tool_version_is
+from ..utils.tools import (
+    skip_unless_tools_exist,
+    skip_if_binutils_does_not_support_x86,
+    skip_unless_module_exists,
+    skip_if_tool_version_is,
+)
 
 
 obj1 = load_fixture('test1.o')
@@ -47,10 +50,7 @@ def readelf_version():
         out = e.output
 
     # Only match GNU readelf; we only need to match some versions
-    m = re.match(
-        r'^GNU readelf .* (?P<version>[\d.]+)\n',
-        out.decode('utf-8'),
-    )
+    m = re.match(r'^GNU readelf .* (?P<version>[\d.]+)\n', out.decode('utf-8'))
 
     # Return '0' as the version if we can't parse one; it should be harmless.
     if m is None:
@@ -150,15 +150,21 @@ TEST_DBGSYM_DEB2_PATH = data('dbgsym/mult/test-dbgsym_1_amd64.deb')
 @pytest.fixture
 def dbgsym_dir1():
     container = FilesystemDirectory(
-        os.path.dirname(TEST_DBGSYM_DEB1_PATH)).as_container
-    return specialize(FilesystemFile(TEST_DBGSYM_DEB1_PATH, container=container))
+        os.path.dirname(TEST_DBGSYM_DEB1_PATH)
+    ).as_container
+    return specialize(
+        FilesystemFile(TEST_DBGSYM_DEB1_PATH, container=container)
+    )
 
 
 @pytest.fixture
 def dbgsym_dir2():
     container = FilesystemDirectory(
-        os.path.dirname(TEST_DBGSYM_DEB2_PATH)).as_container
-    return specialize(FilesystemFile(TEST_DBGSYM_DEB2_PATH, container=container))
+        os.path.dirname(TEST_DBGSYM_DEB2_PATH)
+    ).as_container
+    return specialize(
+        FilesystemFile(TEST_DBGSYM_DEB2_PATH, container=container)
+    )
 
 
 @pytest.fixture
@@ -175,7 +181,10 @@ def test_differences_with_dbgsym(dbgsym_differences):
     bin_details = dbgsym_differences.details[2].details[0].details[0]
     assert bin_details.source1 == './usr/bin/test'
     assert bin_details.details[1].source1.startswith('objdump')
-    assert 'test-cases/dbgsym/package/test.c:2' in bin_details.details[1].unified_diff
+    assert (
+        'test-cases/dbgsym/package/test.c:2'
+        in bin_details.details[1].unified_diff
+    )
 
 
 @skip_unless_tools_exist('readelf', 'objdump', 'objcopy')

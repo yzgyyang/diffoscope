@@ -55,8 +55,7 @@ class AndroidBootImgContainer(Archive):
         self._unpacked = get_temporary_directory()
 
         logger.debug(
-            "Extracting Android boot image to %s",
-            self._unpacked.name,
+            "Extracting Android boot image to %s", self._unpacked.name
         )
 
         subprocess.check_call(

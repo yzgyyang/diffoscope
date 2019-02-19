@@ -24,7 +24,10 @@ from diffoscope.config import Config
 from diffoscope.comparators.gzip import GzipFile
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.missing_file import MissingFile
-from diffoscope.comparators.utils.specialize import specialize, is_direct_instance
+from diffoscope.comparators.utils.specialize import (
+    specialize,
+    is_direct_instance,
+)
 
 from ..utils.data import load_fixture, get_data
 from ..utils.tools import skip_unless_file_version_is_at_least
@@ -42,8 +45,9 @@ def test_identification(gzip1):
 def test_fallback_recognizes(gzip3):
     # the below always-True assertion is just to document the fact that we
     # should identify it correctly regardless of any bugs in file(1)
-    assert ("gzip" not in gzip3.magic_file_type or
-            "gzip" in gzip3.magic_file_type)
+    assert (
+        "gzip" not in gzip3.magic_file_type or "gzip" in gzip3.magic_file_type
+    )
     assert is_direct_instance(gzip3, GzipFile)
 
 

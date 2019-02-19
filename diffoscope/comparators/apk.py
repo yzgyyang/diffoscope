@@ -45,22 +45,34 @@ class ApkContainer(Archive):
     def open_archive(self):
         self._members = []
         self._unpacked = os.path.join(
-            get_temporary_directory().name,
-            os.path.basename(self.source.name),
+            get_temporary_directory().name, os.path.basename(self.source.name)
         )
         self._andmanifest = None
         self._andmanifest_orig = None
 
         logger.debug("Extracting %s to %s", self.source.name, self._unpacked)
 
-        subprocess.check_call((
-            'apktool', 'd', '-k', '-m', '-o', self._unpacked, self.source.path,
-        ), shell=False, stderr=None, stdout=subprocess.PIPE)
+        subprocess.check_call(
+            (
+                'apktool',
+                'd',
+                '-k',
+                '-m',
+                '-o',
+                self._unpacked,
+                self.source.path,
+            ),
+            shell=False,
+            stderr=None,
+            stdout=subprocess.PIPE,
+        )
 
         # Optionally extract the classes.dex file; apktool does not do this.
-        subprocess.call((
-            'unzip', '-d', self._unpacked, self.source.path, 'classes.dex',
-        ), stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        subprocess.call(
+            ('unzip', '-d', self._unpacked, self.source.path, 'classes.dex'),
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+        )
 
         for root, _, files in os.walk(self._unpacked):
             current_dir = []
@@ -74,17 +86,16 @@ class ApkContainer(Archive):
                 # reproducibility.
                 if filename == 'apktool.yml':
                     abspath = filter_apk_metadata(
-                        abspath,
-                        os.path.basename(self.source.name),
+                        abspath, os.path.basename(self.source.name)
                     )
-                    relpath = abspath[len(self._unpacked) + 1:]
+                    relpath = abspath[len(self._unpacked) + 1 :]
                     current_dir.insert(0, relpath)
                     continue
 
-                relpath = abspath[len(self._unpacked) + 1:]
+                relpath = abspath[len(self._unpacked) + 1 :]
 
                 if filename == 'AndroidManifest.xml':
-                    containing_dir = root[len(self._unpacked) + 1:]
+                    containing_dir = root[len(self._unpacked) + 1 :]
                     if containing_dir == 'original':
                         self._andmanifest_orig = relpath
                     if containing_dir == '':
@@ -98,8 +109,9 @@ class ApkContainer(Archive):
         return self
 
     def get_android_manifest(self):
-        return self.get_member(self._andmanifest) \
-            if self._andmanifest else None
+        return (
+            self.get_member(self._andmanifest) if self._andmanifest else None
+        )
 
     def get_original_android_manifest(self):
         if self._andmanifest_orig:
@@ -122,21 +134,25 @@ class ApkContainer(Archive):
         diff_manifests = None
         if my_android_manifest and other_android_manifest:
             source = 'AndroidManifest.xml (decoded)'
-            diff_manifests = compare_files(my_android_manifest,
-                                           other_android_manifest,
-                                           source=source)
+            diff_manifests = compare_files(
+                my_android_manifest, other_android_manifest, source=source
+            )
             if diff_manifests is None:
                 comment = 'No difference found for decoded AndroidManifest.xml'
         else:
-            comment = 'No decoded AndroidManifest.xml found ' + \
-                      'for one of the APK files.'
+            comment = (
+                'No decoded AndroidManifest.xml found '
+                + 'for one of the APK files.'
+            )
         if diff_manifests:
             return diff_manifests
 
         source = 'AndroidManifest.xml (original / undecoded)'
-        diff_manifests = compare_files(self.get_original_android_manifest(),
-                                       other.get_original_android_manifest(),
-                                       source=source)
+        diff_manifests = compare_files(
+            self.get_original_android_manifest(),
+            other.get_original_android_manifest(),
+            source=source,
+        )
         if diff_manifests is not None:
             diff_manifests.add_comment(comment)
         return diff_manifests
@@ -159,8 +175,9 @@ class ApkFile(File):
     CONTAINER_CLASS = ApkContainer
 
     def compare_details(self, other, source=None):
-        zipinfo_difference = Difference.from_command(Zipinfo, self.path, other.path) or \
-            Difference.from_command(ZipinfoVerbose, self.path, other.path)
+        zipinfo_difference = Difference.from_command(
+            Zipinfo, self.path, other.path
+        ) or Difference.from_command(ZipinfoVerbose, self.path, other.path)
         return [zipinfo_difference]
 
 
@@ -170,7 +187,7 @@ def filter_apk_metadata(filepath, archive_name):
     logger.debug("Moving APK metadata from %s to %s", filepath, new_filename)
 
     re_filename = re.compile(
-        r'^apkFileName: %s' % re.escape(os.path.basename(archive_name)),
+        r'^apkFileName: %s' % re.escape(os.path.basename(archive_name))
     )
 
     with open(filepath) as in_, open(new_filename, 'w') as out:

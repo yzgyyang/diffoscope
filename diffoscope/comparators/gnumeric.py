@@ -35,30 +35,36 @@ class GnumericFile(File):
     @tool_required('ssconvert')
     def compare_details(self, other, source=None):
         if isinstance(other, MissingFile):
-            return [Difference(
-                None,
+            return [
+                Difference(
+                    None,
+                    self.name,
+                    other.name,
+                    comment="Trying to compare two non-existing files.",
+                )
+            ]
+
+        return [
+            Difference.from_text(
+                self.dump(self),
+                self.dump(other),
                 self.name,
                 other.name,
-                comment="Trying to compare two non-existing files."
-            )]
-
-        return [Difference.from_text(
-            self.dump(self),
-            self.dump(other),
-            self.name,
-            other.name,
-            source='ssconvert'
-        )]
+                source='ssconvert',
+            )
+        ]
 
     def dump(self, file):
         t = get_named_temporary_file()
 
-        subprocess.check_call((
-            'ssconvert',
-            '--export-type=Gnumeric_stf:stf_assistant',
-            file.path,
-            t.name,
-        ))
+        subprocess.check_call(
+            (
+                'ssconvert',
+                '--export-type=Gnumeric_stf:stf_assistant',
+                file.path,
+                t.name,
+            )
+        )
 
         with open(t.name) as f:
             return f.read().strip()

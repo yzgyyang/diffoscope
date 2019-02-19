@@ -82,8 +82,7 @@ def clean_all_temp_files():
 def _get_base_temporary_directory():
     if not _DIRS:
         d = tempfile.TemporaryDirectory(
-            dir=tempfile.gettempdir(),
-            prefix='diffoscope_',
+            dir=tempfile.gettempdir(), prefix='diffoscope_'
         )
 
         logger.debug("Created top-level temporary directory: %s", d.name)

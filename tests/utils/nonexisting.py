@@ -22,7 +22,9 @@ from diffoscope.config import Config
 from diffoscope.comparators.missing_file import MissingFile
 
 
-def assert_non_existing(monkeypatch, fixture, has_null_source=True, has_details=True):
+def assert_non_existing(
+    monkeypatch, fixture, has_null_source=True, has_details=True
+):
     monkeypatch.setattr(Config(), 'new_file', True)
     assert Config().new_file, "Did not get patched"
 

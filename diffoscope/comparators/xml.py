@@ -109,19 +109,20 @@ class XMLFile(File):
             A diffoscope.difference.Difference object
         """
         if isinstance(other, MissingFile):
-            return [Difference(
-                None,
-                self.name,
-                other.name,
-                comment="Trying to compare two non-existing files."
-            )]
+            return [
+                Difference(
+                    None,
+                    self.name,
+                    other.name,
+                    comment="Trying to compare two non-existing files.",
+                )
+            ]
 
-        return [Difference.from_text(
-            self.dumps(self),
-            self.dumps(other),
-            self.name,
-            other.name,
-        )]
+        return [
+            Difference.from_text(
+                self.dumps(self), self.dumps(other), self.name, other.name
+            )
+        ]
 
     def dumps(self, file):
         """

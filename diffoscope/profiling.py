@@ -42,10 +42,9 @@ class ProfileManager(object):
 
         if not self._singleton:
             self.data = collections.defaultdict(
-                lambda: collections.defaultdict(lambda: {
-                    'time': 0.0,
-                    'count': 0,
-                }),
+                lambda: collections.defaultdict(
+                    lambda: {'time': 0.0, 'count': 0}
+                )
             )
 
     def setup(self, parsed_args):
@@ -55,8 +54,7 @@ class ProfileManager(object):
     def increment(self, start, namespace, key):
         if not isinstance(key, str):
             key = '{}.{}'.format(
-                key.__class__.__module__,
-                key.__class__.__name__,
+                key.__class__.__module__, key.__class__.__name__
             )
 
         self.data[namespace][key]['time'] += time.time() - start
@@ -80,15 +78,18 @@ class ProfileManager(object):
             return x[1]['time']
 
         for namespace, keys in sorted(self.data.items(), key=lambda x: x[0]):
-            print_fn("\n## {} (total time: {:.3f}s)".format(
-                namespace,
-                sum(x['time'] for x in keys.values()),
-            ))
+            print_fn(
+                "\n## {} (total time: {:.3f}s)".format(
+                    namespace, sum(x['time'] for x in keys.values())
+                )
+            )
 
             for value, totals in sorted(keys.items(), key=key, reverse=True):
-                print_fn("  {:10.3f}s {:6d} call{}    {}".format(
-                    totals['time'],
-                    totals['count'],
-                    ' ' if totals['count'] == 1 else 's',
-                    value,
-                ))
+                print_fn(
+                    "  {:10.3f}s {:6d} call{}    {}".format(
+                        totals['time'],
+                        totals['count'],
+                        ' ' if totals['count'] == 1 else 's',
+                        value,
+                    )
+                )

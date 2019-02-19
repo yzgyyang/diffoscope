@@ -41,25 +41,33 @@ def list_files(path):
     path = os.path.realpath(path)
     all_files = []
     for root, dirs, names in os.walk(path):
-        all_files.extend([os.path.join(root[len(path) + 1:], dir)
-                         for dir in dirs])
-        all_files.extend([os.path.join(root[len(path) + 1:], name)
-                         for name in names])
+        all_files.extend(
+            [os.path.join(root[len(path) + 1 :], dir) for dir in dirs]
+        )
+        all_files.extend(
+            [os.path.join(root[len(path) + 1 :], name) for name in names]
+        )
     all_files.sort()
     return all_files
 
 
 if os.uname()[0] == 'FreeBSD':
+
     class Stat(Command):
         @tool_required('stat')
         def cmdline(self):
             return [
                 'stat',
-                '-t', '%Y-%m-%d %H:%M:%S',
-                '-f', '%Sp %l %Su %Sg %z %Sm %k %b %#Xf',
+                '-t',
+                '%Y-%m-%d %H:%M:%S',
+                '-f',
+                '%Sp %l %Su %Sg %z %Sm %k %b %#Xf',
                 self.path,
             ]
+
+
 else:
+
     class Stat(Command):
         @tool_required('stat')
         def cmdline(self):
@@ -90,9 +98,7 @@ def lsattr(path):
 
     try:
         output = subprocess.check_output(
-            ['lsattr', '-d', path],
-            shell=False,
-            stderr=subprocess.STDOUT,
+            ['lsattr', '-d', path], shell=False, stderr=subprocess.STDOUT
         ).decode('utf-8')
         return output.split()[0]
     except subprocess.CalledProcessError as e:
@@ -122,24 +128,28 @@ def xattr(path1, path2):
     try:
         get_all = xattr_.get_all
     except AttributeError:
+
         def get_all(x):
             return xattr_.xattr(x).items()
 
     def fn(x):
-        return '\n'.join('{}: {}'.format(
-            k.decode('utf-8', 'ignore'),
-            v.decode('utf-8', 'ignore'),
-        ) for k, v in get_all(x))
+        return '\n'.join(
+            '{}: {}'.format(
+                k.decode('utf-8', 'ignore'), v.decode('utf-8', 'ignore')
+            )
+            for k, v in get_all(x)
+        )
 
     return Difference.from_text(
-        fn(path1), fn(path2), path1, path2, source='extended file attributes',
+        fn(path1), fn(path2), path1, path2, source='extended file attributes'
     )
 
 
 def compare_meta(path1, path2):
     if Config().exclude_directory_metadata in ('yes', 'recursive'):
         logger.debug(
-            "Excluding directory metadata for paths (%s, %s)", path1, path2)
+            "Excluding directory metadata for paths (%s, %s)", path1, path2
+        )
         return []
 
     logger.debug('compare_meta(%s, %s)', path1, path2)
@@ -159,20 +169,20 @@ def compare_meta(path1, path2):
         differences.append(Difference.from_command(Getfacl, path1, path2))
     except RequiredToolNotFound:
         logger.info(
-            "Unable to find 'getfacl', some directory metadata differences might not be noticed.")
+            "Unable to find 'getfacl', some directory metadata differences might not be noticed."
+        )
     try:
         lsattr1 = lsattr(path1)
         lsattr2 = lsattr(path2)
-        differences.append(Difference.from_text(
-            lsattr1,
-            lsattr2,
-            path1,
-            path2,
-            source='lsattr',
-        ))
+        differences.append(
+            Difference.from_text(
+                lsattr1, lsattr2, path1, path2, source='lsattr'
+            )
+        )
     except RequiredToolNotFound:
         logger.info(
-            "Unable to find 'lsattr', some directory metadata differences might not be noticed.")
+            "Unable to find 'lsattr', some directory metadata differences might not be noticed."
+        )
     differences.append(xattr(path1, path2))
     return [d for d in differences if d is not None]
 
@@ -256,16 +266,17 @@ class DirectoryContainer(Container):
             return FilesystemDirectory(member_path)
 
         return FilesystemFile(
-            os.path.join(self.source.path, member_name),
-            container=self,
+            os.path.join(self.source.path, member_name), container=self
         )
 
     def comparisons(self, other):
         my_members = collections.OrderedDict(self.get_adjusted_members_sizes())
         other_members = collections.OrderedDict(
-            other.get_adjusted_members_sizes())
-        total_size = sum(x[1] for x in my_members.values()) + \
-                         sum(x[1] for x in other_members.values())
+            other.get_adjusted_members_sizes()
+        )
+        total_size = sum(x[1] for x in my_members.values()) + sum(
+            x[1] for x in other_members.values()
+        )
 
         to_compare = set(my_members.keys()).intersection(other_members.keys())
         with Progress(total_size) as p:
@@ -288,6 +299,5 @@ class DirectoryContainer(Container):
             return inner_difference
 
         return filter(
-            None,
-            itertools.starmap(compare_pair, self.comparisons(other)),
+            None, itertools.starmap(compare_pair, self.comparisons(other))
         )

@@ -49,8 +49,14 @@ from diffoscope.config import Config
 from diffoscope.diff import SideBySideDiff, DIFFON, DIFFOFF
 
 from ..icon import FAVICON_BASE64
-from ..utils import sizeof_fmt, PrintLimitReached, DiffBlockLimitReached, \
-    Presenter, make_printer, PartialString
+from ..utils import (
+    sizeof_fmt,
+    PrintLimitReached,
+    DiffBlockLimitReached,
+    Presenter,
+    make_printer,
+    PartialString,
+)
 
 from . import templates
 
@@ -62,9 +68,7 @@ TABSIZE = 8
 # Characters we're willing to word wrap on
 WORDBREAK = " \t;.,/):-"
 
-JQUERY_SYSTEM_LOCATIONS = (
-    '/usr/share/javascript/jquery/jquery.js',
-)
+JQUERY_SYSTEM_LOCATIONS = ('/usr/share/javascript/jquery/jquery.js',)
 
 logger = logging.getLogger(__name__)
 re_anchor_prefix = re.compile(r'^[^A-Za-z]')
@@ -97,10 +101,7 @@ def escape_anchor(val):
     colons (":"), and periods (".").
     """
 
-    for pattern, repl in (
-        (re_anchor_prefix, 'D'),
-        (re_anchor_suffix, '-'),
-    ):
+    for pattern, repl in ((re_anchor_prefix, 'D'), (re_anchor_suffix, '-')):
         val = pattern.sub(repl, val)
 
     return val
@@ -164,22 +165,37 @@ def output_visual(visual, path, indentstr, indentnum):
 {0[1]}</div>
 {0[1]}</div>
 {0[1]}<div class="difference"><img src=\"data:{3},{4}\" alt=\"compared images\" /></div>
-{0[0]}</div>""".format(indent, html.escape(visual.source), anchor, visual.data_type, visual.content)
+{0[0]}</div>""".format(
+        indent,
+        html.escape(visual.source),
+        anchor,
+        visual.data_type,
+        visual.content,
+    )
 
 
 def output_node_frame(difference, path, indentstr, indentnum, body):
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
     anchor = output_anchor(path)
-    dctrl_class, dctrl = ("diffcontrol", u'⊟') if difference.has_visible_children(
-    ) else ("diffcontrol-nochildren", u'⊡')
+    dctrl_class, dctrl = (
+        ("diffcontrol", u'⊟')
+        if difference.has_visible_children()
+        else ("diffcontrol-nochildren", u'⊡')
+    )
     if difference.source1 == difference.source2:
         header = u"""{0[1]}<div class="{1}">{2}</div>
 {0[1]}<div><span class="diffsize">{3}</span></div>
 {0[1]}<div><span class="source">{5}</span>
 {0[2]}<a class="anchor" href="#{4}" name="{4}">\xb6</a>
 {0[1]}</div>
-""".format(indent, dctrl_class, dctrl, sizeof_fmt(difference.size()), anchor,
-           html.escape(difference.source1))
+""".format(
+            indent,
+            dctrl_class,
+            dctrl,
+            sizeof_fmt(difference.size()),
+            anchor,
+            html.escape(difference.source1),
+        )
     else:
         header = u"""{0[1]}<div class="{1} diffcontrol-double">{2}</div>
 {0[1]}<div><span class="diffsize">{3}</span></div>
@@ -187,13 +203,22 @@ def output_node_frame(difference, path, indentstr, indentnum, body):
 {0[1]}<div><span class="source">{6}</span>
 {0[2]}<a class="anchor" href="#{4}" name="{4}">\xb6</a>
 {0[1]}</div>
-""".format(indent, dctrl_class, dctrl, sizeof_fmt(difference.size()), anchor,
-           html.escape(difference.source1),
-           html.escape(difference.source2))
+""".format(
+            indent,
+            dctrl_class,
+            dctrl,
+            sizeof_fmt(difference.size()),
+            anchor,
+            html.escape(difference.source1),
+            html.escape(difference.source2),
+        )
 
-    return PartialString.numl(u"""{0[1]}<div class="diffheader">
+    return PartialString.numl(
+        u"""{0[1]}<div class="diffheader">
 {1}{0[1]}</div>
-{2}""", 3).pformatl(indent, header, body)
+{2}""",
+        3,
+    ).pformatl(indent, header, body)
 
 
 def output_node(ctx, difference, path, indentstr, indentnum):
@@ -212,7 +237,12 @@ def output_node(ctx, difference, path, indentstr, indentnum):
     comments = u""
     if difference.comments:
         comments = u'{0[1]}<div class="comment">\n{1}{0[1]}</div>\n'.format(
-            indent, "".join(u"{0[2]}{1}<br/>\n".format(indent, html.escape(x)) for x in difference.comments))
+            indent,
+            "".join(
+                u"{0[2]}{1}<br/>\n".format(indent, html.escape(x))
+                for x in difference.comments
+            ),
+        )
 
     visuals = u""
     for visual in difference.visuals:
@@ -222,7 +252,8 @@ def output_node(ctx, difference, path, indentstr, indentnum):
     ud_cont = None
     if difference.unified_diff:
         ud_cont = HTMLSideBySidePresenter().output_unified_diff(
-            ctx, difference.unified_diff, difference.has_internal_linenos)
+            ctx, difference.unified_diff, difference.has_internal_linenos
+        )
         udiff = next(ud_cont)
         if isinstance(udiff, PartialString):
             ud_cont = ud_cont.send
@@ -233,8 +264,9 @@ def output_node(ctx, difference, path, indentstr, indentnum):
             ud_cont = None
 
     # PartialString for this node
-    body = PartialString.numl(
-        u"{0}{1}{2}{-1}", 3, cont).pformatl(comments, visuals, udiff)
+    body = PartialString.numl(u"{0}{1}{2}{-1}", 3, cont).pformatl(
+        comments, visuals, udiff
+    )
     if len(path) == 1:
         # root node, frame it
         body = output_node_frame(difference, path, indentstr, indentnum, body)
@@ -243,10 +275,15 @@ def output_node(ctx, difference, path, indentstr, indentnum):
     # Add holes for child nodes
     for d in difference.details:
         child = output_node_frame(
-            d, path + [d], indentstr, indentnum + 1, PartialString.of(d))
-        child = PartialString.numl(u"""{0[1]}<div class="difference">
+            d, path + [d], indentstr, indentnum + 1, PartialString.of(d)
+        )
+        child = PartialString.numl(
+            u"""{0[1]}<div class="difference">
 {1}{0[1]}</div>
-{-1}""", 2, cont).pformatl(indent, child)
+{-1}""",
+            2,
+            cont,
+        ).pformatl(indent, child)
         t = cont(t, child)
 
     # there might be extra holes for the unified diff continuation
@@ -256,13 +293,21 @@ def output_node(ctx, difference, path, indentstr, indentnum):
 
 def output_header(css_url, our_css_url=False, icon_url=None):
     if css_url:
-        css_link = u'  <link href="%s" type="text/css" rel="stylesheet" />\n' % css_url
+        css_link = (
+            u'  <link href="%s" type="text/css" rel="stylesheet" />\n'
+            % css_url
+        )
     else:
         css_link = u''
     if our_css_url:
-        css_style = u'  <link href="%s" type="text/css" rel="stylesheet" />\n' % our_css_url
+        css_style = (
+            u'  <link href="%s" type="text/css" rel="stylesheet" />\n'
+            % our_css_url
+        )
     else:
-        css_style = u'<style type="text/css">\n' + templates.STYLES + u'</style>\n'
+        css_style = (
+            u'<style type="text/css">\n' + templates.STYLES + u'</style>\n'
+        )
     if icon_url:
         favicon = icon_url
     else:
@@ -271,38 +316,50 @@ def output_header(css_url, our_css_url=False, icon_url=None):
         'title': html.escape(' '.join(sys.argv)),
         'favicon': favicon,
         'css_link': css_link,
-        'css_style': css_style
+        'css_style': css_style,
     }
 
 
 def output_footer(jquery_url=None):
     footer = templates.FOOTER % {'version': VERSION}
     if jquery_url:
-        return templates.SCRIPTS % {'jquery_url': html.escape(jquery_url)} + footer
+        return (
+            templates.SCRIPTS % {'jquery_url': html.escape(jquery_url)}
+            + footer
+        )
     return footer
 
 
 @contextlib.contextmanager
 def file_printer(directory, filename):
-    with codecs.open(os.path.join(directory, filename), 'w', encoding='utf-8') as f:
+    with codecs.open(
+        os.path.join(directory, filename), 'w', encoding='utf-8'
+    ) as f:
         yield f.write
 
 
 @contextlib.contextmanager
 def spl_file_printer(directory, filename, accum):
-    with codecs.open(os.path.join(directory, filename), 'w', encoding='utf-8') as f:
+    with codecs.open(
+        os.path.join(directory, filename), 'w', encoding='utf-8'
+    ) as f:
         print_func = f.write
 
         def recording_print_func(s):
             print_func(s)
             recording_print_func.bytes_written += len(s)
             accum.bytes_written += len(s)
+
         recording_print_func.bytes_written = 0
         yield recording_print_func
 
 
-class HTMLPrintContext(collections.namedtuple("HTMLPrintContext",
-                                              "target single_page jquery_url css_url our_css_url icon_url")):
+class HTMLPrintContext(
+    collections.namedtuple(
+        "HTMLPrintContext",
+        "target single_page jquery_url css_url our_css_url icon_url",
+    )
+):
     @property
     def directory(self):
         return None if self.single_page else self.target
@@ -329,20 +386,28 @@ class HTMLSideBySidePresenter(object):
 
     def output_hunk_header(self, hunk_off1, hunk_size1, hunk_off2, hunk_size2):
         self.spl_print_func(
-            u'<tr class="diffhunk"><td colspan="2">Offset %d, %d lines modified</td>' % (hunk_off1, hunk_size1))
+            u'<tr class="diffhunk"><td colspan="2">Offset %d, %d lines modified</td>'
+            % (hunk_off1, hunk_size1)
+        )
         self.spl_print_func(
-            u'<td colspan="2">Offset %d, %d lines modified</td></tr>\n' % (hunk_off2, hunk_size2))
+            u'<td colspan="2">Offset %d, %d lines modified</td></tr>\n'
+            % (hunk_off2, hunk_size2)
+        )
 
-    def output_line(self, has_internal_linenos, type_name, s1, line1, s2, line2):
+    def output_line(
+        self, has_internal_linenos, type_name, s1, line1, s2, line2
+    ):
         self.spl_print_func(u'<tr class="diff%s">' % type_name)
         try:
             if s1:
                 if has_internal_linenos:
                     self.spl_print_func(
-                        u'<td colspan="2" class="diffpresent">')
+                        u'<td colspan="2" class="diffpresent">'
+                    )
                 else:
                     self.spl_print_func(
-                        u'<td class="diffline">%d </td>' % line1)
+                        u'<td class="diffline">%d </td>' % line1
+                    )
                     self.spl_print_func(u'<td class="diffpresent">')
                 self.spl_print_func(convert(s1, ponct=1, tag='del'))
                 self.spl_print_func(u'</td>')
@@ -352,10 +417,12 @@ class HTMLSideBySidePresenter(object):
             if s2:
                 if has_internal_linenos:
                     self.spl_print_func(
-                        u'<td colspan="2" class="diffpresent">')
+                        u'<td colspan="2" class="diffpresent">'
+                    )
                 else:
                     self.spl_print_func(
-                        u'<td class="diffline">%d </td>' % line2)
+                        u'<td class="diffline">%d </td>' % line2
+                    )
                     self.spl_print_func(u'<td class="diffpresent">')
                 self.spl_print_func(convert(s2, ponct=1, tag='ins'))
                 self.spl_print_func(u'</td>')
@@ -370,11 +437,16 @@ class HTMLSideBySidePresenter(object):
         self.spl_print_func = print_context.__enter__()
         ctx, _ = rotation_params
         # Print file and table headers
-        self.spl_print_func(output_header(
-            ctx.css_url, ctx.our_css_url, ctx.icon_url))
+        self.spl_print_func(
+            output_header(ctx.css_url, ctx.our_css_url, ctx.icon_url)
+        )
 
     def spl_had_entered_child(self):
-        return self.spl_print_ctrl and self.spl_print_ctrl[1] and self.spl_current_page > 0
+        return (
+            self.spl_print_ctrl
+            and self.spl_print_ctrl[1]
+            and self.spl_current_page > 0
+        )
 
     def spl_print_exit(self, *exc_info):
         if not self.spl_had_entered_child():
@@ -400,14 +472,24 @@ class HTMLSideBySidePresenter(object):
                 if self.spl_rows < self.max_lines_parent:
                     return False
                 logger.debug(
-                    "new unified-diff subpage, parent page went over %s lines", self.max_lines_parent)
+                    "new unified-diff subpage, parent page went over %s lines",
+                    self.max_lines_parent,
+                )
             else:  # on child page
-                if self.bytes_max_total and self.bytes_written > self.bytes_max_total:
+                if (
+                    self.bytes_max_total
+                    and self.bytes_written > self.bytes_max_total
+                ):
                     raise PrintLimitReached()
-                if self.spl_print_func.bytes_written < self.max_page_size_child:
+                if (
+                    self.spl_print_func.bytes_written
+                    < self.max_page_size_child
+                ):
                     return False
                 logger.debug(
-                    "new unified-diff subpage, previous subpage went over %s bytes", self.max_page_size_child)
+                    "new unified-diff subpage, previous subpage went over %s bytes",
+                    self.max_page_size_child,
+                )
             return True
 
     def new_child_page(self):
@@ -418,8 +500,10 @@ class HTMLSideBySidePresenter(object):
 
         if self.spl_current_page > 1:
             # previous page was a child, close it
-            self.spl_print_func(templates.UD_TABLE_FOOTER % {
-                                "filename": html.escape(filename), "text": "load diff"})
+            self.spl_print_func(
+                templates.UD_TABLE_FOOTER
+                % {"filename": html.escape(filename), "text": "load diff"}
+            )
             self.spl_print_func(u"</table>\n")
             self.spl_print_exit(None, None, None)
 
@@ -435,7 +519,7 @@ class HTMLSideBySidePresenter(object):
             "limit_type": limit_type,
             "bytes_left": bytes_left,
             "bytes_total": total,
-            "percent": (bytes_left / total) * 100
+            "percent": (bytes_left / total) * 100,
         }
         self.spl_print_func(self.error_row)
 
@@ -471,12 +555,14 @@ class HTMLSideBySidePresenter(object):
         except GeneratorExit:
             return
         except DiffBlockLimitReached:
-            self.output_limit_reached("diff block lines", len(
-                unified_diff), ydiff.bytes_processed)
+            self.output_limit_reached(
+                "diff block lines", len(unified_diff), ydiff.bytes_processed
+            )
             wrote_all = False
         except PrintLimitReached:
-            self.output_limit_reached("report size", len(
-                unified_diff), ydiff.bytes_processed)
+            self.output_limit_reached(
+                "report size", len(unified_diff), ydiff.bytes_processed
+            )
             wrote_all = False
         finally:
             # no footer on the last page, just a close tag
@@ -497,14 +583,18 @@ class HTMLSideBySidePresenter(object):
             self.spl_print_ctrl = None, rotation_params
 
             it = self.output_unified_diff_table(
-                unified_diff, has_internal_linenos)
+                unified_diff, has_internal_linenos
+            )
             wrote_all = next(it)
             if wrote_all is None:
                 assert self.spl_current_page == 1
                 # now pause the iteration and wait for consumer to give us a
                 # size-limit to write the remaining pages with
                 # exhaust the iterator and save the last item in wrote_all
-                new_limit = yield PartialString(PartialString.escape(udiff.getvalue()) + u"{0}</table>\n", None)
+                new_limit = yield PartialString(
+                    PartialString.escape(udiff.getvalue()) + u"{0}</table>\n",
+                    None,
+                )
                 wrote_all = send_and_exhaust(it, new_limit, wrote_all)
             else:
                 yield udiff.getvalue()
@@ -517,6 +607,7 @@ class HTMLSideBySidePresenter(object):
             return
         except Exception:
             import traceback
+
             traceback.print_exc()
             if self.spl_print_exit(*sys.exc_info()) is False:
                 raise
@@ -535,9 +626,14 @@ class HTMLSideBySidePresenter(object):
         else:
             noun = "pieces" if self.spl_current_page > 1 else "piece"
             text = "load diff (%s %s%s)" % (
-                self.spl_current_page, noun, (", truncated" if truncated else ""))
+                self.spl_current_page,
+                noun,
+                (", truncated" if truncated else ""),
+            )
             parent_last_row = templates.UD_TABLE_FOOTER % {
-                "filename": html.escape("%s-1.html" % mainname), "text": text}
+                "filename": html.escape("%s-1.html" % mainname),
+                "text": text,
+            }
         yield self.bytes_written, parent_last_row
 
 
@@ -562,10 +658,13 @@ class HTMLPresenter(Presenter):
             return
 
         # could be slightly more accurate, whatever
-        est_placeholder_len = max(
-            len(templates.UD_TABLE_FOOTER),
-            len(templates.UD_TABLE_LIMIT_FOOTER),
-        ) + 40
+        est_placeholder_len = (
+            max(
+                len(templates.UD_TABLE_FOOTER),
+                len(templates.UD_TABLE_LIMIT_FOOTER),
+            )
+            + 40
+        )
         est_size = output.size(est_placeholder_len)
 
         results = {}
@@ -598,10 +697,11 @@ class HTMLPresenter(Presenter):
     def output_difference(self, ctx, root_difference):
         outputs = {}  # nodes to their partial output
         ancestors = {}  # child nodes to ancestor nodes
-        placeholder_len = len(self.output_node_placeholder(
-            "XXXXXXXXXXXXXXXX",
-            not ctx.single_page,
-        ))
+        placeholder_len = len(
+            self.output_node_placeholder(
+                "XXXXXXXXXXXXXXXX", not ctx.single_page
+            )
+        )
         # functions to print unified diff continuations (html-dir only)
         continuations = {}
         printers = {}  # nodes to their printers
@@ -620,17 +720,23 @@ class HTMLPresenter(Presenter):
 
             ancestor = ancestors.pop(node, None)
             assert ancestor in path or (
-                ancestor is None and node is root_difference)
+                ancestor is None and node is root_difference
+            )
             node_output, node_continuation = output_node(
-                ctx, node, path, "  ", len(path) - 1)
+                ctx, node, path, "  ", len(path) - 1
+            )
 
             add_to_existing = False
             if ancestor:
-                page_limit = Config().max_page_size if ancestor is \
-                    root_difference else Config().max_page_size_child
+                page_limit = (
+                    Config().max_page_size
+                    if ancestor is root_difference
+                    else Config().max_page_size_child
+                )
                 page_current = outputs[ancestor].size(placeholder_len)
-                report_current = self.report_printed + \
-                    sum(p.size(placeholder_len) for p in outputs.values())
+                report_current = self.report_printed + sum(
+                    p.size(placeholder_len) for p in outputs.values()
+                )
                 want_to_add = node_output.size(placeholder_len)
                 logger.debug(
                     "report size: %s/%s, page size: %s/%s, want to add %s)",
@@ -649,23 +755,23 @@ class HTMLPresenter(Presenter):
 
             if add_to_existing:
                 # under limit, add it to an existing page
-                outputs[ancestor] = outputs[ancestor].pformat({
-                    node: node_output,
-                })
+                outputs[ancestor] = outputs[ancestor].pformat(
+                    {node: node_output}
+                )
                 stored = ancestor
 
             else:
                 # over limit (or root), new subpage or continue/break
                 if ancestor:
                     placeholder = self.output_node_placeholder(
-                        pagename,
-                        make_new_subpage,
-                        node.size(),
+                        pagename, make_new_subpage, node.size()
                     )
                     outputs[ancestor] = outputs[ancestor].pformat(
-                        {node: placeholder})
-                    self.maybe_print(ancestor, printers,
-                                     outputs, continuations)
+                        {node: placeholder}
+                    )
+                    self.maybe_print(
+                        ancestor, printers, outputs, continuations
+                    )
                     footer = output_footer()
                     # we hit a limit, either max-report-size or single-page
                     if not make_new_subpage:
@@ -684,11 +790,16 @@ class HTMLPresenter(Presenter):
                     pagename = "index"
 
                 outputs[node] = node_output.frame(
-                    output_header(ctx.css_url, ctx.our_css_url, ctx.icon_url) +
-                    u'<div class="difference">\n', u'</div>\n' + footer)
+                    output_header(ctx.css_url, ctx.our_css_url, ctx.icon_url)
+                    + u'<div class="difference">\n',
+                    u'</div>\n' + footer,
+                )
                 assert not ctx.single_page or node is root_difference
-                printers[node] = (make_printer, ctx.target) if ctx.single_page \
+                printers[node] = (
+                    (make_printer, ctx.target)
+                    if ctx.single_page
                     else (file_printer, ctx.target, "%s.html" % pagename)
+                )
                 stored = node
 
             for child in node.details:
@@ -705,7 +816,8 @@ class HTMLPresenter(Presenter):
             self.maybe_print(stored, printers, outputs, continuations)
 
         nodes = root_difference.traverse_heapq(
-            smallest_first, yield_score=True)
+            smallest_first, yield_score=True
+        )
         prune_prev_node_descendants = None
         while True:
             try:
@@ -716,6 +828,7 @@ class HTMLPresenter(Presenter):
 
         if outputs:
             import pprint
+
             pprint.pprint(outputs, indent=4)
         assert not outputs
 
@@ -744,7 +857,8 @@ class HTMLPresenter(Presenter):
             if os.path.exists(path):
                 os.symlink(path, check_path)
                 logger.debug(
-                    'jquery found at %s and symlinked to %s', path, check_path)
+                    'jquery found at %s and symlinked to %s', path, check_path
+                )
                 return url.path
 
         if default_override is None:
@@ -752,12 +866,16 @@ class HTMLPresenter(Presenter):
             return None
 
         logger.warning(
-            '--jquery given, but jQuery was not found. Using it regardless.')
-        logger.debug('Locations searched: %s',
-                     ', '.join(JQUERY_SYSTEM_LOCATIONS))
+            '--jquery given, but jQuery was not found. Using it regardless.'
+        )
+        logger.debug(
+            'Locations searched: %s', ', '.join(JQUERY_SYSTEM_LOCATIONS)
+        )
         return url.path
 
-    def output_html_directory(self, directory, difference, css_url=None, jquery_url=None):
+    def output_html_directory(
+        self, directory, difference, css_url=None, jquery_url=None
+    ):
         """
         Multi-file presenter. Writes to a directory, and puts large diff tables
         into files of their own.
@@ -778,8 +896,9 @@ class HTMLPresenter(Presenter):
             fp.write(templates.STYLES)
         with open(os.path.join(directory, "icon.png"), "wb") as fp:
             fp.write(base64.b64decode(FAVICON_BASE64))
-        ctx = HTMLPrintContext(directory, False, jquery_url,
-                               css_url, "common.css", "icon.png")
+        ctx = HTMLPrintContext(
+            directory, False, jquery_url, css_url, "common.css", "icon.png"
+        )
         self.output_difference(ctx, difference)
 
     def output_html(self, target, difference, css_url=None, jquery_url=None):

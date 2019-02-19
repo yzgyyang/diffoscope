@@ -59,53 +59,58 @@ def from_raw_reader(in_file, filter=None):
                 end_nl = buf[-1] == '\n'
 
         if h is not None and line_count >= max_lines:
-            out_file.write("[ Too much input for diff (SHA1: {}) ]\n".format(
-                h.hexdigest(),
-            ).encode('utf-8'))
+            out_file.write(
+                "[ Too much input for diff (SHA1: {}) ]\n".format(
+                    h.hexdigest()
+                ).encode('utf-8')
+            )
             end_nl = True
 
         return end_nl
+
     return feeder
 
 
 def from_text_reader(in_file, filter=None):
     if filter is None:
+
         def encoding_filter(text_buf):
             return text_buf.encode('utf-8')
+
     else:
+
         def encoding_filter(text_buf):
             return filter(text_buf).encode('utf-8')
+
     return from_raw_reader(in_file, encoding_filter)
 
 
 def from_command(command):
     def feeder(out_file):
         with profile('command', command.cmdline()[0]):
-            feeder = from_raw_reader(
-                command.stdout,
-                command.filter,
-            )
+            feeder = from_raw_reader(command.stdout, command.filter)
             end_nl = feeder(out_file)
             returncode = command.returncode
         if returncode not in (0, -signal.SIGTERM):
             raise subprocess.CalledProcessError(
-                returncode,
-                command.cmdline(),
-                output=command.stderr,
+                returncode, command.cmdline(), output=command.stderr
             )
         return end_nl
+
     return feeder
 
 
 def from_text(content):
     def feeder(f):
         for offset in range(0, len(content), DIFF_CHUNK):
-            f.write(content[offset:offset + DIFF_CHUNK].encode('utf-8'))
+            f.write(content[offset : offset + DIFF_CHUNK].encode('utf-8'))
         return content and content[-1] == '\n'
+
     return feeder
 
 
 def empty():
     def feeder(f):
         return False
+
     return feeder

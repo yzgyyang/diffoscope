@@ -135,12 +135,14 @@ class ZipContainer(Archive):
         # We don't really want to crash if the filename in the zip archive
         # can't be encoded using the filesystem encoding. So let's replace
         # any weird character so we can get to the bytes.
-        targetpath = os.path.join(dest_dir, os.path.basename(member_name)).encode(
-            sys.getfilesystemencoding(), errors='replace')
+        targetpath = os.path.join(
+            dest_dir, os.path.basename(member_name)
+        ).encode(sys.getfilesystemencoding(), errors='replace')
 
         try:
-            with self.archive.open(member_name) as source, \
-                    open(targetpath, 'wb') as target:
+            with self.archive.open(member_name) as source, open(
+                targetpath, 'wb'
+            ) as target:
                 shutil.copyfileobj(source, target)
             return targetpath.decode(sys.getfilesystemencoding())
         except RuntimeError as exc:
@@ -160,16 +162,25 @@ class ZipContainer(Archive):
 class ZipFile(File):
     CONTAINER_CLASS = ZipContainer
     FILE_TYPE_RE = re.compile(
-        r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b')
+        r'^(Zip archive|Java archive|EPUB document|OpenDocument (Text|Spreadsheet|Presentation|Drawing|Formula|Template|Text Template)|Google Chrome extension)\b'
+    )
 
     def compare_details(self, other, source=None):
         differences = []
         zipinfo_difference = None
         if Config().exclude_directory_metadata != 'recursive':
-            zipinfo_difference = Difference.from_command(Zipinfo, self.path, other.path) or \
-                Difference.from_command(ZipinfoVerbose, self.path, other.path) or \
-                Difference.from_command(BsdtarVerbose, self.path, other.path)
-        zipnote_difference = Difference.from_command(Zipnote, self.path, other.path)
+            zipinfo_difference = (
+                Difference.from_command(Zipinfo, self.path, other.path)
+                or Difference.from_command(
+                    ZipinfoVerbose, self.path, other.path
+                )
+                or Difference.from_command(
+                    BsdtarVerbose, self.path, other.path
+                )
+            )
+        zipnote_difference = Difference.from_command(
+            Zipnote, self.path, other.path
+        )
         for x in (zipinfo_difference, zipnote_difference):
             if x is not None:
                 differences.append(x)
@@ -201,9 +212,11 @@ class MozillaZipContainer(ZipContainer):
         def _EndRecData(fh):
             endrec = _orig_EndRecData(fh)
             if endrec:
-                endrec[zipfile._ECD_LOCATION] = (endrec[zipfile._ECD_OFFSET] +
-                                                 endrec[zipfile._ECD_SIZE])
+                endrec[zipfile._ECD_LOCATION] = (
+                    endrec[zipfile._ECD_OFFSET] + endrec[zipfile._ECD_SIZE]
+                )
             return endrec
+
         zipfile._EndRecData = _EndRecData
         result = super(MozillaZipContainer, self).open_archive()
         zipfile._EndRecData = _orig_EndRecData
@@ -223,7 +236,11 @@ class MozillaZipFile(File):
     def compare_details(self, other, source=None):
         if Config().exclude_directory_metadata == 'recursive':
             return []
-        zipinfo_difference = Difference.from_command(MozillaZipinfo, self.path, other.path) or \
-            Difference.from_command(MozillaZipinfoVerbose, self.path, other.path) or \
-            Difference.from_command(BsdtarVerbose, self.path, other.path)
+        zipinfo_difference = (
+            Difference.from_command(MozillaZipinfo, self.path, other.path)
+            or Difference.from_command(
+                MozillaZipinfoVerbose, self.path, other.path
+            )
+            or Difference.from_command(BsdtarVerbose, self.path, other.path)
+        )
         return [zipinfo_difference]

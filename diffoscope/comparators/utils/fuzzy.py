@@ -42,15 +42,24 @@ def perform_fuzzy_matching(members1, members2):
             continue
         comparisons = []
         for name2, (file2, _) in members2.items():
-            if name2 in already_compared or file2.is_directory() or not file2.fuzzy_hash:
+            if (
+                name2 in already_compared
+                or file2.is_directory()
+                or not file2.fuzzy_hash
+            ):
                 continue
             comparisons.append(
-                (tlsh.diff(file1.fuzzy_hash, file2.fuzzy_hash), name2))
+                (tlsh.diff(file1.fuzzy_hash, file2.fuzzy_hash), name2)
+            )
         if comparisons:
             comparisons.sort(key=operator.itemgetter(0))
             score, name2 = comparisons[0]
             logger.debug(
-                'fuzzy top match %s %s: %d difference score', name1, name2, score)
+                'fuzzy top match %s %s: %d difference score',
+                name1,
+                name2,
+                score,
+            )
             if score < Config().fuzzy_threshold:
                 yield name1, name2, score
                 already_compared.add(name2)

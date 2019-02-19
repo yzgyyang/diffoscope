@@ -76,7 +76,11 @@ class Config(object):
             if isinstance(vb, defaultint):
                 logger.warn(
                     "%s (%s) < default value of %s (%s), setting latter to %s",
-                    a, va, b, vb, va
+                    a,
+                    va,
+                    b,
+                    vb,
+                    va,
                 )
                 setattr(self, b, va)
             else:

@@ -40,9 +40,8 @@ class XsbFile(File):
     FILE_EXTENSION_SUFFIX = '.xsb'
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(
-            Dumpxsb,
-            self.path,
-            other.path,
-            source='dumpxsb',
-        )]
+        return [
+            Difference.from_command(
+                Dumpxsb, self.path, other.path, source='dumpxsb'
+            )
+        ]

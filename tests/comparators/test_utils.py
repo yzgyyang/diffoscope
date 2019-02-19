@@ -27,8 +27,11 @@ from diffoscope.difference import Difference
 from diffoscope.comparators.utils.command import Command
 
 from ..utils.data import data, load_fixture
-from ..utils.tools import tools_missing, skip_unless_tools_exist, \
-    skip_unless_module_exists
+from ..utils.tools import (
+    tools_missing,
+    skip_unless_tools_exist,
+    skip_unless_module_exists,
+)
 
 
 fuzzy_tar1 = load_fixture('fuzzy1.tar')
@@ -62,6 +65,7 @@ def skip_unless_tool_is_at_least():
 
     def version():
         return '4.3-git'
+
     assert func('cat', version, '4.3').args[0] is False
 
 
@@ -69,7 +73,8 @@ def skip_unless_tool_is_at_least():
 def test_fuzzy_matching(fuzzy_tar1, fuzzy_tar2):
     differences = fuzzy_tar1.compare(fuzzy_tar2).details
     expected_diff = codecs.open(
-        data('text_iso8859_expected_diff'), encoding='utf-8').read()
+        data('text_iso8859_expected_diff'), encoding='utf-8'
+    ).read()
     assert differences[1].source1 == './matching'
     assert differences[1].source2 == './fuzzy'
     assert 'similar' in differences[1].comment
@@ -95,7 +100,9 @@ def test_no_fuzzy_matching(monkeypatch, fuzzy_tar_in_tar1, fuzzy_tar_in_tar2):
 
 
 @skip_unless_module_exists('tlsh')
-def test_no_fuzzy_matching_new_file(monkeypatch, fuzzy_tar_in_tar1, fuzzy_tar_in_tar2):
+def test_no_fuzzy_matching_new_file(
+    monkeypatch, fuzzy_tar_in_tar1, fuzzy_tar_in_tar2
+):
     monkeypatch.setattr(Config(), 'fuzzy_threshold', 0)
     monkeypatch.setattr(Config(), 'new_file', True)
     difference = fuzzy_tar_in_tar1.compare(fuzzy_tar_in_tar2)
@@ -117,8 +124,10 @@ def test_trim_stderr_in_command():
             def write():
                 for dummy in range(0, Command.MAX_STDERR_LINES + 1):
                     w.write('error {}\n'.format(self.path))
+
             threading.Thread(target=write).start()
 
             return r
+
     difference = Difference.from_command(FillStderr, 'dummy1', 'dummy2')
     assert '[ 1 lines ignored ]' in difference.comment

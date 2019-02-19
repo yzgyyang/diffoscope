@@ -37,8 +37,7 @@ dtb2 = load_fixture('devicetree2.dtb')
 
 def fdtdump_version():
     out = subprocess.check_output(
-        ('fdtdump', '--version'),
-        stderr=subprocess.STDOUT,
+        ('fdtdump', '--version'), stderr=subprocess.STDOUT
     ).decode('utf-8')
 
     m = re.search(r'Version: DTC (?P<version>\d+\.\d+\.\d+)', out)

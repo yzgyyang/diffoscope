@@ -61,7 +61,7 @@ class Javap(Command):
             '-s',
             '-l',
             '-private',
-            self.path
+            self.path,
         ]
 
     def filter(self, line):
@@ -85,16 +85,15 @@ class ClassFile(File):
         for decompiler in self.decompilers:
             try:
                 single_diff = Difference.from_command(
-                    decompiler,
-                    self.path,
-                    other.path
+                    decompiler, self.path, other.path
                 )
                 if single_diff:
                     diff.append(single_diff)
                     break
             except RequiredToolNotFound:
-                logger.debug("Unable to find %s. Falling back...",
-                             decompiler.__name__)
+                logger.debug(
+                    "Unable to find %s. Falling back...", decompiler.__name__
+                )
 
         if not diff:
             raise RequiredToolNotFound(self.decompilers[-1])

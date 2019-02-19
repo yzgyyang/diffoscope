@@ -98,8 +98,11 @@ class DebContainer(LibarchiveContainer):
 
         for name1 in my_members.keys():
             main, ext = os.path.splitext(name1)
-            candidates = [name2 for name2 in other_members.keys() - matched
-                          if os.path.splitext(name2)[0] == main]
+            candidates = [
+                name2
+                for name2 in other_members.keys() - matched
+                if os.path.splitext(name2)[0] == main
+            ]
             if len(candidates) == 1:
                 yield name1, candidates[0], 0
                 matched.add(candidates[0])
@@ -113,8 +116,11 @@ class DebFile(File):
     def md5sums(self):
         if not hasattr(self, '_md5sums'):
             control_tar = self.as_container.control_tar
-            md5sums_file = control_tar.as_container.lookup_file(
-                './md5sums') if control_tar else None
+            md5sums_file = (
+                control_tar.as_container.lookup_file('./md5sums')
+                if control_tar
+                else None
+            )
             if isinstance(md5sums_file, Md5sumsFile):
                 self._md5sums = md5sums_file.parse()
             else:
@@ -129,7 +135,8 @@ class DebFile(File):
 
         if not hasattr(self, '_control'):
             control_file = self.as_container.control_tar.as_container.lookup_file(
-                './control')
+                './control'
+            )
             if control_file:
                 with open(control_file.path, 'rb') as f:
                     self._control = deb822.Deb822(f)
@@ -137,21 +144,35 @@ class DebFile(File):
         return self._control
 
     def compare_details(self, other, source=None):
-        return [Difference.from_text_readers(list_libarchive(self.path),
-                                             list_libarchive(other.path),
-                                             self.path, other.path, source="file list")]
+        return [
+            Difference.from_text_readers(
+                list_libarchive(self.path),
+                list_libarchive(other.path),
+                self.path,
+                other.path,
+                source="file list",
+            )
+        ]
 
 
 class Md5sumsFile(File):
     @classmethod
     def recognizes(cls, file):
-        return isinstance(file, ArchiveMember) and \
-            file.name == './md5sums' and \
-            isinstance(file.container.source, ArchiveMember) and \
-            isinstance(file.container.source.container.source, ArchiveMember) and \
-            DebContainer.RE_CONTROL_TAR.match(file.container.source.container.source.name) and \
-            isinstance(
-                file.container.source.container.source.container.source, DebFile)
+        return (
+            isinstance(file, ArchiveMember)
+            and file.name == './md5sums'
+            and isinstance(file.container.source, ArchiveMember)
+            and isinstance(
+                file.container.source.container.source, ArchiveMember
+            )
+            and DebContainer.RE_CONTROL_TAR.match(
+                file.container.source.container.source.name
+            )
+            and isinstance(
+                file.container.source.container.source.container.source,
+                DebFile,
+            )
+        )
 
     def parse(self):
         try:
@@ -171,9 +192,18 @@ class Md5sumsFile(File):
                 yield " ".join(line.split(" ")[2:])
 
     def compare_details(self, other, source=None):
-        return [compare_files(self, other, source='md5sums', diff_content_only=True),
-                Difference.from_text_readers(self.strip_checksum(self.path), self.strip_checksum(other.path),
-                                             self.path, other.path, source="line order")]
+        return [
+            compare_files(
+                self, other, source='md5sums', diff_content_only=True
+            ),
+            Difference.from_text_readers(
+                self.strip_checksum(self.path),
+                self.strip_checksum(other.path),
+                self.path,
+                other.path,
+                source="line order",
+            ),
+        ]
 
 
 class DebTarContainer(TarContainer):
@@ -184,12 +214,17 @@ class DebTarContainer(TarContainer):
         if self.source:
             my_md5sums = self.source.container.source.container.source.md5sums
         if other.source:
-            other_md5sums = other.source.container.source.container.source.md5sums
+            other_md5sums = (
+                other.source.container.source.container.source.md5sums
+            )
 
         for my_member, other_member, comment in super().comparisons(other):
-            if not Config().force_details and \
-               my_member.name == other_member.name and \
-               my_md5sums.get(my_member.name, 'my') == other_md5sums.get(other_member.name, 'other'):
+            if (
+                not Config().force_details
+                and my_member.name == other_member.name
+                and my_md5sums.get(my_member.name, 'my')
+                == other_md5sums.get(other_member.name, 'other')
+            ):
                 logger.debug("Skip %s: identical md5sum", my_member.name)
                 continue
             yield my_member, other_member, comment
@@ -200,12 +235,20 @@ class DebDataTarFile(File):
 
     @classmethod
     def recognizes(cls, file):
-        return isinstance(file, ArchiveMember) and \
-            isinstance(file.container.source, ArchiveMember) and \
-            DebContainer.RE_DATA_TAR.match(file.container.source.name) and \
-            isinstance(file.container.source.container.source, DebFile)
+        return (
+            isinstance(file, ArchiveMember)
+            and isinstance(file.container.source, ArchiveMember)
+            and DebContainer.RE_DATA_TAR.match(file.container.source.name)
+            and isinstance(file.container.source.container.source, DebFile)
+        )
 
     def compare_details(self, other, source=None):
-        return [Difference.from_text_readers(list_libarchive(self.path, ignore_errors=True),
-                                             list_libarchive(other.path, ignore_errors=True),
-                                             self.path, other.path, source="file list")]
+        return [
+            Difference.from_text_readers(
+                list_libarchive(self.path, ignore_errors=True),
+                list_libarchive(other.path, ignore_errors=True),
+                self.path,
+                other.path,
+                source="file list",
+            )
+        ]

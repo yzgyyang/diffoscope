@@ -96,6 +96,7 @@ def test_compare_non_existing_with_xxd(binary1):
 def xxd_not_found(monkeypatch):
     def mock_cmdline(self):
         raise RequiredToolNotFound('xxd')
+
     monkeypatch.setattr(Xxd, 'cmdline', mock_cmdline)
 
 
@@ -116,8 +117,10 @@ def test_with_compare_details():
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
             return [d]
+
     difference = MockFile(TEST_FILE1_PATH).compare(
-        MockFile(TEST_FILE2_PATH), source='source')
+        MockFile(TEST_FILE2_PATH), source='source'
+    )
     assert difference.details[0] == d
 
 
@@ -126,9 +129,12 @@ def test_with_compare_details_and_fallback():
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
             return []
+
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
     expected_diff = get_data('binary_expected_diff')
-    assert 'but no file-specific differences were detected' in difference.comment
+    assert (
+        'but no file-specific differences were detected' in difference.comment
+    )
     assert normalize_zeros(difference.unified_diff) == expected_diff
 
 
@@ -136,6 +142,7 @@ def test_with_compare_details_and_no_actual_differences():
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
             return []
+
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE1_PATH))
     assert difference is None
 
@@ -146,10 +153,9 @@ def test_with_compare_details_and_failed_process():
 
     class MockFile(FilesystemFile):
         def compare_details(self, other, source=None):
-            subprocess.check_call(
-                ['sh', '-c', 'echo "%s"; exit 42' % output],
-            )
+            subprocess.check_call(['sh', '-c', 'echo "%s"; exit 42' % output])
             raise Exception('should not be run')
+
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
     expected_diff = get_data('../data/binary_expected_diff')
     assert output in difference.comment
@@ -165,6 +171,7 @@ def test_with_compare_details_and_parsing_error():
         def compare_details(self, other, source=None):
             subprocess.check_output(['sh', '-c', 'exit 0'], shell=False)
             raise OutputParsingError('sh', self)
+
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
     expected_diff = get_data('../data/binary_expected_diff')
     assert 'Error parsing output' in difference.comment
@@ -179,6 +186,7 @@ def test_with_compare_details_and_extraction_error():
         def compare_details(self, other, source=None):
             subprocess.check_output(['sh', '-c', 'exit 0'], shell=False)
             raise ContainerExtractionError(self.path, Exception())
+
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
     expected_diff = get_data('../data/binary_expected_diff')
     assert 'Error extracting' in difference.comment
@@ -189,6 +197,7 @@ def test_with_compare_details_and_extraction_error():
 @skip_unless_module_exists('distro')
 def test_with_compare_details_and_tool_not_found(monkeypatch):
     from diffoscope.external_tools import EXTERNAL_TOOLS
+
     monkeypatch.setitem(
         EXTERNAL_TOOLS,
         'nonexistent',
@@ -196,14 +205,15 @@ def test_with_compare_details_and_tool_not_found(monkeypatch):
             'debian': 'some-package',
             'arch': 'some-package',
             'fedora': 'some-package',
-            'FreeBSD': 'some-package'
-        }
+            'FreeBSD': 'some-package',
+        },
     )
 
     class MockFile(FilesystemFile):
         @tool_required('nonexistent')
         def compare_details(self, other, source=None):
             raise Exception('should not be run')
+
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
     expected_diff = get_data('binary_expected_diff')
     assert 'nonexistent' in difference.comment

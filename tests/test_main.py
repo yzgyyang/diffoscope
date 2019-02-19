@@ -75,10 +75,13 @@ def test_remove_temp_files_on_sigterm(capsys, tmpdir, monkeypatch):
     pid = os.fork()
 
     if pid == 0:
+
         def suicide(*args):
             os.kill(os.getpid(), signal.SIGTERM)
+
         monkeypatch.setattr(
-            'diffoscope.comparators.text.TextFile.compare', suicide)
+            'diffoscope.comparators.text.TextFile.compare', suicide
+        )
         tempfile.tempdir = str(tmpdir)
 
         ret, _, _ = run(capsys, *TEST_TARS)
@@ -94,9 +97,9 @@ def test_ctrl_c_handling(tmpdir, monkeypatch, capsys):
 
     def interrupt(*args):
         raise KeyboardInterrupt
+
     monkeypatch.setattr(
-        'diffoscope.comparators.text.TextFile.compare',
-        interrupt,
+        'diffoscope.comparators.text.TextFile.compare', interrupt
     )
 
     ret, _, err = run(capsys, *TEST_TARS)

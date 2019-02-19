@@ -37,11 +37,9 @@ find_executable = functools.lru_cache()(find_executable)
 
 # The output of --help and --list-tools will use the order of this dict.
 # Please keep it alphabetized.
-OS_NAMES = collections.OrderedDict([
-    ('arch', 'Arch Linux'),
-    ('debian', 'Debian'),
-    ('FreeBSD', 'FreeBSD'),
-])
+OS_NAMES = collections.OrderedDict(
+    [('arch', 'Arch Linux'), ('debian', 'Debian'), ('FreeBSD', 'FreeBSD')]
+)
 
 
 def get_tool_name(tool):
@@ -56,7 +54,11 @@ def tool_prepend_prefix(prefix, *tools):
 
 
 def tool_check_installed(command):
-    if command == get_tool_name(command) and not os_is_gnu() and tool_is_gnu(command):
+    if (
+        command == get_tool_name(command)
+        and not os_is_gnu()
+        and tool_is_gnu(command)
+    ):
         # try "g" + command for each tool, if we're on a non-GNU system
         if find_executable("g" + command):
             tool_prepend_prefix("g", command)
@@ -91,7 +93,9 @@ def tool_required(command):
 
             with profile('command', command):
                 return fn(*args, **kwargs)
+
         return tool_check
+
     return wrapper
 
 

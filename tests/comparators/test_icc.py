@@ -50,7 +50,9 @@ def cd_iccdump_version():
     somewhat-arbitrary newline too.
     """
 
-    val = subprocess.check_output(('cd-iccdump', data('test1.icc'))).decode('utf-8')
+    val = subprocess.check_output(('cd-iccdump', data('test1.icc'))).decode(
+        'utf-8'
+    )
 
     for x in val.splitlines():
         if x.startswith('  Profile ID') and len(x) == 47:
@@ -75,8 +77,10 @@ def differences(icc1, icc2):
 @skip_unless_tool_is_at_least('cd-iccdump', cd_iccdump_version, '1.4.3')
 def test_diff(differences):
     if 'ne_SU' in differences[0].unified_diff:
-        pytest.skip("Endian-specific differences detected; see "
-                    "<https://bugs.debian.org/847595>")
+        pytest.skip(
+            "Endian-specific differences detected; see "
+            "<https://bugs.debian.org/847595>"
+        )
 
     expected_diff = get_data('icc_expected_diff')
     assert differences[0].unified_diff == expected_diff

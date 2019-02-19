@@ -43,6 +43,7 @@ else:
         if not hasattr(fn, '_temp_dir'):
             fn._temp_dir = get_temporary_directory('binwalk').name
         return fn._temp_dir
+
     binwalk.core.settings.Settings._get_user_config_dir = fn
 
 logger = logging.getLogger(__name__)

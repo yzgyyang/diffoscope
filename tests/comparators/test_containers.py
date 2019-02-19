@@ -22,7 +22,10 @@ import pytest
 import itertools
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist, skip_unless_file_version_is_at_least
+from ..utils.tools import (
+    skip_unless_tools_exist,
+    skip_unless_file_version_is_at_least,
+)
 
 gzip1 = load_fixture('containers/a.tar.gz')
 gzip2 = load_fixture('containers/b.tar.gz')
@@ -53,7 +56,11 @@ def expected_magic_diff(ext1, ext2):
 
 
 def expected_type_diff(ext1, ext2):
-    return "@@ -1 +1 @@\n-%sFile\n+%sFile\n" % (ext1.capitalize(), ext2.capitalize())
+    return "@@ -1 +1 @@\n-%sFile\n+%sFile\n" % (
+        ext1.capitalize(),
+        ext2.capitalize(),
+    )
+
 
 # Compares same content files, but with different extensions
 
@@ -68,8 +75,10 @@ def test_equal(set1):
         else:
             differences = diff.details
             assert differences[0].unified_diff == expected_magic_diff(
-                x, y), "{} {}".format(x, y)
+                x, y
+            ), "{} {}".format(x, y)
             assert differences[1].unified_diff == expected_type_diff(x, y)
+
 
 # Compares different content files with different extensions
 
@@ -84,6 +93,7 @@ def test_different(set1, set2):
             assert differences[0].details[1].unified_diff == expected_diff
         else:
             assert differences[0].unified_diff == expected_magic_diff(
-                x, y), "{} {}".format(x, y)
+                x, y
+            ), "{} {}".format(x, y)
             assert differences[1].unified_diff == expected_type_diff(x, y)
             assert differences[2].details[1].unified_diff == expected_diff

@@ -23,8 +23,7 @@ import subprocess
 from diffoscope.comparators.ps import PsFile
 
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist, \
-    skip_unless_tool_is_at_least
+from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least
 from ..utils.nonexisting import assert_non_existing
 
 

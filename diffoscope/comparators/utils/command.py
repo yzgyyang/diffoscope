@@ -32,8 +32,9 @@ class Command(object, metaclass=abc.ABCMeta):
         self._path = path
 
     def start(self):
-        logger.debug("Executing %s", ' '.join(
-            [shlex.quote(x) for x in self.cmdline()]))
+        logger.debug(
+            "Executing %s", ' '.join([shlex.quote(x) for x in self.cmdline()])
+        )
 
         self._stdin = self.stdin()
         # "stdin" used to be a feeder but we didn't need the functionality so
@@ -42,12 +43,15 @@ class Command(object, metaclass=abc.ABCMeta):
         # consider using a shell pipeline ("sh -ec $script") to implement what
         # you need, because that involves much less code - like it or not (I
         # don't) shell is still the most readable option for composing processes
-        self._process = subprocess.run(self.cmdline(),
-                                       shell=False, close_fds=True,
-                                       env=self.env(),
-                                       stdin=self._stdin,
-                                       stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE)
+        self._process = subprocess.run(
+            self.cmdline(),
+            shell=False,
+            close_fds=True,
+            env=self.env(),
+            stdin=self._stdin,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
 
         self.stderr = self._read_stderr()
 
@@ -63,7 +67,12 @@ class Command(object, metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     def shell_cmdline(self):
-        return ' '.join(map(lambda x: '{}' if x == self.path else shlex.quote(x), self.cmdline()))
+        return ' '.join(
+            map(
+                lambda x: '{}' if x == self.path else shlex.quote(x),
+                self.cmdline(),
+            )
+        )
 
     def env(self):
         return None  # inherit parent environment by default
@@ -89,7 +98,7 @@ class Command(object, metaclass=abc.ABCMeta):
 
         if len(lines) > Command.MAX_STDERR_LINES:
             buf += '[ {} lines ignored ]\n'.format(
-                len(lines) - Command.MAX_STDERR_LINES,
+                len(lines) - Command.MAX_STDERR_LINES
             )
 
         return buf

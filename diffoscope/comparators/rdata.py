@@ -62,8 +62,10 @@ class RdsReader(Command):
     @tool_required('Rscript')
     def cmdline(self):
         return [
-            'Rscript', '-e', 'args <- commandArgs(TRUE); readRDS(args[1])',
-            self.path
+            'Rscript',
+            '-e',
+            'args <- commandArgs(TRUE); readRDS(args[1])',
+            self.path,
         ]
 
 
@@ -72,9 +74,11 @@ class RdsFile(File):
 
     @classmethod
     def recognizes(cls, file):
-        if check_rds_extension(file) or \
-                file.container and \
-                check_rds_extension(file.container.source):
+        if (
+            check_rds_extension(file)
+            or file.container
+            and check_rds_extension(file.container.source)
+        ):
             return file.file_header.startswith(HEADER)
         return False
 

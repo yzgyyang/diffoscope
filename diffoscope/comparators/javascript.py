@@ -35,4 +35,6 @@ class JavaScriptFile(File):
     FILE_EXTENSION_SUFFIX = '.js'
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(JavaScriptBeautify, self.path, other.path)]
+        return [
+            Difference.from_command(JavaScriptBeautify, self.path, other.path)
+        ]

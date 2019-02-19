@@ -30,8 +30,8 @@ from diffoscope.difference import Difference
 from .utils.file import File
 from .utils.command import Command
 
-HI_MAGIC_32 = struct.pack('>I', 0x1face)
-HI_MAGIC_64 = struct.pack('>I', 0x1face64)
+HI_MAGIC_32 = struct.pack('>I', 0x1FACE)
+HI_MAGIC_64 = struct.pack('>I', 0x1FACE64)
 
 if platform.architecture()[0] == '32bit':
     HI_MAGIC = HI_MAGIC_32
@@ -69,6 +69,7 @@ class HiFile(File):
     So the version of this file has 4 characters, and it's 7103. Note how all
     this information is stored as big endian.
     """
+
     DESCRIPTION = "GHC Haskell .hi files"
     RE_FILE_EXTENSION = re.compile(r'\.(p_|dyn_)?hi$')
 
@@ -81,7 +82,7 @@ class HiFile(File):
             try:
                 with profile('command', 'ghc'):
                     output = subprocess.check_output(
-                        ['ghc', '--numeric-version'],
+                        ['ghc', '--numeric-version']
                     )
             except (OSError, subprocess.CalledProcessError):
                 HiFile.hi_version = None
@@ -103,7 +104,9 @@ class HiFile(File):
                 logger.debug(
                     "Haskell interface magic mismatch. "
                     "Found %r instead of %r or %r",
-                    buf, HI_MAGIC_32, HI_MAGIC_64,
+                    buf,
+                    HI_MAGIC_32,
+                    HI_MAGIC_64,
                 )
                 return False
 
@@ -119,7 +122,7 @@ class HiFile(File):
             # Small list optimisation - anything less than 0xff has its length
             # in a single byte; everything else is 0xff followed by the 32-bit
             # length (big-endian).
-            if buf[0] == 0xff:
+            if buf[0] == 0xFF:
                 buf = fp.read(4)
                 length = struct.unpack('>I', buf)[0]
             else:

@@ -44,9 +44,5 @@ class JSONReaderV1(object):
         details = [self.load_rec(child) for child in raw.get('details', [])]
 
         return Difference(
-            unified_diff,
-            source1,
-            source2,
-            comment=comments,
-            details=details,
+            unified_diff, source1, source2, comment=comments, details=details
         )

@@ -65,7 +65,9 @@ def test_diff(obj_differences):
         'macho_expected_diff_disassembly',
     ]
     for idx, diff in enumerate(obj_differences):
-        with open(os.path.join(os.path.dirname(__file__), '../data', diffs[idx]), 'w') as f:
+        with open(
+            os.path.join(os.path.dirname(__file__), '../data', diffs[idx]), 'w'
+        ) as f:
             print(diff.unified_diff, file=f)
     expected_diff = get_data('macho_expected_diff')
     assert obj_differences[0].unified_diff == expected_diff

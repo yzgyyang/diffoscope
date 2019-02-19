@@ -32,10 +32,12 @@ class CpioFile(File):
     FILE_TYPE_RE = re.compile(r'\bcpio archive\b')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_text_readers(
-            list_libarchive(self.path),
-            list_libarchive(other.path),
-            self.path,
-            other.path,
-            source="file list",
-        )]
+        return [
+            Difference.from_text_readers(
+                list_libarchive(self.path),
+                list_libarchive(other.path),
+                self.path,
+                other.path,
+                source="file list",
+            )
+        ]

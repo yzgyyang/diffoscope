@@ -38,4 +38,6 @@ class DeviceTreeFile(File):
     FILE_TYPE_RE = re.compile(r'^Device Tree Blob')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(DeviceTreeContents, self.path, other.path)]
+        return [
+            Difference.from_command(DeviceTreeContents, self.path, other.path)
+        ]

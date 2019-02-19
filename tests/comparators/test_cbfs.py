@@ -38,22 +38,24 @@ TEST_FILE2_PATH = data('text_ascii2')
 def rom1(tmpdir):
     path = str(tmpdir.join('coreboot1'))
 
-    subprocess.check_call((
-        'cbfstool',
-        path,
-        'create',
-        '-m', 'x86',
-        '-s', '32768',
-    ), shell=False)
+    subprocess.check_call(
+        ('cbfstool', path, 'create', '-m', 'x86', '-s', '32768'), shell=False
+    )
 
-    subprocess.check_call((
-        'cbfstool',
-        path,
-        'add',
-        '-f', TEST_FILE1_PATH,
-        '-n', 'text',
-        '-t', 'raw'
-    ), shell=False)
+    subprocess.check_call(
+        (
+            'cbfstool',
+            path,
+            'add',
+            '-f',
+            TEST_FILE1_PATH,
+            '-n',
+            'text',
+            '-t',
+            'raw',
+        ),
+        shell=False,
+    )
 
     return specialize(FilesystemFile(path))
 
@@ -63,22 +65,25 @@ def rom2(tmpdir):
     size = 32768
     path = str(tmpdir.join('coreboot2.rom'))
 
-    subprocess.check_call((
-        'cbfstool',
-        path,
-        'create',
-        '-m', 'x86',
-        '-s', '%s' % size,
-    ), shell=False)
+    subprocess.check_call(
+        ('cbfstool', path, 'create', '-m', 'x86', '-s', '%s' % size),
+        shell=False,
+    )
 
-    subprocess.check_call((
-        'cbfstool',
-        path,
-        'add',
-        '-f', TEST_FILE2_PATH,
-        '-n', 'text',
-        '-t', 'raw',
-    ), shell=False)
+    subprocess.check_call(
+        (
+            'cbfstool',
+            path,
+            'add',
+            '-f',
+            TEST_FILE2_PATH,
+            '-n',
+            'text',
+            '-t',
+            'raw',
+        ),
+        shell=False,
+    )
 
     # Remove the last 4 bytes to exercise the full header search
     buf = bytearray(size)

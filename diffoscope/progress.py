@@ -148,16 +148,21 @@ class Progress(object):
                 # complex
                 cur_child_done, cur_child_total = cur_child_estimate or (0, 0)
                 own_done += self.current_steps
-                all_done += self.current_steps + \
-                    self.current_child_steps_done + \
-                    cur_child_done
+                all_done += (
+                    self.current_steps
+                    + self.current_child_steps_done
+                    + cur_child_done
+                )
                 # Cost of what we expect will have been done, once the current
                 # in-progress step plus all of its children, have completed
-                expected_all_done = all_done + \
-                    (cur_child_total - cur_child_done)
+                expected_all_done = all_done + (
+                    cur_child_total - cur_child_done
+                )
                 assert own_done  # non-zero
-                return all_done, int(float(self.total) / own_done
-                                     * expected_all_done)
+                return (
+                    all_done,
+                    int(float(self.total) / own_done * expected_all_done),
+                )
         else:
             # nothing in progress
             assert not cur_child_estimate
@@ -210,7 +215,7 @@ class ProgressBar(object):
                     return msg.rjust(width)
 
                 # Print the last `width` characters with an ellipsis.
-                return '…{}'.format(msg[-width + 1:])
+                return '…{}'.format(msg[-width + 1 :])
 
         class OurProgressBar(progressbar.ProgressBar):
             def __init__(self, *args, **kwargs):
@@ -236,17 +241,19 @@ class ProgressBar(object):
                 if self.signal_set:
                     signal.signal(signal.SIGWINCH, signal.SIG_DFL)
 
-        self.bar = OurProgressBar(widgets=(
-            ' ',
-            progressbar.Bar(),
-            '  ',
-            progressbar.Percentage(),
-            '  ',
-            Message(),
-            '  ',
-            progressbar.ETA(),
-            ' ',
-        ))
+        self.bar = OurProgressBar(
+            widgets=(
+                ' ',
+                progressbar.Bar(),
+                '  ',
+                progressbar.Percentage(),
+                '  ',
+                Message(),
+                '  ',
+                progressbar.ETA(),
+                ' ',
+            )
+        )
         self.bar.start()
 
     def notify(self, current, total, msg):
@@ -265,11 +272,10 @@ class StatusFD(object):
         self.fileobj = fileobj
 
     def notify(self, current, total, msg):
-        print(json.dumps({
-            'msg': msg,
-            'total': total,
-            'current': current,
-        }), file=self.fileobj)
+        print(
+            json.dumps({'msg': msg, 'total': total, 'current': current}),
+            file=self.fileobj,
+        )
 
     def finish(self):
         pass

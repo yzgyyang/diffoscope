@@ -45,7 +45,7 @@ class Otool(Command):
         # Strip filename
         prefix = '{}:'.format(self._path)
         if line.decode('utf-8', 'ignore').startswith(prefix):
-            return line[len(prefix):].strip()
+            return line[len(prefix) :].strip()
         return line
 
 
@@ -73,17 +73,22 @@ class MachoFile(File):
     DESCRIPTION = "MacOS binaries"
     FILE_TYPE_RE = re.compile(r'^Mach-O ')
     RE_EXTRACT_ARCHS = re.compile(
-        r'^(?:Architectures in the fat file: .* are|Non-fat file: .* is architecture): (.*)$')
+        r'^(?:Architectures in the fat file: .* are|Non-fat file: .* is architecture): (.*)$'
+    )
 
     @staticmethod
     @tool_required('lipo')
     def get_arch_from_macho(path):
-        lipo_output = subprocess.check_output(
-            ['lipo', '-info', path]).decode('utf-8')
+        lipo_output = subprocess.check_output(['lipo', '-info', path]).decode(
+            'utf-8'
+        )
         lipo_match = MachoFile.RE_EXTRACT_ARCHS.match(lipo_output)
         if lipo_match is None:
             raise ValueError(
-                'lipo -info on Mach-O file %s did not produce expected output. Output was: %s' % path, lipo_output)
+                'lipo -info on Mach-O file %s did not produce expected output. Output was: %s'
+                % path,
+                lipo_output,
+            )
         return lipo_match.group(1).split()
 
     def compare_details(self, other, source=None):
@@ -92,16 +97,37 @@ class MachoFile(File):
         my_archs = MachoFile.get_arch_from_macho(self.path)
         other_archs = MachoFile.get_arch_from_macho(other.path)
 
-        differences.append(Difference.from_text('\n'.join(my_archs),
-                                                '\n'.join(other_archs),
-                                                self.name, other.name, source='architectures'))
+        differences.append(
+            Difference.from_text(
+                '\n'.join(my_archs),
+                '\n'.join(other_archs),
+                self.name,
+                other.name,
+                source='architectures',
+            )
+        )
 
         # Compare common architectures for differences
         for common_arch in set(my_archs) & set(other_archs):
-            differences.append(Difference.from_command(OtoolHeaders, self.path, other.path, command_args=[common_arch],
-                                                       comment="Mach-O headers for architecture %s" % common_arch))
-            differences.append(Difference.from_command(OtoolLibraries, self.path, other.path, command_args=[common_arch],
-                                                       comment="Mach-O load commands for architecture %s" % common_arch))
+            differences.append(
+                Difference.from_command(
+                    OtoolHeaders,
+                    self.path,
+                    other.path,
+                    command_args=[common_arch],
+                    comment="Mach-O headers for architecture %s" % common_arch,
+                )
+            )
+            differences.append(
+                Difference.from_command(
+                    OtoolLibraries,
+                    self.path,
+                    other.path,
+                    command_args=[common_arch],
+                    comment="Mach-O load commands for architecture %s"
+                    % common_arch,
+                )
+            )
 
             x = Difference.from_command(
                 OtoolDisassemble,
@@ -114,12 +140,15 @@ class MachoFile(File):
 
             # If the LLVM disassembler does not work, try the internal one.
             if x is None:
-                differences.append(Difference.from_command(
-                    OtoolDisassembleInternal,
-                    self.path,
-                    other.path,
-                    command_args=[common_arch],
-                    comment="Code for architecture %s (internal disassembler)" % common_arch,
-                ))
+                differences.append(
+                    Difference.from_command(
+                        OtoolDisassembleInternal,
+                        self.path,
+                        other.path,
+                        command_args=[common_arch],
+                        comment="Code for architecture %s (internal disassembler)"
+                        % common_arch,
+                    )
+                )
 
         return differences

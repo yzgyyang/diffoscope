@@ -29,7 +29,7 @@ def round_sigfig(num, s):
     # https://stackoverflow.com/questions/3410976/how-to-round-a-number-to-significant-figures-in-python
     # This was too painful :/
     x = float(('%%.%sg' % s) % num)
-    return x if abs(x) < (10 ** (s -1)) else int(x)
+    return x if abs(x) < (10 ** (s - 1)) else int(x)
 
 
 def sizeof_fmt(num, suffix='B', sigfig=3):
@@ -99,6 +99,7 @@ def make_printer(path):
     def fn(*args, **kwargs):
         kwargs['file'] = output
         print(*args, **kwargs)
+
     fn.output = output
 
     yield fn
@@ -124,7 +125,6 @@ def create_limited_print_func(print_func, max_page_size):
 
 
 class PartialFormatter(string.Formatter):
-
     @staticmethod
     def escape(x):
         return x.replace("}", "}}").replace("{", "{{")
@@ -138,13 +138,15 @@ class PartialFormatter(string.Formatter):
 
     def parse(self, *args, **kwargs):
         # Preserve {{ and }} escapes when formatting
-        return map(lambda x: (self.escape(x[0]),) + x[1:], super().parse(*args, **kwargs))
+        return map(
+            lambda x: (self.escape(x[0]),) + x[1:],
+            super().parse(*args, **kwargs),
+        )
 
     parse_no_escape = string.Formatter.parse
 
 
 class FormatPlaceholder(object):
-
     def __init__(self, ident):
         self.ident = str(ident)
 
@@ -277,22 +279,30 @@ class PartialString(object):
         fmt = self.formatter
         # use parse_no_escape so lengths are preserved
         pieces = [(len(l), f) for l, f, _, _ in fmt.parse_no_escape(fmtstr)]
-        used_args = set(fmt.arg_of_field_name(f, holes)
-                        for _, f in pieces if f is not None)
+        used_args = set(
+            fmt.arg_of_field_name(f, holes) for _, f in pieces if f is not None
+        )
         self.num_holes = sum(1 for _, f in pieces if f is not None)
         self.base_len = sum(l for l, _ in pieces)
 
         # Remove unused and duplicates in the holes objects
         seen = collections.OrderedDict()
-        mapping = tuple(FormatPlaceholder(seen.setdefault(k, len(seen))) if i in used_args else None
-                        for i, k in enumerate(holes))
+        mapping = tuple(
+            FormatPlaceholder(seen.setdefault(k, len(seen)))
+            if i in used_args
+            else None
+            for i, k in enumerate(holes)
+        )
         self._fmtstr = fmt.vformat(fmtstr, mapping, None)
         self.holes = tuple(seen.keys())
 
     def __eq__(self, other):
-        return (self is other or isinstance(other, PartialString) and
-                other._fmtstr == self._fmtstr and
-                other.holes == self.holes)
+        return (
+            self is other
+            or isinstance(other, PartialString)
+            and other._fmtstr == self._fmtstr
+            and other.holes == self.holes
+        )
 
     def __repr__(self):
         return "%s%r" % (self.__class__.__name__, (self._fmtstr,) + self.holes)
@@ -302,7 +312,9 @@ class PartialString(object):
         return self.formatter.vformat(self._fmtstr, mapping, None)
 
     def _offset_fmtstr(self, offset):
-        return self._format(*(FormatPlaceholder(i + offset) for i in range(len(self.holes))))
+        return self._format(
+            *(FormatPlaceholder(i + offset) for i in range(len(self.holes)))
+        )
 
     def _pformat(self, mapping, escapestr):
         new_holes = []
@@ -388,21 +400,25 @@ class PartialString(object):
         >>> t.size(hole_size=5)
         27
         """
+
         def cont(t, fmtstr, *holes):
             if isinstance(fmtstr, cls):
                 return t.pformat({cont: fmtstr})
             else:
                 return t.pformat({cont: cls(fmtstr, *(holes + (cont,)))})
+
         return cls("{0}", cont), cont
 
     def frame(self, header, footer):
-        frame = self.__class__(self.escape(header) +
-                               "{0}" + self.escape(footer), None)
+        frame = self.__class__(
+            self.escape(header) + "{0}" + self.escape(footer), None
+        )
         return frame.pformat({None: self})
 
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod(optionflags=doctest.ELLIPSIS)
     a, b = object(), object()
     tmpl = PartialString("{0} {1}", a, b)

@@ -18,97 +18,34 @@
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
 EXTERNAL_TOOLS = {
-    'abootimg': {
-        'debian': 'abootimg',
-    },
-    'apktool': {
-        'debian': 'apktool',
-    },
-    'db_dump': {
-        'debian': 'db-util',
-    },
+    'abootimg': {'debian': 'abootimg'},
+    'apktool': {'debian': 'apktool'},
+    'db_dump': {'debian': 'db-util'},
     'bsdtar': {
         'debian': 'libarchive-tools',
         'arch': 'libarchive',
         'fedora': 'bsdtar',
         'FreeBSD': 'libarchive',
     },
-    'bzip2': {
-        'debian': 'bzip2',
-        'arch': 'bzip2',
-    },
-    'cbfstool': {
-    },
-    'cd-iccdump': {
-        'debian': 'colord',
-        'arch': 'colord',
-        'FreeBSD': 'colord',
-    },
-    'cmp': {
-        'debian': 'diffutils',
-        'arch': 'diffutils',
-    },
-    'compare': {
-        'debian': 'imagemagick',
-        'arch': 'imagemagick',
-    },
-    'cpio': {
-        'debian': 'cpio',
-        'arch': 'cpio',
-    },
-    'diff': {
-        'debian': 'diffutils',
-        'arch': 'diffutils',
-    },
-    'docx2txt': {
-        'debian': 'docx2txt',
-        'arch': 'docx2txt',
-    },
-    'enjarify': {
-        'debian': 'enjarify',
-        'arch': 'enjarify',
-    },
-    'fdtdump': {
-        'debian': 'device-tree-compiler',
-        'arch': 'dtc',
-    },
-    'ffprobe': {
-        'debian': 'ffmpeg',
-    },
-    'file': {
-        'debian': 'file',
-        'arch': 'file',
-    },
-    'find': {
-        'debian': 'findutils',
-        'arch': 'findutils',
-    },
-    'getfacl': {
-        'debian': 'acl',
-        'arch': 'acl',
-    },
-    'gifbuild': {
-        'debian': 'giflib-tools',
-        'arch': 'giflib',
-    },
-    'ghc': {
-        'debian': 'ghc',
-        'arch': 'ghc',
-        'FreeBSD': 'ghc',
-    },
-    'gpg': {
-        'debian': 'gnupg',
-        'arch': 'gnupg',
-        'FreeBSD': 'gnupg',
-    },
-    'gzip': {
-        'debian': 'gzip',
-        'arch': 'gzip',
-    },
-    'identify': {
-        'debian': 'imagemagick',
-        'arch': 'imagemagick',
-    },
+    'bzip2': {'debian': 'bzip2', 'arch': 'bzip2'},
+    'cbfstool': {},
+    'cd-iccdump': {'debian': 'colord', 'arch': 'colord', 'FreeBSD': 'colord'},
+    'cmp': {'debian': 'diffutils', 'arch': 'diffutils'},
+    'compare': {'debian': 'imagemagick', 'arch': 'imagemagick'},
+    'cpio': {'debian': 'cpio', 'arch': 'cpio'},
+    'diff': {'debian': 'diffutils', 'arch': 'diffutils'},
+    'docx2txt': {'debian': 'docx2txt', 'arch': 'docx2txt'},
+    'enjarify': {'debian': 'enjarify', 'arch': 'enjarify'},
+    'fdtdump': {'debian': 'device-tree-compiler', 'arch': 'dtc'},
+    'ffprobe': {'debian': 'ffmpeg'},
+    'file': {'debian': 'file', 'arch': 'file'},
+    'find': {'debian': 'findutils', 'arch': 'findutils'},
+    'getfacl': {'debian': 'acl', 'arch': 'acl'},
+    'gifbuild': {'debian': 'giflib-tools', 'arch': 'giflib'},
+    'ghc': {'debian': 'ghc', 'arch': 'ghc', 'FreeBSD': 'ghc'},
+    'gpg': {'debian': 'gnupg', 'arch': 'gnupg', 'FreeBSD': 'gnupg'},
+    'gzip': {'debian': 'gzip', 'arch': 'gzip'},
+    'identify': {'debian': 'imagemagick', 'arch': 'imagemagick'},
     'img2txt': {
         'debian': 'caca-utils',
         'arch': 'libcaca',
@@ -123,137 +60,58 @@ EXTERNAL_TOOLS = {
         'debian': 'default-jdk-headless | default-jdk | java-sdk',
         'arch': 'java-environment',
     },
-    'js-beautify': {
-        'debian': 'jsbeautifier',
-        'arch': 'python-jsbeautifier',
-    },
-    'llvm-bcanalyzer': {
-        'debian': 'llvm',
-        'arch': 'llvm',
-    },
-    'llvm-config': {
-        'debian': 'llvm',
-        'arch': 'llvm',
-    },
-    'llvm-dis': {
-        'debian': 'llvm',
-        'arch': 'llvm',
-    },
-    'ls': {
-        'debian': 'coreutils',
-        'arch': 'coreutils',
-    },
+    'js-beautify': {'debian': 'jsbeautifier', 'arch': 'python-jsbeautifier'},
+    'llvm-bcanalyzer': {'debian': 'llvm', 'arch': 'llvm'},
+    'llvm-config': {'debian': 'llvm', 'arch': 'llvm'},
+    'llvm-dis': {'debian': 'llvm', 'arch': 'llvm'},
+    'ls': {'debian': 'coreutils', 'arch': 'coreutils'},
     'lsattr': {
         'debian': 'e2fsprogs',
         'arch': 'e2fsprogs',
         'FreeBSD': 'e2fsprogs',
     },
-    'lz4': {
-        'debian': 'lz4 | liblz4-tool',
-        'FreeBSD': 'lz4',
-    },
+    'lz4': {'debian': 'lz4 | liblz4-tool', 'FreeBSD': 'lz4'},
     'msgunfmt': {
         'debian': 'gettext',
         'arch': 'gettext',
         'FreeBSD': 'gettext-tools',
     },
-    'convert': {
-        'debian': 'imagemagick',
-        'arch': 'imagemagick',
-    },
-    'nm': {
-        'debian': 'binutils-multiarch',
-        'arch': 'binutils',
-    },
-    'objcopy': {
-        'debian': 'binutils-multiarch',
-        'arch': 'binutils',
-    },
-    'objdump': {
-        'debian': 'binutils-multiarch',
-        'arch': 'binutils',
-    },
-    'ocamlobjinfo': {
-        'debian': 'ocaml-nox',
-    },
-    'odt2txt': {
-        'debian': 'odt2txt',
-        'arch': 'odt2txt',
-    },
-    'oggDump': {
-        'debian': 'oggvideotools',
-    },
-    'pgpdump': {
-        'debian': 'pgpdump',
-        'arch': 'pgpdump',
-    },
+    'convert': {'debian': 'imagemagick', 'arch': 'imagemagick'},
+    'nm': {'debian': 'binutils-multiarch', 'arch': 'binutils'},
+    'objcopy': {'debian': 'binutils-multiarch', 'arch': 'binutils'},
+    'objdump': {'debian': 'binutils-multiarch', 'arch': 'binutils'},
+    'ocamlobjinfo': {'debian': 'ocaml-nox'},
+    'odt2txt': {'debian': 'odt2txt', 'arch': 'odt2txt'},
+    'oggDump': {'debian': 'oggvideotools'},
+    'pgpdump': {'debian': 'pgpdump', 'arch': 'pgpdump'},
     'pdftotext': {
         'debian': 'poppler-utils',
         'arch': 'poppler',
         'FreeBSD': 'poppler-utils',
     },
-    'pedump': {
-        'debian': 'mono-utils',
-        'arch': 'mono',
-        'FreeBSD': 'mono',
-    },
-    'ppudump': {
-        'debian': 'fp-utils',
-        'arch': 'fpc',
-        'FreeBSD': 'fpc',
-    },
+    'pedump': {'debian': 'mono-utils', 'arch': 'mono', 'FreeBSD': 'mono'},
+    'ppudump': {'debian': 'fp-utils', 'arch': 'fpc', 'FreeBSD': 'fpc'},
     'ps2ascii': {
         'debian': 'ghostscript',
         'arch': 'ghostscript',
         'FreeBSD': 'ghostscript9-base',
     },
-    'readelf': {
-        'debian': 'binutils-multiarch',
-        'arch': 'binutils',
-    },
+    'readelf': {'debian': 'binutils-multiarch', 'arch': 'binutils'},
     'rpm2cpio': {
         'debian': 'rpm2cpio',
         'arch': 'rpmextract',
         'FreeBSD': 'rpm2cpio',
     },
-    'Rscript': {
-        'debian': 'r-base-core',
-        'arch': 'r',
-    },
-    'showttf': {
-        'debian': 'fontforge-extras',
-    },
-    'sng': {
-        'debian': 'sng',
-    },
-    'ssconvert': {
-        'debian': 'gnumeric',
-        'arch': 'gnumeric',
-    },
-    'ssh-keygen': {
-        'debian': 'openssh-client',
-        'arch': 'openssh',
-    },
-    'stat': {
-        'debian': 'coreutils',
-        'arch': 'coreutils',
-    },
-    'sqlite3': {
-        'debian': 'sqlite3',
-        'arch': 'sqlite',
-        'FreeBSD': 'sqlite3',
-    },
-    'wasm2wat': {
-        'arch': 'wabt',
-    },
-    'tar': {
-        'debian': 'tar',
-        'arch': 'tar',
-    },
-    'tcpdump': {
-        'debian': 'tcpdump',
-        'arch': 'tcpdump',
-    },
+    'Rscript': {'debian': 'r-base-core', 'arch': 'r'},
+    'showttf': {'debian': 'fontforge-extras'},
+    'sng': {'debian': 'sng'},
+    'ssconvert': {'debian': 'gnumeric', 'arch': 'gnumeric'},
+    'ssh-keygen': {'debian': 'openssh-client', 'arch': 'openssh'},
+    'stat': {'debian': 'coreutils', 'arch': 'coreutils'},
+    'sqlite3': {'debian': 'sqlite3', 'arch': 'sqlite', 'FreeBSD': 'sqlite3'},
+    'wasm2wat': {'arch': 'wabt'},
+    'tar': {'debian': 'tar', 'arch': 'tar'},
+    'tcpdump': {'debian': 'tcpdump', 'arch': 'tcpdump'},
     'unsquashfs': {
         'debian': 'squashfs-tools',
         'arch': 'squashfs-tools',
@@ -264,24 +122,11 @@ EXTERNAL_TOOLS = {
         'arch': 'vim',
         'FreeBSD': 'vim | vim-lite',
     },
-    'xz': {
-        'debian': 'xz-utils',
-        'arch': 'xz',
-    },
-    'zipinfo': {
-        'debian': 'unzip',
-        'arch': 'unzip',
-        'FreeBSD': 'unzip',
-    },
-    'zipnote': {
-        'debian': 'zip',
-    },
-    'procyon': {
-        'debian': 'procyon-decompiler',
-    },
-    'dumpxsb': {
-        'debian': 'xmlbeans',
-    },
+    'xz': {'debian': 'xz-utils', 'arch': 'xz'},
+    'zipinfo': {'debian': 'unzip', 'arch': 'unzip', 'FreeBSD': 'unzip'},
+    'zipnote': {'debian': 'zip'},
+    'procyon': {'debian': 'procyon-decompiler'},
+    'dumpxsb': {'debian': 'xmlbeans'},
 }
 
 # May be populated at runtime by remapped names like
@@ -296,9 +141,4 @@ REMAPPED_TOOL_NAMES = {}
 #
 # If we only use POSIX CLI options and the output is identical to the system
 # version (so that our tests don't break) then it's unnecessary to add it here.
-GNU_TOOL_NAMES = {
-    'diff',
-    'readelf',
-    'objcopy',
-    'objdump',
-}
+GNU_TOOL_NAMES = {'diff', 'readelf', 'objcopy', 'objdump'}

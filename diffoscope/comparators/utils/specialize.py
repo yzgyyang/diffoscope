@@ -52,7 +52,9 @@ def specialize(file):
     for cls in ComparatorManager().classes:
         if try_recognize(file, cls, cls.fallback_recognizes):
             logger.debug(
-                "File recognized by fallback. Magic says: %s", file.magic_file_type)
+                "File recognized by fallback. Magic says: %s",
+                file.magic_file_type,
+            )
             return file
 
     logger.debug(

@@ -79,7 +79,7 @@ class MissingFile(File):
                 None,
                 self.name,
                 other.name,
-                comment="Trying to compare two non-existing files."
+                comment="Trying to compare two non-existing files.",
             )
 
         logger.debug("Performing backward comparison")
@@ -108,5 +108,7 @@ class MissingFile(File):
     @property
     def deb822(self):
         class DummyChanges(dict):
-            def get_as_string(self, _): return ''
+            def get_as_string(self, _):
+                return ''
+
         return DummyChanges(Files=[], Version='')

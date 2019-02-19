@@ -43,9 +43,8 @@ class OcamlInterfaceFile(File):
     FILE_TYPE_RE = re.compile(r'^OCaml interface file ')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(
-            Ocamlobjinfo,
-            self.path,
-            other.path,
-            source="ocamlobjinfo",
-        )]
+        return [
+            Difference.from_command(
+                Ocamlobjinfo, self.path, other.path, source="ocamlobjinfo"
+            )
+        ]

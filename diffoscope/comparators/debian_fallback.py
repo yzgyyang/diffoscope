@@ -28,7 +28,8 @@ class DotChangesFile(TextFile):
         if not difference:
             return None
         difference.add_comment(
-            'Unable to find Python debian module. Falling back to text comparison.')
+            'Unable to find Python debian module. Falling back to text comparison.'
+        )
         return difference
 
 
@@ -40,7 +41,8 @@ class DotDscFile(TextFile):
         if not difference:
             return None
         difference.add_comment(
-            'Unable to find Python debian module. Falling back to text comparison.')
+            'Unable to find Python debian module. Falling back to text comparison.'
+        )
         return difference
 
 
@@ -52,5 +54,6 @@ class DotBuildinfoFile(TextFile):
         if not difference:
             return None
         difference.add_comment(
-            'Unable to find Python debian module. Falling back to text comparison.')
+            'Unable to find Python debian module. Falling back to text comparison.'
+        )
         return difference

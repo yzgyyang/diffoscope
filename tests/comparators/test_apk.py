@@ -78,15 +78,21 @@ def test_apk_metadata_source(differences):
 
 @skip_unless_tools_exist('apktool', 'zipinfo')
 def test_skip_undecoded_android_manifest(differences):
-    assert not any(difference.source1 == 'original/AndroidManifest.xml'
-                   for difference in differences)
-    assert not any(difference.source2 == 'original/AndroidManifest.xml'
-                   for difference in differences)
+    assert not any(
+        difference.source1 == 'original/AndroidManifest.xml'
+        for difference in differences
+    )
+    assert not any(
+        difference.source2 == 'original/AndroidManifest.xml'
+        for difference in differences
+    )
     undecoded_manifest = 'AndroidManifest.xml (original / undecoded)'
-    assert not any(difference.source1 == undecoded_manifest
-                   for difference in differences)
-    assert not any(difference.source2 == undecoded_manifest
-                   for difference in differences)
+    assert not any(
+        difference.source1 == undecoded_manifest for difference in differences
+    )
+    assert not any(
+        difference.source2 == undecoded_manifest for difference in differences
+    )
 
 
 @skip_unless_tools_exist('apktool', 'zipinfo')
@@ -94,5 +100,7 @@ def test_no_android_manifest(differences2):
     undecoded_manifest = 'AndroidManifest.xml (original / undecoded)'
     assert differences2[2].source1 == undecoded_manifest
     assert differences2[2].source2 == undecoded_manifest
-    assert differences2[2].comment == 'No decoded AndroidManifest.xml ' \
-                                      'found for one of the APK files.'
+    assert (
+        differences2[2].comment == 'No decoded AndroidManifest.xml '
+        'found for one of the APK files.'
+    )

@@ -29,8 +29,17 @@ logger = logging.getLogger(__name__)
 
 
 class Difference(object):
-    def __init__(self, unified_diff, path1, path2, source=None, comment=None,
-                 has_internal_linenos=False, details=None, visuals=None):
+    def __init__(
+        self,
+        unified_diff,
+        path1,
+        path2,
+        source=None,
+        comment=None,
+        has_internal_linenos=False,
+        details=None,
+        visuals=None,
+    ):
         self._unified_diff = unified_diff
 
         self._comments = []
@@ -74,37 +83,43 @@ class Difference(object):
     def map_lines(self, f_diff, f_comment):
         unified_diff = self.unified_diff
         return self.__class__(
-            "".join(map(f_diff, diff_split_lines(unified_diff))
-                    ) if unified_diff is not None else None,
+            "".join(map(f_diff, diff_split_lines(unified_diff)))
+            if unified_diff is not None
+            else None,
             self.source1,
             self.source2,
-            comment=["".join(map(f_comment, diff_split_lines(comment)))
-                             for comment in self._comments],
+            comment=[
+                "".join(map(f_comment, diff_split_lines(comment)))
+                for comment in self._comments
+            ],
             has_internal_linenos=self.has_internal_linenos,
             details=self._details[:],
             visuals=self._visuals[:],
         )
 
     def fmap(self, f):
-        return f(self.__class__(
-            self.unified_diff,
-            self.source1,
-            self.source2,
-            comment=self._comments[:],
-            has_internal_linenos=self.has_internal_linenos,
-            details=[d.fmap(f) for d in self._details],
-            visuals=self._visuals[:],
-        ))
+        return f(
+            self.__class__(
+                self.unified_diff,
+                self.source1,
+                self.source2,
+                comment=self._comments[:],
+                has_internal_linenos=self.has_internal_linenos,
+                details=[d.fmap(f) for d in self._details],
+                visuals=self._visuals[:],
+            )
+        )
 
     def _reverse_self(self):
         # assumes we're being called from get_reverse()
         if self._visuals:
             raise NotImplementedError(
-                "_reverse_self on VisualDifference is not yet implemented",
+                "_reverse_self on VisualDifference is not yet implemented"
             )
         return self.__class__(
-            reverse_unified_diff(
-                self.unified_diff) if self.unified_diff is not None else None,
+            reverse_unified_diff(self.unified_diff)
+            if self.unified_diff is not None
+            else None,
             self.source2,
             self.source1,
             comment=self._comments,  # already copied by fmap in get_reverse
@@ -118,27 +133,31 @@ class Difference(object):
 
     def equals(self, other):
         return self == other or (
-            self.unified_diff == other.unified_diff and
-            self.source1 == other.source1 and
-            self.source2 == other.source2 and
-            self._comments == other._comments and
-            self.has_internal_linenos == other.has_internal_linenos and
-            all(x.equals(y) for x, y in zip(self._details, other._details)) and
-            all(x.equals(y) for x, y in zip(self._visuals, other._visuals)))
+            self.unified_diff == other.unified_diff
+            and self.source1 == other.source1
+            and self.source2 == other.source2
+            and self._comments == other._comments
+            and self.has_internal_linenos == other.has_internal_linenos
+            and all(x.equals(y) for x, y in zip(self._details, other._details))
+            and all(x.equals(y) for x, y in zip(self._visuals, other._visuals))
+        )
 
     def size(self):
         if self._size_cache is None:
-            self._size_cache = sum(d.size_self()
-                                   for d in self.traverse_depth())
+            self._size_cache = sum(
+                d.size_self() for d in self.traverse_depth()
+            )
         return self._size_cache
 
     def size_self(self):
         """Size, excluding children."""
-        return ((len(self.unified_diff) if self.unified_diff else 0) +
-                (len(self.source1) if self.source1 else 0) +
-                (len(self.source2) if self.source2 else 0) +
-                sum(map(len, self.comments)) +
-                sum(v.size() for v in self._visuals))
+        return (
+            (len(self.unified_diff) if self.unified_diff else 0)
+            + (len(self.source1) if self.source1 else 0)
+            + (len(self.source2) if self.source2 else 0)
+            + sum(map(len, self.comments))
+            + sum(v.size() for v in self._visuals)
+        )
 
     def has_visible_children(self):
         """
@@ -146,8 +165,12 @@ class Difference(object):
 
         Useful for e.g. choosing whether to display [+]/[-] controls.
         """
-        return (self._unified_diff is not None or
-                self._comments or self._details or self._visuals)
+        return (
+            self._unified_diff is not None
+            or self._comments
+            or self._details
+            or self._visuals
+        )
 
     def traverse_depth(self, depth=-1):
         yield self
@@ -181,18 +204,15 @@ class Difference(object):
                     heapq.heappush(queue, (scorer(d, val), d))
 
     @staticmethod
-    def from_feeder(feeder1, feeder2, path1, path2, source=None, comment=None, **kwargs):
+    def from_feeder(
+        feeder1, feeder2, path1, path2, source=None, comment=None, **kwargs
+    ):
         try:
             unified_diff = diff(feeder1, feeder2)
             if not unified_diff:
                 return None
             return Difference(
-                unified_diff,
-                path1,
-                path2,
-                source,
-                comment,
-                **kwargs
+                unified_diff, path1, path2, source, comment, **kwargs
             )
         except RequiredToolNotFound:
             difference = Difference(None, path1, path2, source)
@@ -207,7 +227,7 @@ class Difference(object):
             feeders.from_text(content1),
             feeders.from_text(content2),
             *args,
-            **kwargs
+            **kwargs,
         )
 
     @staticmethod
@@ -216,7 +236,7 @@ class Difference(object):
             feeders.from_raw_reader(file1),
             feeders.from_raw_reader(file2),
             *args,
-            **kwargs
+            **kwargs,
         )
 
     @staticmethod
@@ -225,12 +245,14 @@ class Difference(object):
             feeders.from_text_reader(file1),
             feeders.from_text_reader(file2),
             *args,
-            **kwargs
+            **kwargs,
         )
 
     @staticmethod
     def from_command(klass, path1, path2, *args, **kwargs):
-        return Difference.from_command_exc(klass, path1, path2, *args, **kwargs)[0]
+        return Difference.from_command_exc(
+            klass, path1, path2, *args, **kwargs
+        )[0]
 
     @staticmethod
     def from_command_exc(klass, path1, path2, *args, **kwargs):
@@ -262,25 +284,20 @@ class Difference(object):
             kwargs['source'] = source_cmd.shell_cmdline()
 
         difference = Difference.from_feeder(
-            feeder1,
-            feeder2,
-            path1,
-            path2,
-            *args,
-            **kwargs
+            feeder1, feeder2, path1, path2, *args, **kwargs
         )
         if not difference:
             return None, False
 
         if command1 and command1.stderr:
-            difference.add_comment("stderr from `{}`:".format(
-                ' '.join(command1.cmdline()),
-            ))
+            difference.add_comment(
+                "stderr from `{}`:".format(' '.join(command1.cmdline()))
+            )
             difference.add_comment(command1.stderr)
         if command2 and command2.stderr:
-            difference.add_comment("stderr from `{}`:".format(
-                ' '.join(command2.cmdline()),
-            ))
+            difference.add_comment(
+                "stderr from `{}`:".format(' '.join(command2.cmdline()))
+            )
             difference.add_comment(command2.stderr)
 
         return difference, False
@@ -358,6 +375,7 @@ class VisualDifference(object):
 
     def equals(self, other):
         return self == other or (
-            self._data_type == other._data_type and
-            self._content == other._content and
-            self._source == other._source)
+            self._data_type == other._data_type
+            and self._content == other._content
+            and self._source == other._source
+        )

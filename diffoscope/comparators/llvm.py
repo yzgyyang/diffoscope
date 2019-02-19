@@ -44,7 +44,16 @@ class LlvmBcDisassembler(Command):
         # execute llvm-dis from the same directory as the file, so it doesn't
         # embed the whole path, including our tempdir, into the output.
         # this makes it easier to generate reproducible diffs for our tests.
-        return ['find', self.path, '-execdir', 'llvm-dis', '-o', '-', '{}', ';']
+        return [
+            'find',
+            self.path,
+            '-execdir',
+            'llvm-dis',
+            '-o',
+            '-',
+            '{}',
+            ';',
+        ]
 
 
 class LlvmBitCodeFile(File):
@@ -52,5 +61,7 @@ class LlvmBitCodeFile(File):
     FILE_TYPE_RE = re.compile(r'^LLVM IR bitcode')
 
     def compare_details(self, other, source=None):
-        return [Difference.from_command(LlvmBcAnalyzer, self.path, other.path),
-                Difference.from_command(LlvmBcDisassembler, self.path, other.path)]
+        return [
+            Difference.from_command(LlvmBcAnalyzer, self.path, other.path),
+            Difference.from_command(LlvmBcDisassembler, self.path, other.path),
+        ]

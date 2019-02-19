@@ -27,21 +27,17 @@ from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.utils.specialize import specialize
 
 re_normalize_zeros = re.compile(
-    r'^(?P<prefix>[ \-\+])(?P<offset>[0-9a-f]+)(?=: )', re.MULTILINE,
+    r'^(?P<prefix>[ \-\+])(?P<offset>[0-9a-f]+)(?=: )', re.MULTILINE
 )
 
 
 def init_fixture(filename):
-    return pytest.fixture(
-        lambda: specialize(FilesystemFile(filename))
-    )
+    return pytest.fixture(lambda: specialize(FilesystemFile(filename)))
 
 
 def data(filename):
     return os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        'data',
-        filename,
+        os.path.dirname(os.path.dirname(__file__)), 'data', filename
     )
 
 
@@ -72,4 +68,5 @@ def normalize_zeros(s):
     # older xxd had one zero less.  Make sure there are always 8.
     def repl(x):
         return '{}{:08x}'.format(x.group('prefix'), int(x.group('offset'), 16))
+
     return re_normalize_zeros.sub(repl, s)

@@ -52,7 +52,8 @@ class RustObjectContainer(Archive):
             raw_deflate = fpr.read()[RLIB_BYTECODE_OBJECT_V1_DATA_OFFSET:]
             # decompressobj() ignores the (non-existent) checksum; a zlib.decompress() would error
             raw_inflate = zlib.decompressobj().decompress(
-                ZLIB_DEFAULT_COMPRESSION + raw_deflate)
+                ZLIB_DEFAULT_COMPRESSION + raw_deflate
+            )
             fpw.write(raw_inflate)
         return dest_path
 
@@ -64,4 +65,12 @@ class RustObjectFile(File):
     FILE_EXTENSION_SUFFIX = '.deflate'
 
     def compare_details(self, other, source=None):
-        return [Difference.from_text(self.magic_file_type, other.magic_file_type, self, other, source='metadata')]
+        return [
+            Difference.from_text(
+                self.magic_file_type,
+                other.magic_file_type,
+                self,
+                other,
+                source='metadata',
+            )
+        ]

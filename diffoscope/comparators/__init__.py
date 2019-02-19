@@ -131,10 +131,11 @@ class ComparatorManager(object):
                 self.classes.append(getattr(mod, klass_name))
                 break
             else:  # noqa
-                logger.error("Could not import {}{}".format(
-                    "any of " if len(xs) > 1 else '',
-                    ', '.join(xs)
-                ))
+                logger.error(
+                    "Could not import {}{}".format(
+                        "any of " if len(xs) > 1 else '', ', '.join(xs)
+                    )
+                )
                 for x in errors:
                     logger.error("Original error for %s:", x[0])
                     sys.stderr.buffer.write(line_eraser())

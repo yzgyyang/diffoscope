@@ -30,13 +30,20 @@ from .utils.libarchive import LibarchiveContainer
 
 @tool_required('isoinfo')
 def get_iso9660_names(path):
-    return subprocess.check_output((
-        'isoinfo',
-        '-R',  # Always use RockRidge for names
-        '-f',
-        '-i',
-        path,
-    ), shell=False).strip().split('\n')
+    return (
+        subprocess.check_output(
+            (
+                'isoinfo',
+                '-R',  # Always use RockRidge for names
+                '-f',
+                '-i',
+                path,
+            ),
+            shell=False,
+        )
+        .strip()
+        .split('\n')
+    )
 
 
 class ISO9660PVD(Command):
@@ -74,8 +81,9 @@ class Iso9660File(File):
 
     @classmethod
     def recognizes(cls, file):
-        if file.magic_file_type and \
-                cls.FILE_TYPE_RE.search(file.magic_file_type):
+        if file.magic_file_type and cls.FILE_TYPE_RE.search(
+            file.magic_file_type
+        ):
             return True
 
         # Sometimes CDs put things like MBRs at the front which is an expected
@@ -91,15 +99,20 @@ class Iso9660File(File):
         differences = []
 
         for klass in (ISO9660PVD, ISO9660Listing):
-            differences.append(Difference.from_command(
-                klass, self.path, other.path,
-            ))
+            differences.append(
+                Difference.from_command(klass, self.path, other.path)
+            )
 
         for x in ('joliet', 'rockridge'):
             try:
-                differences.append(Difference.from_command(
-                    ISO9660Listing, self.path, other.path, command_args=(x,),
-                ))
+                differences.append(
+                    Difference.from_command(
+                        ISO9660Listing,
+                        self.path,
+                        other.path,
+                        command_args=(x,),
+                    )
+                )
             except subprocess.CalledProcessError:
                 # Probably no joliet or rockridge data
                 pass

@@ -32,5 +32,6 @@ class RpmFile(AbstractRpmFile):
         if not difference:
             return None
         difference.add_comment(
-            'Unable to import Python rpm module. Falling back to binary comparison.')
+            'Unable to import Python rpm module. Falling back to binary comparison.'
+        )
         return difference

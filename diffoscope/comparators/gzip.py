@@ -47,7 +47,10 @@ class GzipContainer(Archive):
         with open(dest_path, 'wb') as fp:
             subprocess.check_call(
                 ["gzip", "--decompress", "--stdout", self.source.path],
-                shell=False, stdout=fp, stderr=None)
+                shell=False,
+                stdout=fp,
+                stderr=None,
+            )
         return dest_path
 
 

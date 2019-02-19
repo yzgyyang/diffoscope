@@ -30,19 +30,28 @@ class FontconfigCacheFile(File):
     FILE_EXTENSION_SUFFIX = '-le64.cache-4'
 
     def compare_details(self, other, source=None):
-        return [Difference.from_text(
-            describe_cache_file(self.path),
-            describe_cache_file(other.path),
-            self.path,
-            other.path,
-        )]
+        return [
+            Difference.from_text(
+                describe_cache_file(self.path),
+                describe_cache_file(other.path),
+                self.path,
+                other.path,
+            )
+        ]
 
 
 def describe_cache_file(filename):
     fmt = '<IIQQQQQQQ'
     fields = (
-        'magic', 'version', 'size', 'dir', 'dirs', 'dirs_count', 'set',
-        'checksum', 'checksum_nano',
+        'magic',
+        'version',
+        'size',
+        'dir',
+        'dirs',
+        'dirs_count',
+        'set',
+        'checksum',
+        'checksum_nano',
     )
 
     with open(filename, 'rb') as f:
@@ -63,7 +72,9 @@ struct FcCache {{
     int             checksum = {checksum};  /* checksum of directory state */
     int64_t         checksum_nano = {checksum_nano};  /* checksum of directory state */
 }};
-""".format(**kwargs)
+""".format(
+        **kwargs
+    )
 
 
 def read_null_terminated_string(fileobj, offset=None):

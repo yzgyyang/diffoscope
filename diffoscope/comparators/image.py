@@ -38,12 +38,7 @@ logger = logging.getLogger(__name__)
 class Img2Txt(Command):
     @tool_required('img2txt')
     def cmdline(self):
-        return [
-            'img2txt',
-            '--width', '60',
-            '--format', 'utf8',
-            self.path,
-        ]
+        return ['img2txt', '--width', '60', '--format', 'utf8', self.path]
 
     def filter(self, line):
         # Strip ANSI escapes
@@ -76,12 +71,7 @@ class Identify(Command):
 
     @tool_required('identify')
     def cmdline(self):
-        return [
-            'identify',
-            '-format',
-            '\n'.join(self.ATTRIBUTES),
-            self.path,
-        ]
+        return ['identify', '-format', '\n'.join(self.ATTRIBUTES), self.path]
 
 
 @tool_required('compare')
@@ -89,13 +79,16 @@ def pixel_difference(image1_path, image2_path):
     compared_filename = get_named_temporary_file(suffix='.png').name
 
     try:
-        subprocess.check_call((
-            'compare',
-            image1_path,
-            image2_path,
-            '-compose', 'src',
-            compared_filename,
-        ))
+        subprocess.check_call(
+            (
+                'compare',
+                image1_path,
+                image2_path,
+                '-compose',
+                'src',
+                compared_filename,
+            )
+        )
     except subprocess.CalledProcessError as e:
         # ImageMagick's `compare` will return 1 if images are different
         if e.returncode == 1:
@@ -111,15 +104,20 @@ def pixel_difference(image1_path, image2_path):
 def flicker_difference(image1_path, image2_path):
     compared_filename = get_named_temporary_file(suffix='.gif').name
 
-    subprocess.check_call((
-        'convert',
-        '-delay', '50',
-        image1_path,
-        image2_path,
-        '-loop', '0',
-        '-compose', 'difference',
-        compared_filename,
-    ))
+    subprocess.check_call(
+        (
+            'convert',
+            '-delay',
+            '50',
+            image1_path,
+            image2_path,
+            '-loop',
+            '0',
+            '-compose',
+            'difference',
+            compared_filename,
+        )
+    )
 
     with open(compared_filename, 'rb') as f:
         content = base64.b64encode(f.read()).decode('utf8')
@@ -129,11 +127,9 @@ def flicker_difference(image1_path, image2_path):
 
 @tool_required('identify')
 def get_image_size(image_path):
-    return subprocess.check_output((
-        'identify',
-        '-format', '%[h]x%[w]',
-        image_path,
-    ))
+    return subprocess.check_output(
+        ('identify', '-format', '%[h]x%[w]', image_path)
+    )
 
 
 def same_size(image1, image2):
@@ -149,32 +145,31 @@ class JPEGImageFile(File):
 
     def compare_details(self, other, source=None):
         content_diff = Difference.from_command(
-            Img2Txt,
-            self.path,
-            other.path,
-            source="Image content",
+            Img2Txt, self.path, other.path, source="Image content"
         )
-        if content_diff is not None and Config().compute_visual_diffs and \
-                same_size(self, other):
+        if (
+            content_diff is not None
+            and Config().compute_visual_diffs
+            and same_size(self, other)
+        ):
             try:
                 logger.debug(
                     "Generating visual difference for %s and %s",
                     self.path,
                     other.path,
                 )
-                content_diff.add_visuals([
-                    pixel_difference(self.path, other.path),
-                    flicker_difference(self.path, other.path),
-                ])
+                content_diff.add_visuals(
+                    [
+                        pixel_difference(self.path, other.path),
+                        flicker_difference(self.path, other.path),
+                    ]
+                )
             except subprocess.CalledProcessError:  # noqa
                 pass
         return [
             content_diff,
             Difference.from_command(
-                Identify,
-                self.path,
-                other.path,
-                source="Image metadata",
+                Identify, self.path, other.path, source="Image metadata"
             ),
         ]
 
@@ -193,31 +188,32 @@ class ICOImageFile(File):
             pass
         else:
             content_diff = Difference.from_command(
-                Img2Txt,
-                png_a,
-                png_b,
-                source="Image content",
+                Img2Txt, png_a, png_b, source="Image content"
             )
-            if content_diff is not None and Config().compute_visual_diffs and \
-                    same_size(self, other):
+            if (
+                content_diff is not None
+                and Config().compute_visual_diffs
+                and same_size(self, other)
+            ):
                 if get_image_size(self.path) == get_image_size(other.path):
                     logger.debug(
                         "Generating visual difference for %s and %s",
                         self.path,
                         other.path,
                     )
-                    content_diff.add_visuals([
-                        pixel_difference(self.path, other.path),
-                        flicker_difference(self.path, other.path),
-                    ])
+                    content_diff.add_visuals(
+                        [
+                            pixel_difference(self.path, other.path),
+                            flicker_difference(self.path, other.path),
+                        ]
+                    )
             differences.append(content_diff)
 
-        differences.append(Difference.from_command(
-            Identify,
-            self.path,
-            other.path,
-            source="Image metadata",
-        ))
+        differences.append(
+            Difference.from_command(
+                Identify, self.path, other.path, source="Image metadata"
+            )
+        )
 
         return differences
 

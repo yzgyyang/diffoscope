@@ -26,8 +26,11 @@ from diffoscope.comparators.ar import ArFile
 
 from ..utils import diff_ignore_line_numbers
 from ..utils.data import load_fixture, get_data
-from ..utils.tools import skip_unless_tools_exist, skip_unless_tool_is_at_least, \
-    skip_if_binutils_does_not_support_x86
+from ..utils.tools import (
+    skip_unless_tools_exist,
+    skip_unless_tool_is_at_least,
+    skip_if_binutils_does_not_support_x86,
+)
 from ..utils.nonexisting import assert_non_existing
 
 
@@ -36,7 +39,11 @@ rlib2 = load_fixture('test2.rlib')
 
 
 def llvm_version():
-    return subprocess.check_output(['llvm-config', '--version']).decode("utf-8").strip()
+    return (
+        subprocess.check_output(['llvm-config', '--version'])
+        .decode("utf-8")
+        .strip()
+    )
 
 
 def test_identification(rlib1):
@@ -57,13 +64,13 @@ def differences(rlib1, rlib2):
 def rlib_dis_expected_diff():
     actual_ver = llvm_version()
 
-    if (LooseVersion(str(actual_ver)) >= LooseVersion("3.8")):
+    if LooseVersion(str(actual_ver)) >= LooseVersion("3.8"):
         diff_file = 'rlib_llvm_dis_expected_diff'
 
-    if (LooseVersion(str(actual_ver)) >= LooseVersion("5.0")):
+    if LooseVersion(str(actual_ver)) >= LooseVersion("5.0"):
         diff_file = 'rlib_llvm_dis_expected_diff_5'
 
-    if (LooseVersion(str(actual_ver)) >= LooseVersion("7.0")):
+    if LooseVersion(str(actual_ver)) >= LooseVersion("7.0"):
         diff_file = 'rlib_llvm_dis_expected_diff_7'
 
     return get_data(diff_file)
@@ -105,8 +112,9 @@ def test_item3_deflate_llvm_bitcode(differences, rlib_dis_expected_diff):
     assert differences[3].source2 == 'alloc_system-d16b8f0e.0.bytecode.deflate'
     expected_diff = rlib_dis_expected_diff
     actual_diff = differences[3].details[0].details[1].unified_diff
-    assert diff_ignore_line_numbers(
-        actual_diff) == diff_ignore_line_numbers(expected_diff)
+    assert diff_ignore_line_numbers(actual_diff) == diff_ignore_line_numbers(
+        expected_diff
+    )
 
 
 @skip_unless_tools_exist('nm')

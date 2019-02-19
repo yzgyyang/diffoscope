@@ -130,12 +130,17 @@ class Container(object, metaclass=abc.ABCMeta):
     def comparisons(self, other):
         my_members = OrderedDict(self.get_adjusted_members_sizes())
         other_members = OrderedDict(other.get_adjusted_members_sizes())
-        total_size = sum(x[1] for x in itertools.chain(
-            my_members.values(), other_members.values()))
+        total_size = sum(
+            x[1]
+            for x in itertools.chain(
+                my_members.values(), other_members.values()
+            )
+        )
         # TODO: progress could be a bit more accurate here, give more weight to fuzzy-hashed files
         # TODO: merge DirectoryContainer.comparisons() into this
 
         with Progress(total_size) as p:
+
             def prep_yield(my_name, other_name, comment=NO_COMMENT):
                 my_member, my_size = my_members.pop(my_name)
                 other_member, other_size = other_members.pop(other_name)
@@ -144,20 +149,27 @@ class Container(object, metaclass=abc.ABCMeta):
 
             # if both containers contain 1 element, compare these
             if len(my_members) == 1 and len(other_members) == 1:
-                yield prep_yield(next(iter(my_members.keys())),
-                                 next(iter(other_members.keys())))
+                yield prep_yield(
+                    next(iter(my_members.keys())),
+                    next(iter(other_members.keys())),
+                )
                 return
 
             other_names = set(other_members.keys())
             # keep it sorted like my_members
-            both_names = [name for name in my_members.keys()
-                                                           if name in other_names]
+            both_names = [
+                name for name in my_members.keys() if name in other_names
+            ]
             for name in both_names:
                 yield prep_yield(name, name)
 
-            for my_name, other_name, score in self.perform_fuzzy_matching(my_members, other_members):
-                comment = "Files similar despite different names" \
+            for my_name, other_name, score in self.perform_fuzzy_matching(
+                my_members, other_members
+            ):
+                comment = (
+                    "Files similar despite different names"
                     " (score: {}, lower is more similar)".format(score)
+                )
                 if score == 0:
                     comment = "Files identical despite different names"
                 yield prep_yield(my_name, other_name, comment)
@@ -165,25 +177,32 @@ class Container(object, metaclass=abc.ABCMeta):
             if Config().new_file:
                 for my_member, my_size in my_members.values():
                     p.begin_step(my_size, msg=my_member.progress_name)
-                    yield my_member, MissingFile('/dev/null', my_member), NO_COMMENT
+                    yield my_member, MissingFile(
+                        '/dev/null', my_member
+                    ), NO_COMMENT
 
                 for other_member, other_size in other_members.values():
                     p.begin_step(other_size, msg=other_member.progress_name)
-                    yield MissingFile('/dev/null', other_member), other_member, NO_COMMENT
+                    yield MissingFile(
+                        '/dev/null', other_member
+                    ), other_member, NO_COMMENT
 
     def compare(self, other, source=None, no_recurse=False):
         from .compare import compare_files
 
         def compare_pair(file1, file2, comment):
             difference = compare_files(
-                file1, file2, source=None, diff_content_only=no_recurse)
+                file1, file2, source=None, diff_content_only=no_recurse
+            )
             if comment:
                 if difference is None:
                     difference = Difference(None, file1.name, file2.name)
                 difference.add_comment(comment)
             return difference
 
-        return filter(None, itertools.starmap(compare_pair, self.comparisons(other)))
+        return filter(
+            None, itertools.starmap(compare_pair, self.comparisons(other))
+        )
 
 
 class MissingContainer(Container):

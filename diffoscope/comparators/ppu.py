@@ -52,7 +52,10 @@ class Ppudump(Command):
         return env
 
     def filter(self, line):
-        if re.match(r'^Analyzing %s \(v[0-9]+\)$' % re.escape(self.path), line.decode('utf-8', errors='ignore')):
+        if re.match(
+            r'^Analyzing %s \(v[0-9]+\)$' % re.escape(self.path),
+            line.decode('utf-8', errors='ignore'),
+        ):
             return b''
         return line
 
@@ -75,7 +78,10 @@ class PpuFile(File):
             try:
                 with profile('command', 'ppudump'):
                     subprocess.check_output(
-                        ['ppudump', '-vh', file.path], shell=False, stderr=subprocess.STDOUT)
+                        ['ppudump', '-vh', file.path],
+                        shell=False,
+                        stderr=subprocess.STDOUT,
+                    )
                 PpuFile.ppu_version = ppu_version
             except subprocess.CalledProcessError as e:
                 error = e.output.decode('utf-8', errors='ignore')

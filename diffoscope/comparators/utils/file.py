@@ -24,8 +24,11 @@ import magic
 import logging
 import subprocess
 
-from diffoscope.exc import RequiredToolNotFound, OutputParsingError, \
-    ContainerExtractionError
+from diffoscope.exc import (
+    RequiredToolNotFound,
+    OutputParsingError,
+    ContainerExtractionError,
+)
 from diffoscope.tools import tool_required
 from diffoscope.config import Config
 from diffoscope.profiling import profile
@@ -63,6 +66,7 @@ def _run_tests(fold, tests):
 
 class File(object, metaclass=abc.ABCMeta):
     if hasattr(magic, 'open'):  # use Magic-file-extensions from file
+
         @classmethod
         def guess_file_type(self, path):
             if not hasattr(self, '_mimedb'):
@@ -78,7 +82,9 @@ class File(object, metaclass=abc.ABCMeta):
                 self._mimedb_encoding = magic.open(magic.MAGIC_MIME_ENCODING)
                 self._mimedb_encoding.load()
             return self._mimedb_encoding.file(path)
+
     else:  # use python-magic
+
         @classmethod
         def guess_file_type(self, path):
             if not hasattr(self, '_mimedb'):
@@ -138,19 +144,31 @@ class File(object, metaclass=abc.ABCMeta):
         # for a class are filtered out, so that we don't get into a "vacuous
         # truth" situation like a naive all([]) invocation would give.
 
-        file_type_tests = [test for test in (
-            (cls.FILE_TYPE_RE,
-             lambda m, t: t.search(m), file.magic_file_type),
-            (cls.FILE_TYPE_HEADER_PREFIX,
-             bytes.startswith, file.file_header),
-        ) if test[0]]  # filter out undefined tests
+        file_type_tests = [
+            test
+            for test in (
+                (
+                    cls.FILE_TYPE_RE,
+                    lambda m, t: t.search(m),
+                    file.magic_file_type,
+                ),
+                (
+                    cls.FILE_TYPE_HEADER_PREFIX,
+                    bytes.startswith,
+                    file.file_header,
+                ),
+            )
+            if test[0]
+        ]  # filter out undefined tests
 
-        all_tests = [test for test in (
-            (cls.FILE_EXTENSION_SUFFIX,
-             str.endswith, file.name),
-            (file_type_tests,
-             _run_tests, any),
-        ) if test[0]]  # filter out undefined tests, inc. file_type_tests if it's empty
+        all_tests = [
+            test
+            for test in (
+                (cls.FILE_EXTENSION_SUFFIX, str.endswith, file.name),
+                (file_type_tests, _run_tests, any),
+            )
+            if test[0]
+        ]  # filter out undefined tests, inc. file_type_tests if it's empty
 
         return _run_tests(all, all_tests) if all_tests else False
 
@@ -180,16 +198,24 @@ class File(object, metaclass=abc.ABCMeta):
         if not cls.ENABLE_FALLBACK_RECOGONIZES:
             return False
 
-        all_tests = [test for test in (
-            (cls.FALLBACK_FILE_EXTENSION_SUFFIX,
-             str.endswith, file.name),
-            (cls.FILE_EXTENSION_SUFFIX,
-             str.endswith, file.name),
-            (cls.FALLBACK_FILE_TYPE_HEADER_PREFIX,
-             bytes.startswith, file.file_header),
-            (cls.FILE_TYPE_HEADER_PREFIX,
-             bytes.startswith, file.file_header),
-        ) if test[0]]  # filter out undefined tests, inc. file_type_tests if it's empty
+        all_tests = [
+            test
+            for test in (
+                (cls.FALLBACK_FILE_EXTENSION_SUFFIX, str.endswith, file.name),
+                (cls.FILE_EXTENSION_SUFFIX, str.endswith, file.name),
+                (
+                    cls.FALLBACK_FILE_TYPE_HEADER_PREFIX,
+                    bytes.startswith,
+                    file.file_header,
+                ),
+                (
+                    cls.FILE_TYPE_HEADER_PREFIX,
+                    bytes.startswith,
+                    file.file_header,
+                ),
+            )
+            if test[0]
+        ]  # filter out undefined tests, inc. file_type_tests if it's empty
 
         return _run_tests(all, all_tests) if all_tests else False
 
@@ -209,8 +235,9 @@ class File(object, metaclass=abc.ABCMeta):
                 return self._other_file.__class__.CONTAINER_CLASS(self)
             return None
         if not hasattr(self, '_as_container'):
-            logger.debug('instantiating %s for %s',
-                         self.__class__.CONTAINER_CLASS, self)
+            logger.debug(
+                'instantiating %s for %s', self.__class__.CONTAINER_CLASS, self
+            )
             try:
                 self._as_container = self.__class__.CONTAINER_CLASS(self)
             except RequiredToolNotFound:
@@ -254,6 +281,7 @@ class File(object, metaclass=abc.ABCMeta):
         return "file"
 
     if tlsh:
+
         @property
         def fuzzy_hash(self):
             if not hasattr(self, '_fuzzy_hash'):
@@ -308,21 +336,36 @@ class File(object, metaclass=abc.ABCMeta):
             details.extend(self.compare_details(other, source))
         if self.as_container:
             if self.as_container.auto_diff_metadata:
-                details.extend([
-                    Difference.from_text(self.magic_file_type, other.magic_file_type, self, other,
-                                         source='filetype from file(1)'),
-                    Difference.from_text(self.__class__.__name__, other.__class__.__name__, self, other,
-                                         source='filetype from diffoscope'),
-                ])
+                details.extend(
+                    [
+                        Difference.from_text(
+                            self.magic_file_type,
+                            other.magic_file_type,
+                            self,
+                            other,
+                            source='filetype from file(1)',
+                        ),
+                        Difference.from_text(
+                            self.__class__.__name__,
+                            other.__class__.__name__,
+                            self,
+                            other,
+                            source='filetype from diffoscope',
+                        ),
+                    ]
+                )
             # Don't recursve forever on archive quines, etc.
             depth = self._as_container.depth
-            no_recurse = (depth >= Config().max_container_depth)
+            no_recurse = depth >= Config().max_container_depth
             if no_recurse:
                 msg = "Reached max container depth ({})".format(depth)
                 logger.debug(msg)
                 difference.add_comment(msg)
-            details.extend(self.as_container.compare(
-                other.as_container, no_recurse=no_recurse))
+            details.extend(
+                self.as_container.compare(
+                    other.as_container, no_recurse=no_recurse
+                )
+            )
 
         details = [x for x in details if x]
         if not details:
@@ -346,7 +389,9 @@ class File(object, metaclass=abc.ABCMeta):
         if my_size == other_size and my_size <= SMALL_FILE_THRESHOLD:
             try:
                 with profile('command', 'cmp (internal)'):
-                    with open(self.path, 'rb') as file1, open(other.path, 'rb') as file2:
+                    with open(self.path, 'rb') as file1, open(
+                        other.path, 'rb'
+                    ) as file2:
                         return file1.read() == file2.read()
             except OSError:
                 # one or both files could not be opened for some reason,
@@ -357,11 +402,14 @@ class File(object, metaclass=abc.ABCMeta):
 
     @tool_required('cmp')
     def cmp_external(self, other):
-        return subprocess.call(
-            ('cmp', '-s', self.path, other.path),
-            shell=False,
-            close_fds=True,
-        ) == 0
+        return (
+            subprocess.call(
+                ('cmp', '-s', self.path, other.path),
+                shell=False,
+                close_fds=True,
+            )
+            == 0
+        )
 
     # To be specialized directly, or by implementing compare_details
     def compare(self, other, source=None):
@@ -373,12 +421,18 @@ class File(object, metaclass=abc.ABCMeta):
                     difference = self.compare_bytes(other, source=source)
                     if difference is None:
                         return None
-                    suffix = ' ({})'.format(self.magic_file_type) \
-                        if self.magic_file_type != 'data' else ''
+                    suffix = (
+                        ' ({})'.format(self.magic_file_type)
+                        if self.magic_file_type != 'data'
+                        else ''
+                    )
                     difference.add_comment(
                         "Format-specific differences are supported for this "
                         "file format, but no file-specific differences were "
-                        "detected. Falling back to a binary diff.{}".format(suffix))
+                        "detected. Falling back to a binary diff.{}".format(
+                            suffix
+                        )
+                    )
             except subprocess.CalledProcessError as e:
                 difference = self.compare_bytes(other, source=source)
                 if e.output:
@@ -388,30 +442,41 @@ class File(object, metaclass=abc.ABCMeta):
                 cmd = ' '.join(e.cmd)
                 if difference is None:
                     return None
-                difference.add_comment("Command `%s` exited with %d. Output:\n%s"
-                                       % (cmd, e.returncode, output))
+                difference.add_comment(
+                    "Command `%s` exited with %d. Output:\n%s"
+                    % (cmd, e.returncode, output)
+                )
             except RequiredToolNotFound as e:
                 difference = self.compare_bytes(other, source=source)
                 if difference is None:
                     return None
                 difference.add_comment(
-                    "'%s' not available in path. Falling back to binary comparison." % e.command)
+                    "'%s' not available in path. Falling back to binary comparison."
+                    % e.command
+                )
                 package = e.get_package()
                 if package:
                     difference.add_comment(
-                        "Install '%s' to get a better output." % package)
+                        "Install '%s' to get a better output." % package
+                    )
             except OutputParsingError as e:
                 difference = self.compare_bytes(other, source=source)
                 if difference is None:
                     return None
-                difference.add_comment("Error parsing output of `%s` for %s" %
-                                       (e.command, e.object_class))
+                difference.add_comment(
+                    "Error parsing output of `%s` for %s"
+                    % (e.command, e.object_class)
+                )
             except ContainerExtractionError as e:
                 difference = self.compare_bytes(other, source=source)
                 if difference is None:
                     return None
-                difference.add_comment("Error extracting '{}', falling back to "
-                                       "binary comparison ('{}')".format(e.pathname, e.wrapped_exc))
+                difference.add_comment(
+                    "Error extracting '{}', falling back to "
+                    "binary comparison ('{}')".format(
+                        e.pathname, e.wrapped_exc
+                    )
+                )
             return difference
         return self.compare_bytes(other, source)
 

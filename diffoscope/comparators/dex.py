@@ -48,8 +48,12 @@ class DexContainer(Archive):
     def extract(self, member_name, dest_dir):
         dest_path = os.path.join(dest_dir, member_name)
         logger.debug('dex extracting to %s', dest_path)
-        subprocess.check_call(['enjarify', '-o', dest_path, self.source.path],
-                              shell=False, stderr=None, stdout=subprocess.PIPE)
+        subprocess.check_call(
+            ['enjarify', '-o', dest_path, self.source.path],
+            shell=False,
+            stderr=None,
+            stdout=subprocess.PIPE,
+        )
         return dest_path
 
 
