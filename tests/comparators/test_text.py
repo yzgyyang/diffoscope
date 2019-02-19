@@ -19,6 +19,7 @@
 
 import codecs
 
+from diffoscope.comparators.text import TextFile
 from diffoscope.comparators.binary import FilesystemFile
 from diffoscope.comparators.utils.specialize import specialize
 
@@ -89,3 +90,17 @@ def test_ordering_differences(text_order1, text_order2):
     difference = text_order1.compare(text_order2)
     assert difference.comments == ['ordering differences only']
     assert difference.unified_diff == get_data('text_order_expected_diff')
+
+
+signature1 = load_fixture('test1.asc')
+signature2 = load_fixture('test2.asc')
+
+
+def test_gpg_signature_identification(signature1, signature2):
+    assert isinstance(signature1, TextFile)
+    assert isinstance(signature2, TextFile)
+
+
+def test_gpg_signature(signature1, signature2):
+    difference = signature1.compare(signature2)
+    assert difference.unified_diff == get_data('text_asc_expected_diff')

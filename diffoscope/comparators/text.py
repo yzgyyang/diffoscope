@@ -37,7 +37,7 @@ def order_only_difference(unified_diff):
 
 class TextFile(File):
     DESCRIPTION = "text files"
-    FILE_TYPE_RE = re.compile(r'\btext\b')
+    FILE_TYPE_RE = re.compile(r'(?:\btext\b|^PGP signature Signature)')
 
     @property
     def encoding(self):
