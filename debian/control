@@ -13,6 +13,7 @@ Build-Depends:
  apktool [!ppc64el !s390x] <!nocheck>,
  bash-completion,
  binutils-multiarch <!nocheck>,
+ black <!nocheck>,
  caca-utils <!nocheck>,
  colord <!nocheck>,
  db-util <!nocheck>,

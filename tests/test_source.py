@@ -20,6 +20,9 @@
 import os
 import glob
 import diffoscope
+import subprocess
+
+from .utils.tools import skip_unless_tools_exist
 
 BASE_DIR = os.path.dirname(os.path.abspath(diffoscope.__file__))
 
@@ -28,3 +31,15 @@ def test_dos_mbr():
     for x in glob.iglob(os.path.join(BASE_DIR, '**', '*.py'), recursive=True):
         with open(x, 'rb') as f:
             assert b'DOS/MBR' not in f.read()
+
+
+@skip_unless_tools_exist('black')
+def test_code_is_black_clean():
+    output = subprocess.check_output(
+        ('black', '--diff', '.'), stderr=subprocess.PIPE
+    ).decode('utf-8')
+
+    # Display diff in "captured stdout call"
+    print(output)
+
+    assert len(output) == 0
