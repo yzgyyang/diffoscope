@@ -485,6 +485,14 @@ class HelpFormatter(argparse.HelpFormatter):
             ),
         )
 
+        append('diffoscope homepage', '<https://diffoscope.org/>')
+
+        append(
+            'bugs/issues',
+            '<https://salsa.debian.org/reproducible-builds/diffoscope/issues>',
+            max_width=sys.maxsize,
+        )
+
         return val
 
 
