@@ -1,3 +1,4 @@
 include COPYING
 include README.rst
+include pyproject.toml
 graft tests
