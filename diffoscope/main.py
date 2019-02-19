@@ -428,15 +428,17 @@ def create_parser():
         parser.epilog = (
             'File renaming detection based on fuzzy-matching is currently '
             'disabled. It can be enabled by installing the "tlsh" module '
-            'available at https://github.com/trendmicro/tlsh'
+            'available from https://github.com/trendmicro/tlsh or in the '
+            'python3-tlsh package.'
         )
     if argcomplete:
         argcomplete.autocomplete(parser)
     elif '_ARGCOMPLETE' in os.environ:
         logger.error(
             'Argument completion requested but the "argcomplete" module is '
-            'not installed. It can be obtained at '
-            'https://pypi.python.org/pypi/argcomplete'
+            'not installed. It can be obtained from '
+            'https://pypi.python.org/pypi/argcomplete or in the '
+            'python3-argcomplete package.'
         )
         sys.exit(1)
 
