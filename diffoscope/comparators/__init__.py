@@ -98,6 +98,7 @@ class ComparatorManager(object):
         ('gif.GifFile',),
         ('pcap.PcapFile',),
         ('pgp.PgpFile',),
+        ('pgp.PgpSignature',),
         ('dtb.DeviceTreeFile',),
         ('ogg.OggFile',),
         ('xsb.XsbFile',),

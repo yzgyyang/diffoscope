@@ -22,6 +22,7 @@ import re
 from diffoscope.tools import tool_required
 from diffoscope.difference import Difference
 
+from .text import TextFile
 from .utils.file import File
 from .utils.command import Command
 
@@ -50,3 +51,23 @@ class PgpFile(File):
                 Pgpdump, self.path, other.path, source='pgpdump'
             )
         ]
+
+
+class PgpSignature(TextFile):
+    DESCRIPTION = "PGP signatures"
+    FILE_TYPE_RE = re.compile(r'^PGP signature\b')
+
+    def compare(self, other, source=None):
+        # Don't display signatures as hexdumps; use TextFile's comparisons...
+        difference = super().compare(other, source)
+
+        # ... but attach pgpdump of outout
+        difference.add_details(
+            [
+                Difference.from_command(
+                    Pgpdump, self.path, other.path, source='pgpdump'
+                )
+            ]
+        )
+
+        return difference
