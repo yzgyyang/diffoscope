@@ -421,11 +421,9 @@ class File(object, metaclass=abc.ABCMeta):
                     difference = self.compare_bytes(other, source=source)
                     if difference is None:
                         return None
-                    suffix = (
-                        ' ({})'.format(self.magic_file_type)
-                        if self.magic_file_type != 'data'
-                        else ''
-                    )
+                    suffix = ''
+                    if self.magic_file_type != 'data':
+                        suffix = ' ({})'.format(self.magic_file_type)
                     difference.add_comment(
                         "Format-specific differences are supported for this "
                         "file format, but no file-specific differences were "
