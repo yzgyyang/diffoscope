@@ -354,7 +354,7 @@ class File(object, metaclass=abc.ABCMeta):
                         ),
                     ]
                 )
-            # Don't recursve forever on archive quines, etc.
+            # Don't recurse forever on archive quines, etc.
             depth = self._as_container.depth
             no_recurse = depth >= Config().max_container_depth
             if no_recurse:
