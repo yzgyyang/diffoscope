@@ -421,15 +421,19 @@ class File(object, metaclass=abc.ABCMeta):
                     difference = self.compare_bytes(other, source=source)
                     if difference is None:
                         return None
+                    try:
+                        infix = type(self).DESCRIPTION
+                    except AttributeError:
+                        infix = 'this file format'
                     suffix = ''
                     if self.magic_file_type != 'data':
-                        suffix = ' ({})'.format(self.magic_file_type)
-                    difference.add_comment(
-                        "Format-specific differences are supported for this "
-                        "file format, but no file-specific differences were "
-                        "detected. Falling back to a binary diff.{}".format(
-                            suffix
+                        suffix = ' file(1) reports: {}'.format(
+                            self.magic_file_type
                         )
+                    difference.add_comment(
+                        "Format-specific differences are supported for {} but "
+                        "no file-specific differences were detected; falling "
+                        "back to a binary diff.{}".format(infix, suffix)
                     )
             except subprocess.CalledProcessError as e:
                 difference = self.compare_bytes(other, source=source)

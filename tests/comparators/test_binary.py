@@ -127,13 +127,16 @@ def test_with_compare_details():
 @skip_unless_tools_exist('xxd')
 def test_with_compare_details_and_fallback():
     class MockFile(FilesystemFile):
+        DESCRIPTION = "mock files"
+
         def compare_details(self, other, source=None):
             return []
 
     difference = MockFile(TEST_FILE1_PATH).compare(MockFile(TEST_FILE2_PATH))
     expected_diff = get_data('binary_expected_diff')
     assert (
-        'but no file-specific differences were detected' in difference.comment
+        'supported for mock files but no file-specific differences were detected'
+        in difference.comment
     )
     assert normalize_zeros(difference.unified_diff) == expected_diff
 
