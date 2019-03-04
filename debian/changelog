@@ -1,8 +1,29 @@
-diffoscope (113) UNRELEASED; urgency=medium
+diffoscope (113) unstable; urgency=medium
 
-  * WIP
+  * Replace over 8 MB of Android boot ROM test suite fixtures with 14 KB
+    equivalents. (Closes: #894334, reproducible-builds/diffoscope#13)
+  * Compare .asc PGP signatures as text, not as a hexdump. (Closes: #908991,
+    reproducible-builds/diffoscope#7)
+  * Improve the displayed comment when falling back to a binary diff to include
+    the file type. (Closes: reproducible-builds/diffoscope#49)
+  * Explicitly mention when the guestfs module is missing at runtime and we are
+    falling back to a binary diff. (Closes: reproducible-builds/diffoscope#45)
+  * Provide explicit help when the libarchive system package is missing or
+    "incomplete". (Closes: reproducible-builds/diffoscope#50)
+  * Improve the --help outout:
+    * Indent and wrap the list of supported file formats.
+    * Include links to the diffoscope homepage and bug tracker.
+    * Refer to the Debian package names when indicating how to obtain the tlsh
+      and argcomplete modules.
+  * Drop "DOS/MBR" source string test.
+  * Correct a "recurse" typo.
+  * Adopt the "black" <https://black.readthedocs.io> source code formatter:
+    - Add an initial configuration in a PEP 518 pyproject.toml file and update
+      MANIFEST.in to include pyproject.toml in future release tarballs.
+    - Run the formatter against the source.
+    - Test that the source code satisfies the formatter.
 
- -- Chris Lamb <lamby@debian.org>  Tue, 19 Feb 2019 10:29:32 +0100
+ -- Chris Lamb <lamby@debian.org>  Mon, 04 Mar 2019 23:00:38 +0100
 
 diffoscope (112) unstable; urgency=medium
 
