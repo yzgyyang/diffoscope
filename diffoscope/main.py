@@ -694,6 +694,17 @@ def main(args=None):
         args = sys.argv[1:]
     signal.signal(signal.SIGTERM, sigterm_handler)
 
+    try:
+        import libarchive
+    except (ImportError, AttributeError):
+        traceback.print_exc()
+        print(
+            "\nMissing or incomplete libarchive module. Try installing your "
+            "system's 'libarchive' package.",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
     # Rewrite/support some legacy argument styles
     for val, repl in (
         ('--exclude-directory-metadata', '--exclude-directory-metadata=yes'),
