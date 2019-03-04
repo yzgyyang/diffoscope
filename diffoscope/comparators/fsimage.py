@@ -116,5 +116,9 @@ class FsImageFile(File):
                     my_fs, other_fs, None, None, source="filesystem"
                 )
             )
+            if not guestfs:
+                differences.add_comment(
+                    "guestfs not available; falling back to binary diff"
+                )
 
         return differences
