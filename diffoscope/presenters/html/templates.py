@@ -228,6 +228,7 @@ DIFFNODE_LIMIT = """<div class="error">Max report size reached</div>
 UD_TABLE_HEADER = """<table class="diff">
 <colgroup><col class="colines"/><col class="coldiff"/>
 <col class="colines"/><col class="coldiff"/></colgroup>
+<tr style="display:none;"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 """
 
 UD_TABLE_FOOTER = """<tr class="ondemand"><td colspan="4">
