@@ -42,6 +42,7 @@ import logging
 import os
 import re
 import sys
+from unicodedata import normalize
 from urllib.parse import urlparse
 
 from diffoscope import VERSION
@@ -150,7 +151,7 @@ def convert(s, ponct=0, tag=''):
             i = 0
             t.write('\u200b')
 
-    return t.getvalue()
+    return normalize('NFC', t.getvalue())
 
 
 def output_visual(visual, path, indentstr, indentnum):
