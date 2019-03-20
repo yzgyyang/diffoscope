@@ -158,11 +158,12 @@ def output_visual(visual, path, indentstr, indentnum):
     logger.debug('including image for %s', visual.source)
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
     anchor = output_anchor(path)
+    id = 'id="{}"'.format(anchor) if anchor else ''
     return u"""{0[0]}<div class="difference">
 {0[1]}<div class="diffheader">
 {0[1]}<div class="diffcontrol">⊟</div>
-{0[1]}<div><span class="source">{1}</span>
-{0[2]}<a class="anchor" href="#{2}" name="{2}">\xb6</a>
+{0[1]}<div {5}><span class="source">{1}</span>
+{0[2]}<a class="anchor" href="#{2}">\xb6</a>
 {0[1]}</div>
 {0[1]}</div>
 {0[1]}<div class="difference"><img src=\"data:{3},{4}\" alt=\"compared images\" /></div>
@@ -172,12 +173,14 @@ def output_visual(visual, path, indentstr, indentnum):
         anchor,
         visual.data_type,
         visual.content,
+        id,
     )
 
 
 def output_node_frame(difference, path, indentstr, indentnum, body):
     indent = tuple(indentstr * (indentnum + x) for x in range(3))
     anchor = output_anchor(path)
+    id = 'id="{}"'.format(anchor) if anchor else ''
     dctrl_class, dctrl = (
         ("diffcontrol", u'⊟')
         if difference.has_visible_children()
@@ -186,8 +189,8 @@ def output_node_frame(difference, path, indentstr, indentnum, body):
     if difference.source1 == difference.source2:
         header = u"""{0[1]}<div class="{1}">{2}</div>
 {0[1]}<div><span class="diffsize">{3}</span></div>
-{0[1]}<div><span class="source">{5}</span>
-{0[2]}<a class="anchor" href="#{4}" name="{4}">\xb6</a>
+{0[1]}<div {6}><span class="source">{5}</span>
+{0[2]}<a class="anchor" href="#{4}">\xb6</a>
 {0[1]}</div>
 """.format(
             indent,
@@ -196,13 +199,14 @@ def output_node_frame(difference, path, indentstr, indentnum, body):
             sizeof_fmt(difference.size()),
             anchor,
             html.escape(difference.source1),
+            id,
         )
     else:
         header = u"""{0[1]}<div class="{1} diffcontrol-double">{2}</div>
 {0[1]}<div><span class="diffsize">{3}</span></div>
 {0[1]}<div><span class="source">{5}</span> vs.</div>
-{0[1]}<div><span class="source">{6}</span>
-{0[2]}<a class="anchor" href="#{4}" name="{4}">\xb6</a>
+{0[1]}<div {7}><span class="source">{6}</span>
+{0[2]}<a class="anchor" href="#{4}">\xb6</a>
 {0[1]}</div>
 """.format(
             indent,
@@ -212,6 +216,7 @@ def output_node_frame(difference, path, indentstr, indentnum, body):
             anchor,
             html.escape(difference.source1),
             html.escape(difference.source2),
+            id,
         )
 
     return PartialString.numl(
