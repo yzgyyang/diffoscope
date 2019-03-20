@@ -598,7 +598,7 @@ def run_diffoscope(parsed_args):
     ProfileManager().setup(parsed_args)
     PresenterManager().configure(parsed_args)
     logger.debug("Starting diffoscope %s", VERSION)
-    if not tlsh and Config().fuzzy_threshold != parsed_args.fuzzy_threshold:
+    if not tlsh:
         logger.warning(
             'Fuzzy-matching is currently disabled as the "tlsh" module is unavailable.'
         )
