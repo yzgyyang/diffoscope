@@ -311,9 +311,7 @@ def output_header(css_url, our_css_url=False, icon_url=None):
             % our_css_url
         )
     else:
-        css_style = (
-            u'<style type="text/css">\n' + templates.STYLES + u'</style>\n'
-        )
+        css_style = '<style>\n{}</style>\n'.format(templates.STYLES)
     if icon_url:
         favicon = icon_url
     else:

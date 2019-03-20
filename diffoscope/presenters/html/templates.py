@@ -194,7 +194,7 @@ $(function() {
   $(".diffcontrol-nochildren").show();
 });
 </script>
-<style type="text/css">
+<style>
 .diffoscope table.diff tr.ondemand td, .diffoscope div.ondemand-details {
   background: #f99;
   text-align: center;
