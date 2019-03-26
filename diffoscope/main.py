@@ -371,10 +371,13 @@ def create_parser():
     )
     group3.add_argument(
         '--use-dbgsym',
-        action='store_true',
-        help='Automatically use corresponding -dbgsym packages'
-        'when comparing .deb files. (default: %(default)s)',
-        default=Config().use_dbgsym,
+        metavar='WHEN',
+        default='auto',
+        choices=('no', 'auto', 'yes'),
+        help='When to automatically use corresponding -dbgsym packages when '
+        'comparing .deb files. WHEN is one of {%(choices)s}. Default: auto, '
+        'meaning yes if two .changes or .buildinfo files are specified, '
+        'otherwise no.',
     )
     group3.add_argument(
         '--force-details',

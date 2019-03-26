@@ -491,6 +491,9 @@ class ElfContainer(Container):
 
     @tool_required('objcopy')
     def _install_debug_symbols(self):
+        if Config().use_dbgsym == 'no':
+            return
+
         # Figure out if we are in a Debian package first
         try:
             deb = (
@@ -511,7 +514,7 @@ class ElfContainer(Container):
         # `Config().use_dbgsym`.
         if (
             not hasattr(deb.container.source, 'container')
-            and not Config().use_dbgsym
+            and Config().use_dbgsym != 'yes'
         ):
             return
 
