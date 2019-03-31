@@ -19,7 +19,9 @@
 
 import os
 import logging
+import sys
 
+from diffoscope.exc import ContainerExtractionError
 from diffoscope.tempfiles import get_named_temporary_file
 from diffoscope.difference import Difference
 
@@ -40,10 +42,20 @@ class Symlink(File):
         return os.readlink(self.name)
 
     def create_placeholder(self):
-        with get_named_temporary_file('w+', delete=False) as f:
-            f.write('destination: %s\n' % self.symlink_destination)
-            f.flush()
-            return f.name
+        
+        try:
+            with get_named_temporary_file('w+', delete=False) as f:
+                f.write('destination: %s\n' % self.symlink_destination)
+                f.flush()
+                return f.name
+
+        except OSError as ose:
+            if (ose.errno == 28):
+                sys.tracebacklimit = 0
+                raise ose
+
+            else:
+                raise   
 
     @property
     def path(self):
