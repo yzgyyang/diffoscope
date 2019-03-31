@@ -86,9 +86,8 @@ def create_parser():
     )
     parser.add_argument(
         'path1',
-        nargs='?',
-        help='First file or directory to '
-        'compare. If omitted, tries to read a diffoscope diff from stdin.',
+        help='First file or directory to compare. Specify "-" to read a '
+        'diffoscope diff from stdin.',
     )
     parser.add_argument(
         'path2',
@@ -652,7 +651,7 @@ def run_diffoscope(parsed_args):
     path1, path2 = parsed_args.path1, parsed_args.path2
     if path2 is None:
         logger.debug("Loading diff from stdin")
-        if path1 is None or path1 == '-':
+        if path1 == '-':
             difference = load_diff(sys.stdin, "stdin")
         else:
             try:
