@@ -156,7 +156,6 @@ class ZipContainer(Archive):
             if (ose.errno == 28):
                 sys.tracebacklimit = 0
                 raise ose
-
             else:
                 raise 
 
