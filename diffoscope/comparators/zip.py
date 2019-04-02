@@ -152,14 +152,6 @@ class ZipContainer(Archive):
                 raise ContainerExtractionError(member_name, exc)
             raise
 
-        except OSError as ose:
-            if (ose.errno == 28):
-                sys.tracebacklimit = 0
-                raise ose
-
-            else:
-                raise 
-
     def get_member(self, member_name):
         zipinfo = self.archive.getinfo(member_name)
         if zipinfo.filename[-1] == '/':
