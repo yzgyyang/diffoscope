@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with diffoscope.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
 import pytest
 import functools
 import importlib.util
@@ -40,8 +41,37 @@ def tools_missing(*required):
     return not required or any(find_executable(x) is None for x in required)
 
 
+def skipif(*args, **kwargs):
+    """
+    Call `pytest.mark.skipif` with the specified arguments.
+
+    As a special-case, if the DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS
+    environment variable is exported, this alters the behaviour such that a
+    missing tool is treated as a failed test. For more information on the
+    rationale here, please see issue #35.
+    """
+
+    if os.environ.get('DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS', None) != '1':
+        return pytest.mark.skipif(*args, **kwargs)
+
+    msg = "{} (DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS=1)".format(
+        kwargs['reason']
+    )
+
+    # We cannot simply call pytest.fail here as that would result in a failure
+    # during the test collection phase instead when the test is actually
+    # executed.
+    def outer(*args1, **kwargs1):
+        def inner(*args2, **kwargs2):
+            return pytest.fail(msg)
+
+        return inner
+
+    return outer
+
+
 def skip_unless_tools_exist(*required):
-    return pytest.mark.skipif(
+    return skipif(
         tools_missing(*required),
         reason="requires {}".format(" and ".join(required)),
     )
@@ -49,10 +79,10 @@ def skip_unless_tools_exist(*required):
 
 def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
     if tools_missing(tool):
-        return pytest.mark.skipif(True, reason="requires {}".format(tool))
+        return skipif(True, reason="requires {}".format(tool))
     if callable(actual_ver):
         actual_ver = actual_ver()
-    return pytest.mark.skipif(
+    return skipif(
         vcls(str(actual_ver)) == vcls(str(target_ver)),
         reason="requires {} != {} ({} detected)".format(
             tool, target_ver, actual_ver
@@ -62,10 +92,10 @@ def skip_if_tool_version_is(tool, actual_ver, target_ver, vcls=LooseVersion):
 
 def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
     if tools_missing(tool) and module_is_not_importable(tool):
-        return pytest.mark.skipif(True, reason="requires {}".format(tool))
+        return skipif(True, reason="requires {}".format(tool))
     if callable(actual_ver):
         actual_ver = actual_ver()
-    return pytest.mark.skipif(
+    return skipif(
         vcls(str(actual_ver)) < vcls(str(min_ver)),
         reason="requires {} >= {} ({} detected)".format(
             tool, min_ver, actual_ver
@@ -75,10 +105,10 @@ def skip_unless_tool_is_at_least(tool, actual_ver, min_ver, vcls=LooseVersion):
 
 def skip_unless_tool_is_at_most(tool, actual_ver, max_ver, vcls=LooseVersion):
     if tools_missing(tool) and module_is_not_importable(tool):
-        return pytest.mark.skipif(True, reason="requires {}".format(tool))
+        return skipif(True, reason="requires {}".format(tool))
     if callable(actual_ver):
         actual_ver = actual_ver()
-    return pytest.mark.skipif(
+    return skipif(
         vcls(str(actual_ver)) > vcls(str(max_ver)),
         reason="requires {} <= {} ({} detected)".format(
             tool, max_ver, actual_ver
@@ -90,10 +120,10 @@ def skip_unless_tool_is_between(
     tool, actual_ver, min_ver, max_ver, vcls=LooseVersion
 ):
     if tools_missing(tool):
-        return pytest.mark.skipif(True, reason="requires {}".format(tool))
+        return skipif(True, reason="requires {}".format(tool))
     if callable(actual_ver):
         actual_ver = actual_ver()
-    return pytest.mark.skipif(
+    return skipif(
         (vcls(str(actual_ver)) < vcls(str(min_ver)))
         or (vcls(str(actual_ver)) > vcls(str(max_ver))),
         reason="requires {} >= {} >= {} ({} detected)".format(
@@ -106,7 +136,7 @@ def skip_if_binutils_does_not_support_x86():
     if tools_missing('objdump'):
         return skip_unless_tools_exist('objdump')
 
-    return pytest.mark.skipif(
+    return skipif(
         'elf64-x86-64' not in get_supported_elf_formats(),
         reason="requires a binutils capable of reading x86-64 binaries",
     )
@@ -137,7 +167,7 @@ def module_is_not_importable(x):
 
 
 def skip_unless_module_exists(name):
-    return pytest.mark.skipif(
+    return skipif(
         module_is_not_importable(name),
         reason="requires {} module".format(name),
     )
