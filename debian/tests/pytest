@@ -8,6 +8,7 @@ if ! [ -d "$ADTTMP" ]; then
 fi
 
 export LIBGUESTFS_MEMSIZE=128
+export DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS=1
 
 cp -r tests $ADTTMP
 (cd $ADTTMP; py.test-3 -vv -l -r a)
