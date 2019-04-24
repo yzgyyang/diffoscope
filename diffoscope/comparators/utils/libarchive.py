@@ -320,8 +320,8 @@ class LibarchiveContainer(Archive):
                     with open(dst, 'wb') as f:
                         for block in entry.get_blocks():
                             f.write(block)
-                except Exception as exc:
-                    raise ContainerExtractionError(entry.pathname, exc)
+                except Exception as e:
+                    raise ContainerExtractionError(entry.pathname, e)
 
         logger.debug(
             "Extracted %d entries from %s to %s",

@@ -64,8 +64,8 @@ class PdfFile(File):
         try:
             pdf = PyPDF2.PdfFileReader(file.path)
             document_info = pdf.getDocumentInfo()
-        except PyPDF2.utils.PdfReadError as exc:
-            return "(Could not extract metadata: {})".format(exc)
+        except PyPDF2.utils.PdfReadError as e:
+            return "(Could not extract metadata: {})".format(e)
 
         xs = []
         for k, v in sorted(document_info.items()):

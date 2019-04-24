@@ -145,11 +145,11 @@ class ZipContainer(Archive):
             ) as target:
                 shutil.copyfileobj(source, target)
             return targetpath.decode(sys.getfilesystemencoding())
-        except RuntimeError as exc:
+        except RuntimeError as e:
             # Handle encrypted files see line 1292 of zipfile.py
             is_encrypted = self.archive.getinfo(member_name).flag_bits & 0x1
             if is_encrypted:
-                raise ContainerExtractionError(member_name, exc)
+                raise ContainerExtractionError(member_name, e)
             raise
 
     def get_member(self, member_name):

@@ -223,8 +223,8 @@ class FIFOFeeder(threading.Thread):
             while True:
                 try:
                     fd = os.open(self.fifo_path, os.O_WRONLY | os.O_NONBLOCK)
-                except OSError as error:
-                    if error.errno != errno.ENXIO:
+                except OSError as e:
+                    if e.errno != errno.ENXIO:
                         raise
                     elif self._want_join.is_set():
                         return
