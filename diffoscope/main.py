@@ -723,6 +723,11 @@ def main(args=None):
         with setup_logging(parsed_args.debug, log_handler) as logger:
             post_parse(parsed_args)
             sys.exit(run_diffoscope(parsed_args))
+    except OSError as e:
+        if e.errno != errno.ENOSPC:
+            raise
+        logger.error('No space left on device. Diffoscope exiting.')
+        sys.exit(1)
     except KeyboardInterrupt:
         logger.error('Keyboard Interrupt')
         sys.exit(2)
