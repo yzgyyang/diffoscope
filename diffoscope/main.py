@@ -23,6 +23,7 @@
 import os
 import sys
 import json
+import errno
 import signal
 import logging
 import textwrap
