@@ -1,8 +1,35 @@
-diffoscope (114) UNRELEASED; urgency=medium
+diffoscope (114) experimental; urgency=medium
 
-  * WIP
+  [ Chris Lamb ]
+  * Add support for GnuPG "keybox" files. Thanks to Daniel Kahn Gillmor for the
+    suggestion. (Closes: #871244, reproducible-builds/diffoscope#23)
+  * Always warn if tlsh module is not available (not just if a specific
+    fuzziness threshold is specified) to match the epilog of the --help output.
+    This prevents missing support for file rename detection.
+    (Closes: #888237, reproducible-builds/diffoscope#29)
+  * Treat missing tools on Debian autopkgtests as individual test failures by
+    checking whether a new DIFFOSCOPE_TESTS_FAIL_ON_MISSING_TOOLS environment
+    variable is exported. (Closes: #905885, reproducible-builds/diffoscope#35)
+  * Require that "-" is explicitly specified to read a single diff from
+    standard input to avoid non-intuitive behaviour when diffoscope is called
+    without any arguments. (Closes: reproducible-builds/diffoscope#54)
+  * Make --use-dbgsym a ternary operator to make it easier to totally disable.
+    Thanks to Mattia Rizzolo for the suggestion.
+  * Consolidate on "e" as the aliased exception name.
 
- -- Chris Lamb <lamby@debian.org>  Mon, 04 Mar 2019 23:36:23 +0100
+  [ Milena Boselli Rosa ]
+  * Various fixes to the HTML markup to prevent validation warnings/errors:
+    - Prevent empty values for the "name" attribute name on HTML anchor tags,
+      and add an "id" to its parent "div" container.
+    - Fix "table column x established by element 'col' has no cells beginning
+      in it" warnings.
+    - Fix "Text run is not in Unicode Normalization Form C".
+    - Remove the "type" HTML attribute from <style> elements.
+
+  [ Vibhu ]
+  * Fail more gracefully when running out of diskspace. (Closes: #874582)
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 28 Apr 2019 17:21:46 +0100
 
 diffoscope (113) unstable; urgency=medium
 
