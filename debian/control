@@ -32,6 +32,7 @@ Build-Depends:
  ghostscript <!nocheck>,
  giflib-tools <!nocheck>,
  gnumeric <!nocheck>,
+ gnupg-utils <!nocheck>,
  help2man,
  imagemagick <!nocheck>,
  jsbeautifier <!nocheck>,

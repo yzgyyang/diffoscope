@@ -99,6 +99,7 @@ class ComparatorManager(object):
         ('pcap.PcapFile',),
         ('pgp.PgpFile',),
         ('pgp.PgpSignature',),
+        ('kbx.KbxFile',),
         ('dtb.DeviceTreeFile',),
         ('ogg.OggFile',),
         ('xsb.XsbFile',),
